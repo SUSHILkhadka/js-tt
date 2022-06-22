@@ -11,14 +11,19 @@ class Ball {
         // this.velocity.z-=GRAVITY
 
 
-        this.centre.x += this.velocity.x*0.01
-        this.centre.y += this.velocity.y*0.01
-        this.centre.z += this.velocity.z*0.01
+        this.centre.x += this.velocity.x*timeScale
+        this.centre.y += this.velocity.y*timeScale
+        this.centre.z += this.velocity.z*timeScale
     }
 
     drawBall(ctx) {
 
         drawSphere(ctx, this.centre, this.rad);
+    }
+
+    drawShadow(ctx){
+        shadowCircle(ctx,this.centre,this.rad)
+        
     }
 
 

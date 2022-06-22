@@ -11,12 +11,10 @@ var centre=new Point3D(0.2,-0.2,1.09)
 var vel=new Point3D(0.001,0.00001,-0.04);
 var ball = new Ball(centre,0.01,vel)
 
+var bat= new Bat();
+
 function play(){
     window.addEventListener('keypress', function event(e) {
-
-
-    
-    
         if (e.code == 'KeyI' || e.key=='ArrowUp') {
             ball.centre.z-=0.0001;
     
@@ -62,19 +60,32 @@ function play(){
         }
 
     });
+
+
+
+    canvas.addEventListener('mousemove', function event(e) {
+        console.log(e.clientX);
+        console.log(e.clientY);
+    bat.updatePosition(e.clientX-translateX,e.clientY-translateY);
+
+
+    });
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.translate(400, 500);
+    ctx.translate(translateX, translateY);
+
     
     table.drawTable(ctx);
     ball.drawBall(ctx);
+    ball.drawShadow(ctx);
     ball.collisionTable();
     ball.collisionWorld();
     ball.updatePosition();
     ball.collisionBat()
+    bat.drawBat(ctx);
     // console.log('yang',rotation_angle)
     // console.log('xang',rotation_anglex)
 
-    ctx.translate(-400, -500);
+    ctx.translate(-translateX, -translateY);
 
 requestAnimationFrame(play);
 

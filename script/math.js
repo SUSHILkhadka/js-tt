@@ -18,9 +18,8 @@ function project(point)
     point=Object.assign(tempmid);
 
     let proj=new Point3D(0,0,0)
-    proj.x=(aspect*f*point.x)/point.z
-    proj.y=(f*point.y)/point.z
-
+    proj.x=(aspect*f*point.x)/point.z;
+    proj.y=(f*point.y)/point.z;
 
     let dest1=new Point3D(0,0,+1)
     let temp1=translate(proj,dest1)

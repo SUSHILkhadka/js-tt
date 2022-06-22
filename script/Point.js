@@ -30,5 +30,3 @@ class Plane3D{
         console.log(this.x,this.y,this.z,this.c)
     }
 }
-
-
