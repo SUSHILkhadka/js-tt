@@ -6,7 +6,7 @@ canvas.width=CANVAS_WIDTH;
 
 
 var table=new Table()
-var centre=new Point3D(0.2,-0.2,1.09)
+var centre=new Point3D(0.2 ,-0.2,1.09)
 
 var vel=new Point3D(0.001,0.00001,-0.04);
 var ball = new Ball(centre,0.01,vel)
