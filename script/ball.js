@@ -38,7 +38,7 @@ class Ball {
                 console.log('bally and boardy and ball rad', this.centre.y, START_BOARD_y, this.rad);
 
                 console.log('hit');
-                this.velocity.y = -Math.abs(this.velocity.y) ;
+                this.velocity.y = -Math.abs(this.velocity.y)+LOSS ;
 
             }
         }
@@ -61,7 +61,16 @@ class Ball {
          */
 
         // this.velocity.y = -this.velocity.y + LOSS;
-        this.centre.y=-0.2;
+
+        // if(thresholdVelocityY>Math.abs(this.velocity.y)){
+        // this.centre.y=-0.2;
+        //     this.velocity.y=0.00001;
+        // }
+
+        if(this.centre.y>START_BOARD_y){
+            this.centre.y=STARTING_BALL_POSITION_Y
+            this.velocity.y=STARTING_BALL_VELOCITY_Y
+        }
 
 
 
@@ -79,7 +88,7 @@ class Ball {
 
 
     //since table position of 2 bats are changing, pass 2 bats info here
-    collisionBat() {
+    collisionBBat() {
 
         if (this.centre.z < START_BOARD_z) {
             console.log('bathit')
@@ -94,7 +103,6 @@ class Ball {
 
             //add power by adding -LOSS
         }
-
 
     }
 }

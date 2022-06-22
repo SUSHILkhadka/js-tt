@@ -80,7 +80,7 @@ function shadowCircle(ctx, centre, rad) {
     // centre.z=centre.z;
 
     let temp = new Point3D(centre.x,START_BOARD_y,centre.z);
-    console.log('centre-y',centre.y)
+    // console.log('centre-y',centre.y)
     let centre2D=project(temp);
 
     let radiusShadow=rad*(-centre.y)*5000;

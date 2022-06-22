@@ -6,12 +6,21 @@ canvas.width=CANVAS_WIDTH;
 
 
 var table=new Table()
-var centre=new Point3D(0.2 ,-0.2,1.09)
+// var centre=new Point3D(0.2 ,-0.2,1.09)
+var centre=new Point3D(0.2 ,STARTING_BALL_POSITION_Y,1.09)
 
-var vel=new Point3D(0.001,0.00001,-0.04);
+
+var vel=new Point3D(0.0,STARTING_BALL_VELOCITY_Y,-0.04);
 var ball = new Ball(centre,0.01,vel)
 
 var bat= new Bat();
+
+canvas.addEventListener('mousemove', function event(e) {
+    console.log(e.clientX);
+    console.log(e.clientY);
+bat.updatePosition(e.clientX-translateX,e.clientY-translateY);
+
+});
 
 function play(){
     window.addEventListener('keypress', function event(e) {
@@ -63,13 +72,6 @@ function play(){
 
 
 
-    canvas.addEventListener('mousemove', function event(e) {
-        console.log(e.clientX);
-        console.log(e.clientY);
-    bat.updatePosition(e.clientX-translateX,e.clientY-translateY);
-
-
-    });
     ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.translate(translateX, translateY);
 
@@ -78,9 +80,10 @@ function play(){
     ball.drawBall(ctx);
     ball.drawShadow(ctx);
     ball.collisionTable();
-    ball.collisionWorld();
-    ball.updatePosition();
     ball.collisionBat()
+    ball.respawn(); 
+    // ball.collisionWorld();
+    ball.updatePosition();
     bat.drawBat(ctx);
     // console.log('yang',rotation_angle)
     // console.log('xang',rotation_anglex)

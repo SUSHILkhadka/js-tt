@@ -1,8 +1,8 @@
-const CANVAS_WIDTH=window.innerWidth;
+const CANVAS_WIDTH=1200;
 const CANVAS_HEIGHT=800;
 
 const translateX=400;
-const translateY=500;
+const translateY=300;   
 
 // rotation_angle=-87.99999999999245;
 rotation_angle=-4;
@@ -15,7 +15,7 @@ const increment=0.005
 //board
 const BOARD_WIDTH=0.3
 const BOARD_HEIGHT=0.1
-const BOARD_LENGTH=2
+const BOARD_LENGTH=0.6
 // START_BOARD_x=20;
 // START_BOARD_y=20;
 // START_BOARD_z=20;
@@ -52,9 +52,17 @@ const BAT_LENGTH_2d=1
 const BALL_RADIUS=5
 
 const GRAVITY=0.0009
+// const GRAVITY=0.0
+
+
 
 const FLOORSTART_Y=800
 const LOSS=0
 
-const timeScale=0.2
+const timeScale=0.3
+
+const thresholdVelocityY=0.00000001
+
+const STARTING_BALL_POSITION_Y=-0.1
+const STARTING_BALL_VELOCITY_Y=0.0001
 
