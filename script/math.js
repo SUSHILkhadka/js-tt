@@ -29,6 +29,31 @@ function project(point)
 
     return temp1;
 }
+function projectbat(point)
+{
+
+    let dest=new Point3D(-0.15,0,-1.3)
+    let temp=translate(point,dest)
+
+    let roty=rotateY(temp,0);
+    let rot=rotateX(roty,rotation_anglex);
+
+    let destmid=new Point3D(0,0,1)
+    let tempmid=translate(rot,destmid)
+    point=Object.assign(tempmid);
+
+    let proj=new Point3D(0,0,0)
+    proj.x=(aspect*f*point.x)/point.z;
+    proj.y=(f*point.y)/point.z;
+
+    let dest1=new Point3D(0.15,0,+1.3)
+    let temp1=translate(proj,dest1)
+
+    temp1.x*=CANVAS_WIDTH
+    temp1.y*=CANVAS_HEIGHT
+
+    return temp1;
+}
 
 // function draw(ctx,)
 function translate(point,dest){

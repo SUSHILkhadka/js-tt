@@ -4,6 +4,8 @@ const ctx=canvas.getContext('2d');
 canvas.height=CANVAS_WIDTH;
 canvas.width=CANVAS_WIDTH;
 
+canvas.style.cursor='none'
+
 
 var table=new Table()
 // var centre=new Point3D(0.2 ,-0.2,1.09)
@@ -16,8 +18,8 @@ var ball = new Ball(centre,0.01,vel)
 var bat= new Bat();
 
 canvas.addEventListener('mousemove', function event(e) {
-    console.log(e.clientX);
-    console.log(e.clientY);
+    // console.log(e.clientX);
+    // console.log(e.clientY);
 bat.updatePosition(e.clientX-translateX,e.clientY-translateY);
 
 });
@@ -61,6 +63,7 @@ function play(){
     
         if (e.code == 'KeyW' || e.key=='ArrowUp') {
             rotation_anglex-=increment;
+            
     
         }    if (e.code == 'KeyS' || e.key=='ArrowUp') {
             // viewpointY+=5;
@@ -77,14 +80,22 @@ function play(){
 
     
     table.drawTable(ctx);
+    table.drawNet(ctx);
+
     ball.drawBall(ctx);
     ball.drawShadow(ctx);
     ball.collisionTable();
-    ball.collisionBat()
+    ball.collisionBat(bat);
     ball.respawn(); 
-    // ball.collisionWorld();
+    ball.collisionWorld();
     ball.updatePosition();
     bat.drawBat(ctx);
+    bat.updateAngle();
+    bat.drawBat3D(ctx);
+    // bat.drawBat3D1(ctx);
+
+    
+    bat.updatePosition();
     // console.log('yang',rotation_angle)
     // console.log('xang',rotation_anglex)
 

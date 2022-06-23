@@ -65,11 +65,38 @@ function drawPolygon(ctx, color, ...obj) {
     // ctx.strokeStyle='white';
     ctx.stroke();
 }
+function drawPolygonImage(ctx, color, ...obj) {
+    const img = new Image();
+    img.src='asset/bat.png'
+    ctx.beginPath();
+  img.onload = function() {
 
+    obj.forEach((value, index) => {
+        if (index == 0) {
+            ctx.moveTo(value.x, value.y);
+        }
+        else {
+            ctx.lineTo(value.x, value.y);
+        }
+    });
+};
+ctx.closePath();
+// ctx.clip();
+ctx.drawImage(img, 10, 0,10,100);
+
+    // ctx.fillStyle = color;
+    // ctx.fill();
+    ctx.lineWidth = 2;
+    // ctx.strokeStyle='white';
+    ctx.stroke();
+    // ctx.restore();
+    
+}
 function drawCircle(ctx, obj, rad) {
     ctx.beginPath();
 
     ctx.arc(obj.x, obj.y, rad, 0, 2 * Math.PI);
+    ctx.fillStyle=BALL_COLOR[0]
     ctx.fill();
     ctx.stroke();
 }

@@ -31,13 +31,6 @@ class Ball {
     collisionTable() {
         if (this.centre.x >= START_BOARD_x && this.centre.x < START_BOARD_x + BOARD_WIDTH && this.centre.z >= START_BOARD_z && this.centre.z < START_BOARD_z + BOARD_LENGTH) {
             if (START_BOARD_y - this.centre.y <= this.rad) {
-
-                console.log('ballx and boardx and boardx+width', this.centre.x, START_BOARD_x, START_BOARD_x + BOARD_WIDTH);
-
-
-                console.log('bally and boardy and ball rad', this.centre.y, START_BOARD_y, this.rad);
-
-                console.log('hit');
                 this.velocity.y = -Math.abs(this.velocity.y)+LOSS ;
 
             }
@@ -51,21 +44,7 @@ class Ball {
         }
     }
     respawn() {
-        // let temp=new Point3D(START_BOARD_x+20,START_BOARD_y,START_BOARD_z+20)
-        // this.centre=Object.assign(temp);
 
-        /**
-         * bounce
-         * 1st one is working good reflection
-         * 2nd one with loss
-         */
-
-        // this.velocity.y = -this.velocity.y + LOSS;
-
-        // if(thresholdVelocityY>Math.abs(this.velocity.y)){
-        // this.centre.y=-0.2;
-        //     this.velocity.y=0.00001;
-        // }
 
         if(this.centre.y>START_BOARD_y){
             this.centre.y=STARTING_BALL_POSITION_Y
@@ -88,21 +67,59 @@ class Ball {
 
 
     //since table position of 2 bats are changing, pass 2 bats info here
-    collisionBBat() {
+    // collisionBat() {
 
-        if (this.centre.z < START_BOARD_z) {
-            console.log('bathit')
-            this.velocity.z = -this.velocity.z;
+    //     if (this.centre.z < START_BOARD_z) {
+    //         console.log('bathit')
+    //         this.velocity.z = -this.velocity.z;
 
-            //add power by adding -LOSS
-        }
+    //         //add power by adding -LOSS
+    //     }
+
+    //     if (this.centre.z > START_BOARD_z+BOARD_LENGTH) {
+    //         console.log('bathit')
+    //         this.velocity.z = -this.velocity.z;
+
+    //         //add power by adding -LOSS
+    //     }
+
+    // }
+    collisionBat(bat) {
+
 
         if (this.centre.z > START_BOARD_z+BOARD_LENGTH) {
-            console.log('bathit')
+            console.log('wallhit')
             this.velocity.z = -this.velocity.z;
 
             //add power by adding -LOSS
         }
+
+        if (this.centre.z < START_BOARD_z) {
+            console.log('wallhit')
+            this.velocity.z = -this.velocity.z;
+
+            //add power by adding -LOSS
+        }
+        // console.log('this.centre.x=',this.centre.x)
+        // console.log('bat.topLeft.x= ',bat.topLeft.x)
+        if(Math.abs(this.centre.z-bat.topLeft.z)<=thresholdZ )
+        {
+            console.log('bathit')
+
+            if(this.centre.x>=bat.topLeft.x && this.centre.x<=bat.topRight.x){
+                if(this.centre.y>=bat.topLeft.y && this.centre.y<=bat.bottomLeft.y){
+                    this.velocity.z=-this.velocity.z;
+
+                }
+            }
+        }
+        // if(Math.abs(this.centre.z-bat.topLeft.z)<=thresholdZ)
+        // {
+        //     console.log('bathit')
+            // this.velocity.z=-this.velocity.z;
+        // }
+
+
 
     }
 }
