@@ -9,6 +9,8 @@ const nomouse=9000;
 // rotation_angle=-87.99999999999245;
 rotation_angle=-4;
 rotation_anglex=7.669999999999859;
+rotation_anglex=90;
+
 // rotation_angle=0
 // rotation_anglex=0
 

@@ -12,17 +12,14 @@ var table=new Table()
 var centre=new Point3D(0.2 ,STARTING_BALL_POSITION_Y,1.09)
 
 
-var vel=new Point3D(-0.00,STARTING_BALL_VELOCITY_Y,-0.04);
+var vel=new Point3D(-0.0,STARTING_BALL_VELOCITY_Y,-0.04);
 var ball = new Ball(centre,0.01,vel)
 
 var bat= new Bat();
 var bat_far= new Bat();
 
 
-canvas.addEventListener('mousemove', function event(e) {
-bat.updatePosition(e.clientX-translateX,e.clientY);
 
-});
 
 var keyboardClientX=500;
 var keyboardClientY=500;
@@ -52,6 +49,10 @@ bat_far.updatePosition(keyboardClientX-translateX,keyboardClientY);
 });
 
 function play(){
+    canvas.addEventListener('mousemove', function event(e) {
+        bat.updatePosition(e.clientX-translateX,e.clientY);
+        
+        });
     window.addEventListener('keypress', function event(e) {
         if (e.code == 'KeyI' || e.key=='ArrowUp') {
             ball.centre.z-=0.0001;
@@ -118,11 +119,12 @@ function play(){
     table.drawTable(ctx);
     table.drawNet(ctx);
     
-
-    ball.drawBall(ctx);
     ball.drawShadow(ctx);
+    ball.drawBall(ctx);
     ball.collisionTable();
-    ball.collisionBat(bat,bat_far);
+    ball.collisionBat(bat);
+    // ball.collisionBat(bat_far);
+
     ball.respawn(); 
     ball.collisionWorld();
     ball.updatePosition();

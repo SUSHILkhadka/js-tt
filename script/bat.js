@@ -104,7 +104,7 @@ class Bat{
         // c_proj.x=this.x+BAT_WIDTH_2d;
         // d_proj.x=this.x;
 
-        drawPolygon(ctx,'white',a_proj,b_proj,c_proj,d_proj);
+        drawPolygon(ctx,'rgba(15, 11, 13, 0.4)',a_proj,b_proj,c_proj,d_proj);
 
     }
 

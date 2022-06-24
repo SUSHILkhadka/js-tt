@@ -84,7 +84,7 @@ class Ball {
     //     }
 
     // }
-    collisionBat(bat, bat_far) {
+    collisionBat(bat) {
         console.log(this.rad);
 
         if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
@@ -100,28 +100,11 @@ class Ball {
 
             //add power by adding -LOSS
         }
-        // console.log('this.centre.x=',this.centre.x)
-        // console.log('bat.topLeft.x= ',bat.topLeft.x)
-        // if(Math.abs(this.centre.z-bat.topLeft.z)<=thresholdZ )
-        // {
-        //     console.log('bathit')
-
-        //     if(this.centre.x>=bat.topLeft.x && this.centre.x<=bat.topRight.x){
-        //         if(this.centre.y>=bat.topLeft.y && this.centre.y<=bat.bottomLeft.y){
-        //             this.velocity.z=-this.velocity.z;
-
-        //         }
-        //     }
-        // }
-        // if (Math.abs(this.centre.y - bat.topLeft.y) <= thresholdY) {
-
-
+  
         if(ball.centre.x>=bat.topLeft.x-this.rad && ball.centre.x<=bat.topRight.x+this.rad)   {
-            if((this.centre.z<=bat.topLeft.z && this.centre.z>=bat.topRight.z) ||(this.centre.z>=bat.topLeft.z && this.centre.z<=bat.topRight.z) )
+            // if((this.centre.z<=bat.topLeft.z && this.centre.z>=bat.topRight.z) ||(this.centre.z>=bat.topLeft.z && this.centre.z<=bat.topRight.z) ){
             console.log("topleft x and z=",bat.topLeft.x,bat.topLeft.z)
             console.log("ball centre x and z=",this.centre.x,this.centre.z)
-
-
 
             let dx = ((bat.topRight.x-ball.centre.x) - (bat.topLeft.x-ball.centre.x));
             let dz = ((bat.topRight.z-ball.centre.z) - (bat.topLeft.z - ball.centre.z));
@@ -132,7 +115,8 @@ class Ball {
             if (delta >= 0) {
                 console.log('bathit')
                     this.velocity.z = -this.velocity.z;
-            }
+            // }
+        }
         }
         // }
 
