@@ -132,7 +132,6 @@ class Ball {
             if (delta >= 0) {
                 console.log('bathit')
                     this.velocity.z = -this.velocity.z;
-
             }
         }
         // }

@@ -180,8 +180,11 @@ function drawSphere(ctx,centre,rad){
 
     let c=project(centre)
     let sideProj=project(sidePoint)
+
+    let guessRadius=20;
+    guessRadius/=2.5*centre.z;
     //draw circle
 
     let displayRadius=distance(c,sidePoint)
-    drawCircle(ctx,c,8);
+    drawCircle(ctx,c,guessRadius);
 }
