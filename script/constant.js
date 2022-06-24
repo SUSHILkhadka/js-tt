@@ -1,7 +1,7 @@
 const CANVAS_WIDTH=1200;
 const CANVAS_HEIGHT=800;
 
-const translateX=400;
+const translateX=500;
 const translateY=300;   
 
 
@@ -42,7 +42,7 @@ const START_NET_z=START_BOARD_z+(BOARD_LENGTH/2)
 
 const TABLE_COLOR=["rgba(31, 199, 31, 0.4)","transparent","transparent","rgba(124, 69, 73, 0.4)","rgba(255, 177, 0, 0.8)"]
 //bat
-const BAT_WIDTH=0.1
+const BAT_WIDTH=0.05
 const BAT_HEIGHT=0.1
 const BAT_LENGTH=1
 
@@ -63,7 +63,7 @@ const GRAVITY=0.0009
 const FLOORSTART_Y=800
 const LOSS=0
 
-const timeScale=0.3
+const timeScale=0.2
 
 const thresholdVelocityY=0.00000001
 
@@ -73,5 +73,15 @@ const STARTING_BALL_VELOCITY_Y=0.0001
 
 const thresholdX=0.01;
 const thresholdY=0.01;
-const thresholdZ=0.03;
+const thresholdZ=0.3;
 
+
+
+const GROUND_START_x=-1
+const GROUND_START_y=1
+const GROUND_START_z=1
+
+const GROUND_WIDTH=2.5
+const GROUND_LENGTH=10
+
+const WALL_HEIGHT=2;

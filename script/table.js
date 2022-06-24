@@ -33,7 +33,7 @@ class Table{
 
 
 
-        drawPolygon(ctx,'black',a_proj,b_proj,c_proj,d_proj);
+        drawPolygon(ctx,'rgba(0, 0, 0, 0.3)',a_proj,b_proj,c_proj,d_proj);
 
 
     }
