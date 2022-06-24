@@ -24,17 +24,11 @@ class Table{
         let bottomRight=new Point3D(this.nPoint.x+NET_WIDHT,this.nPoint.y+NET_HEIGHT,this.nPoint.z);
         let bottomLeft=new Point3D(this.nPoint.x,this.nPoint.y+NET_HEIGHT,this.nPoint.z);
 
-
-        
         let a_proj=project(topLeft);
         let b_proj=project(topRight);
         let c_proj=project(bottomRight);
         let d_proj=project(bottomLeft);
 
-
-
         drawPolygon(ctx,'rgba(0, 0, 0, 0.3)',a_proj,b_proj,c_proj,d_proj);
-
-
     }
 }

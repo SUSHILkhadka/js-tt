@@ -5,12 +5,15 @@ class Ball {
         this.velocity = velocity;
         // this.mass=mass;
     }
+    new(centre,rad,velocity){
+        this.centre=Object.create(centre);
+        this.rad=rad;
+        this.velocity=Object.create(velocity)
+    }
 
     updatePosition() {
         this.velocity.y += GRAVITY
         // this.velocity.z-=GRAVITY
-
-
         this.centre.x += this.velocity.x * timeScale
         this.centre.y += this.velocity.y * timeScale
         this.centre.z += this.velocity.z * timeScale
@@ -23,9 +26,7 @@ class Ball {
 
     drawShadow(ctx) {
         shadowCircle(ctx, this.centre, this.rad)
-
     }
-
 
     //since table position static no need to pass argument here
     collisionTable() {
@@ -35,9 +36,9 @@ class Ball {
 
             }
         }
-
-
     }
+
+
     collisionWorld() {
         if (this.centre.y > FLOORSTART_Y) {
             this.respawn();
@@ -52,10 +53,6 @@ class Ball {
         }
 
 
-
-
-
-
         /**
          * normal reset position
          */
@@ -65,62 +62,52 @@ class Ball {
         // this.velocity.y=0
     }
 
-
-    //since table position of 2 bats are changing, pass 2 bats info here
-    // collisionBat() {
-
-    //     if (this.centre.z < START_BOARD_z) {
-    //         console.log('bathit')
-    //         this.velocity.z = -this.velocity.z;
-
-    //         //add power by adding -LOSS
-    //     }
-
-    //     if (this.centre.z > START_BOARD_z+BOARD_LENGTH) {
-    //         console.log('bathit')
-    //         this.velocity.z = -this.velocity.z;
-
-    //         //add power by adding -LOSS
-    //     }
-
-    // }
     collisionBat(bat) {
         console.log(this.rad);
 
         if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
             // console.log('wallhit')
-            this.velocity.z = -this.velocity.z;
-
+            this.velocity.z = -Math.abs(this.velocity.z);
             //add power by adding -LOSS
         }
 
         if (this.centre.z < START_BOARD_z) {
             // console.log('wallhit')
-            this.velocity.z = -this.velocity.z;
-
+            this.velocity.z = Math.abs(this.velocity.z);
             //add power by adding -LOSS
         }
-  
-        if(ball.centre.x>=bat.topLeft.x-this.rad && ball.centre.x<=bat.topRight.x+this.rad)   {
-            // if((this.centre.z<=bat.topLeft.z && this.centre.z>=bat.topRight.z) ||(this.centre.z>=bat.topLeft.z && this.centre.z<=bat.topRight.z) ){
-            console.log("topleft x and z=",bat.topLeft.x,bat.topLeft.z)
-            console.log("ball centre x and z=",this.centre.x,this.centre.z)
 
-            let dx = ((bat.topRight.x-ball.centre.x) - (bat.topLeft.x-ball.centre.x));
-            let dz = ((bat.topRight.z-ball.centre.z) - (bat.topLeft.z - ball.centre.z));
-            let dr =Math.sqrt( dx * dx + dz * dz);
-            let D = (bat.topLeft.x-ball.centre.x) * (bat.topRight.z-ball.centre.z) - (bat.topRight.x-ball.centre.x) * (bat.topRight.z-ball.centre.z);
+        if (ball.centre.x >= bat.topLeft.x - this.rad && ball.centre.x <= bat.topRight.x + this.rad) {
+            // if((this.centre.z<=bat.topLeft.z && this.centre.z>=bat.topRight.z) ||(this.centre.z>=bat.topLeft.z && this.centre.z<=bat.topRight.z) ){
+            console.log("topleft x and z=", bat.topLeft.x, bat.topLeft.z)
+            console.log("ball centre x and z=", this.centre.x, this.centre.z)
+
+            let dx = ((bat.topRight.x - ball.centre.x) - (bat.topLeft.x - ball.centre.x));
+            let dz = ((bat.topRight.z - ball.centre.z) - (bat.topLeft.z - ball.centre.z));
+            let dr = Math.sqrt(dx * dx + dz * dz);
+            let D = (bat.topLeft.x - ball.centre.x) * (bat.topRight.z - ball.centre.z) - (bat.topRight.x - ball.centre.x) * (bat.topRight.z - ball.centre.z);
             let delta = (this.rad * this.rad * dr * dr) - (D * D);
 
             if (delta >= 0) {
-                console.log('bathit')
-                    this.velocity.z = -this.velocity.z;
-            // }
-        }
+                this.velocity.z = -this.velocity.z;
+            }
         }
         // }
+    }
+
+    reflection() {
+        //first translate world to allign such that point of reflection align with z plane
+        let dest = new Point3D(-START_BOARD_x, -START_BOARD_y, -(START_BOARD_z + (BOARD_LENGTH / 2)));
+        translateByReference(this.centre, dest);
 
 
+        //then reflect about xy plane
+        this.centre.z = -this.centre.z
+
+
+        //then undo translation
+        let dest1 = new Point3D(START_BOARD_x, START_BOARD_y, START_BOARD_z + (BOARD_LENGTH / 2));
+        translateByReference(this.centre, dest1);
 
     }
 }

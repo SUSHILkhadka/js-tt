@@ -5,7 +5,6 @@ class World{
 
     drawGround(ctx){
         this.point=new Point3D(GROUND_START_x,GROUND_START_y,GROUND_START_z)
-
         let b=new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y,GROUND_START_z);
         let c=new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y,GROUND_START_z+GROUND_LENGTH);
         let d=new Point3D(GROUND_START_x,GROUND_START_y,GROUND_START_z+GROUND_LENGTH);
@@ -28,10 +27,9 @@ class World{
         let dp=project(d);
         drawPolygon(ctx,"grey",ap,bp,cp,dp);
     }
-    drawWallL(ctx){
+    drawWallLeft(ctx){
         let a=new Point3D(GROUND_START_x,GROUND_START_y,GROUND_START_z+GROUND_LENGTH);
         let b= new Point3D(GROUND_START_x,GROUND_START_y-WALL_HEIGHT,GROUND_START_z+GROUND_LENGTH);
-
         let c=new Point3D(GROUND_START_x,GROUND_START_y-WALL_HEIGHT,GROUND_START_z);
         let d= new Point3D(GROUND_START_x,GROUND_START_y,GROUND_START_z);
         let ap=project(a);
@@ -40,10 +38,9 @@ class World{
         let dp=project(d);
         drawPolygon(ctx,"green",ap,bp,cp,dp);
     }
-    drawWallR(ctx){
+    drawWallRight(ctx){
         let a=new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y,GROUND_START_z+GROUND_LENGTH);
         let b= new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y-WALL_HEIGHT,GROUND_START_z+GROUND_LENGTH);
-
         let c=new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y-WALL_HEIGHT,GROUND_START_z);
         let d= new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y,GROUND_START_z);
         let ap=project(a);

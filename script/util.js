@@ -175,16 +175,11 @@ function drawCube(ctx, point, width, height, length) {
 }
 
 function drawSphere(ctx,centre,rad){
-// console.log(centre.x,centre.y,centre.z,rad)
-    let sidePoint=new Point3D(centre.x-rad,centre.y,centre.z)
-
     let c=project(centre)
-    let sideProj=project(sidePoint)
 
-    let guessRadius=20;
+    let guessRadius=BALL_RADIUS_2D;
     guessRadius/=2.5*centre.z;
-    //draw circle
 
-    let displayRadius=distance(c,sidePoint)
+    //draw circle
     drawCircle(ctx,c,guessRadius);
 }
