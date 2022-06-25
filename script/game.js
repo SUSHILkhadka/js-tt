@@ -6,7 +6,6 @@ canvas.height = CANVAS_HEIGHT;
 canvas.style.cursor = 'none';
 
 
-
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
 canvas.style.cursor = 'none'
@@ -55,19 +54,19 @@ document.body.addEventListener("mousemove", function (e) {
 window.addEventListener('keypress', function event(e) {
 
     if (e.code == 'KeyT') {
-        keyboardClientY -= 1
+        keyboardClientY -= KeyboardMovement
 
     }
     if (e.code == 'KeyG') {
-        keyboardClientY += 1
+        keyboardClientY += KeyboardMovement
 
     }
     if (e.code == 'KeyF') {
-        keyboardClientX -= 1
+        keyboardClientX -= KeyboardMovement
 
     }
     if (e.code == 'KeyH') {
-        keyboardClientX += 1
+        keyboardClientX += KeyboardMovement
 
     }
     bat_far.updatePosition(keyboardClientX - translateX, keyboardClientY);
@@ -85,8 +84,6 @@ function play() {
             if (START_ZPLANE > RESTRICTION_START_ZPLANE_min) {
                 START_ZPLANE -= 0.0001;
             }
-
-
         }
         if (e.code == 'KeyO') {
             if (START_ZPLANE < RESTRICTION_START_ZPLANE_max) {
@@ -150,11 +147,9 @@ function play() {
 
     ball.drawShadow(ctx);
     ball.drawBall(ctx);
-    ball.collisionTable();
-    ball.collisionBat(bat,speedX,speedY);
+    ball.collisionTable(bat,bat_far);
+    ball.collisionBat(bat,speedX,speedY,bat_far);
     // ball.collisionBat(bat, 0, 0);
-
-
 
     // ball.respawn();
     ball.collisionWorld();
@@ -178,7 +173,7 @@ function play() {
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
     bat_farMirror.reflection();
     bat_farMirror.drawBat3D(ctx);
-    ball.collisionBat(bat_farMirror);
+    ball.collisionBat(bat_farMirror,0,0,bat);
 
 
     ctx.translate(-translateX, -translateY);

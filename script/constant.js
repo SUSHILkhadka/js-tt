@@ -18,7 +18,7 @@ const RESTRICTION_START_ZPLANE_max= 4
 const RESTRICTION_ANGLE_Y= 50
 const RESTRICTION_ANGLE_X= 90
 
-
+const KeyboardMovement=10;
 const increment=0.01
 
 //world

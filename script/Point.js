@@ -30,3 +30,11 @@ class Plane3D{
         console.log(this.x,this.y,this.z,this.c)
     }
 }
+
+// class ScoreUpdateFlags{
+//     constructor(){
+//         this.nearside_collision_count=0;
+//         this.farside_collision_count=0;
+
+//     }
+// }

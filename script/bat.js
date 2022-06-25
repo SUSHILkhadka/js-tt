@@ -11,6 +11,9 @@ class Bat {
         this.topRight = 0;
         this.bottomRight = 0;
         this.bottomLeft = 0;
+
+        this.score=0;
+        this.collision_flag=0;
     }
 
     new(a, b, c, d) {
@@ -21,7 +24,6 @@ class Bat {
     }
 
     updatePosition(x = nomouse, y = nomouse, tilt_angle = 0) {
-
         if (x == nomouse && y == nomouse) {
         }
         else {
@@ -35,8 +37,6 @@ class Bat {
             this.point3D.x = ((this.x) * (1.6) / (CANVAS_WIDTH - 0)) + 0;
             this.point3D.y = -NET_HEIGHT;
         }
-
-
     }
     updateAngle() {
 

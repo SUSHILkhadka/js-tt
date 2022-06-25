@@ -4,11 +4,14 @@ class Ball {
         this.rad = rad;
         this.velocity = velocity;
         // this.mass=mass;
+
+        this.upside_collision_flag = 0;
+        this.downside_collision_flag = 0;
     }
-    new(centre,rad,velocity){
-        this.centre=Object.create(centre);
-        this.rad=rad;
-        this.velocity=Object.create(velocity)
+    new(centre, rad, velocity) {
+        this.centre = Object.create(centre);
+        this.rad = rad;
+        this.velocity = Object.create(velocity)
     }
 
     updatePosition() {
@@ -29,28 +32,65 @@ class Ball {
     }
 
     //since table position static no need to pass argument here
-    collisionTable() {
+    collisionTable(bat, bat_far) {
         if (this.centre.x >= START_BOARD_x && this.centre.x < START_BOARD_x + BOARD_WIDTH && this.centre.z >= START_BOARD_z && this.centre.z < START_BOARD_z + BOARD_LENGTH) {
             if (START_BOARD_y - this.centre.y <= this.rad) {
+
+
+
+                if (this.centre.z > (START_BOARD_z + BOARD_LENGTH / 2)) {
+                    this.upside_collision_flag++;
+                    this.downside_collision_flag = 0;
+                    if (this.upside_collision_flag >= 2) {
+                        bat.score++;
+
+                        console.log('my bat score increased to ',bat.score)
+
+                        //respawn logic
+                    }
+
+
+                }
+                if (this.centre.z < (START_BOARD_z + BOARD_LENGTH / 2)) {
+                    this.upside_collision_flag = 0;
+                    this.downside_collision_flag++;
+
+                    if (this.downside_collision_flag >= 2) {
+                        bat_far.score++;
+
+                        console.log('otherbat bat score increased to ',bat_far.score)
+                        //respawn logic
+                    }
+                }
+
+
+
+
+
+
+
+                console.log('upside flag', this.upside_collision_flag)
+                console.log('downside flag', this.downside_collision_flag)
+
+
                 this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
-                // this.centre.y=START_BOARD_y+this.rad;
-//                 var audio = new Audio('asset/sound1.mp3');
-// audio.play();
-                if(this.centre.y>START_BOARD_y){
+                // var audio = new Audio('asset/sound1.mp3');
+                // audio.play();
+                if (this.centre.y > START_BOARD_y) {
                     this.respawn();
                 }
             }
         }
     }
 
-    dontGoOutside(){
+    dontGoOutside() {
         if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
             // console.log('wallhit')
             // this.velocity.z = -Math.abs(this.velocity.z);
             this.velocity.z = -0.03;
 
             //add power by adding -LOSS
-            this.velocity.y=STABLE_Y_VELOCITY;
+            this.velocity.y = STABLE_Y_VELOCITY;
 
         }
 
@@ -66,7 +106,7 @@ class Ball {
             //add power by adding -LOSS
         }
 
-        if (this.centre.x > START_BOARD_x+BOARD_WIDTH) {
+        if (this.centre.x > START_BOARD_x + BOARD_WIDTH) {
             // console.log('wallhit')
             this.velocity.x = -Math.abs(this.velocity.x);
             //add power by adding -LOSS
@@ -80,8 +120,8 @@ class Ball {
             // this.respawn();
         }
 
-        if((GROUND_START_y-WALL_HEIGHT)>this.centre.y){
-            this.velocity.y=Math.abs(this.velocity.y);
+        if ((GROUND_START_y - WALL_HEIGHT) > this.centre.y) {
+            this.velocity.y = Math.abs(this.velocity.y);
         }
     }
     respawn() {
@@ -102,7 +142,7 @@ class Ball {
         // this.velocity.y=0
     }
 
-    collisionBat(bat,speedx=0,speedy=0) {
+    collisionBat(bat, speedx = 0, speedy = 0, bat_far) {
 
 
         if (ball.centre.x >= bat.topLeft.x - this.rad && ball.centre.x <= bat.topRight.x + this.rad) {
@@ -117,15 +157,16 @@ class Ball {
             let delta = (this.rad * this.rad * dr * dr) - (D * D);
 
             if (delta >= 0) {
+                bat.collision_flag++;
+                bat_far.collision_flag = 0;
 
-                this.velocity.x+=-RESPONSE_SCALE_ZtoX*Math.tan(rotation_angle*Math.PI/180)*Math.abs(this.velocity.z);
-                this.velocity.z = -this.velocity.z-RESPONSE_SCALE_Z*speedy;
+                this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                this.velocity.z = -this.velocity.z - RESPONSE_SCALE_Z * speedy;
 
                 // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
 
-                this.velocity.x+=RESPONSE_SCALE_X*speedx;
-                this.velocity.y=STABLE_Y_VELOCITY;
-
+                this.velocity.x += RESPONSE_SCALE_X * speedx;
+                this.velocity.y = STABLE_Y_VELOCITY;
 
             }
         }
