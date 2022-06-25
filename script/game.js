@@ -151,8 +151,8 @@ function play() {
     ball.drawShadow(ctx);
     ball.drawBall(ctx);
     ball.collisionTable();
-    // ball.collisionBat(bat,speedX,speedY);
-    ball.collisionBat(bat, 0, 0);
+    ball.collisionBat(bat,speedX,speedY);
+    // ball.collisionBat(bat, 0, 0);
 
 
 
@@ -178,7 +178,7 @@ function play() {
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
     bat_farMirror.reflection();
     bat_farMirror.drawBat3D(ctx);
-    // ball.collisionBat(bat_farMirror);
+    ball.collisionBat(bat_farMirror);
 
 
     ctx.translate(-translateX, -translateY);

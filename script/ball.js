@@ -77,8 +77,11 @@ class Ball {
     collisionWorld() {
         if (GROUND_START_y - this.centre.y <= this.rad) {
             this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
-
             // this.respawn();
+        }
+
+        if((GROUND_START_y-WALL_HEIGHT)>this.centre.y){
+            this.velocity.y=Math.abs(this.velocity.y);
         }
     }
     respawn() {
@@ -116,7 +119,7 @@ class Ball {
             if (delta >= 0) {
 
                 this.velocity.x+=-RESPONSE_SCALE_ZtoX*Math.tan(rotation_angle*Math.PI/180)*Math.abs(this.velocity.z);
-                this.velocity.z = Math.abs(this.velocity.z)-RESPONSE_SCALE_Z*speedy;
+                this.velocity.z = -this.velocity.z-RESPONSE_SCALE_Z*speedy;
 
                 // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
 

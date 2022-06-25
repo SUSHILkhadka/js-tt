@@ -11,13 +11,12 @@ const nomouse=9000;
 // rotation_angle=-87.99999999999245;
 START_ZPLANE=1.5
 rotation_angle=-0;
-rotation_anglex=90;
+rotation_anglex=45;
 
 const RESTRICTION_START_ZPLANE_min= 1
 const RESTRICTION_START_ZPLANE_max= 4
 const RESTRICTION_ANGLE_Y= 50
 const RESTRICTION_ANGLE_X= 90
-
 
 
 const increment=0.01
