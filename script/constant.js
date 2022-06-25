@@ -110,7 +110,7 @@ const thresholdZ=0.3;
 //strike back constants
 const RESPONSE_SCALE_ZtoX=0.5;
 const RESPONSE_SCALE_Z=0.00001;
-const RESPONSE_SCALE_X=0.000001;
+const RESPONSE_SCALE_X=0.00008;
 
 const STABLE_Y_VELOCITY=-0.01;
 

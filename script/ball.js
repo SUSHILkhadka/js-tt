@@ -36,15 +36,13 @@ class Ball {
         if (this.centre.x >= START_BOARD_x && this.centre.x < START_BOARD_x + BOARD_WIDTH && this.centre.z >= START_BOARD_z && this.centre.z < START_BOARD_z + BOARD_LENGTH) {
             if (START_BOARD_y - this.centre.y <= this.rad) {
 
-
-
                 if (this.centre.z > (START_BOARD_z + BOARD_LENGTH / 2)) {
                     this.upside_collision_flag++;
                     this.downside_collision_flag = 0;
                     if (this.upside_collision_flag >= 2) {
                         bat.score++;
 
-                        console.log('my bat score increased to ',bat.score)
+                        console.log('my bat score increased to ', bat.score)
 
                         //respawn logic
                     }
@@ -58,7 +56,7 @@ class Ball {
                     if (this.downside_collision_flag >= 2) {
                         bat_far.score++;
 
-                        console.log('otherbat bat score increased to ',bat_far.score)
+                        console.log('otherbat bat score increased to ', bat_far.score)
                         //respawn logic
                     }
                 }
@@ -125,13 +123,10 @@ class Ball {
         }
     }
     respawn() {
-
-
         if (this.centre.y > START_BOARD_y) {
             this.centre.y = STARTING_BALL_POSITION_Y
             this.velocity.y = STARTING_BALL_VELOCITY_Y
         }
-
 
         /**
          * normal reset position
@@ -142,35 +137,56 @@ class Ball {
         // this.velocity.y=0
     }
 
-    collisionBat(bat, speedx = 0, speedy = 0, bat_far) {
+    // collisionBat(bat, speedx = 0, speedy = 0, bat_far) {
+    //     if (ball.centre.x >= bat.topLeft.x - this.rad && ball.centre.x <= bat.topRight.x + this.rad) {
+    //         let dx = ((bat.topRight.x - ball.centre.x) - (bat.topLeft.x - ball.centre.x));
+    //         let dz = ((bat.topRight.z - ball.centre.z) - (bat.topLeft.z - ball.centre.z));
+    //         let dr = Math.sqrt(dx * dx + dz * dz);
+    //         let D = (bat.topLeft.x - ball.centre.x) * (bat.topRight.z - ball.centre.z) - (bat.topRight.x - ball.centre.x) * (bat.topRight.z - ball.centre.z);
+    //         let delta = (this.rad * this.rad * dr * dr) - (D * D);
+
+    //         if (delta >= 0) {
+    //             bat.collision_flag++;
+    //             bat_far.collision_flag = 0;
+
+    //             this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+    //             this.velocity.z = -this.velocity.z - RESPONSE_SCALE_Z * speedy;
+    //             // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
+    //             this.velocity.x += RESPONSE_SCALE_X * speedx;
+    //             this.velocity.y = STABLE_Y_VELOCITY;
+    //         }
+    //     }
+    // }
 
 
-        if (ball.centre.x >= bat.topLeft.x - this.rad && ball.centre.x <= bat.topRight.x + this.rad) {
-            // if((this.centre.z<=bat.topLeft.z && this.centre.z>=bat.topRight.z) ||(this.centre.z>=bat.topLeft.z && this.centre.z<=bat.topRight.z) ){
-            // console.log("topleft x and z=", bat.topLeft.x, bat.topLeft.z)
-            // console.log("ball centre x and z=", this.centre.x, this.centre.z)
+    collisionBat2(bat, speedx = 0, speedy = 0, bat_far, near = true) {
+        let a = rotateY(this.centre, rotation_angle);
+        let b = rotateY(bat.topLeft, rotation_angle);
+        let c = rotateY(bat.topRight, rotation_angle);
 
-            let dx = ((bat.topRight.x - ball.centre.x) - (bat.topLeft.x - ball.centre.x));
-            let dz = ((bat.topRight.z - ball.centre.z) - (bat.topLeft.z - ball.centre.z));
-            let dr = Math.sqrt(dx * dx + dz * dz);
-            let D = (bat.topLeft.x - ball.centre.x) * (bat.topRight.z - ball.centre.z) - (bat.topRight.x - ball.centre.x) * (bat.topRight.z - ball.centre.z);
-            let delta = (this.rad * this.rad * dr * dr) - (D * D);
+        if (b.x <= a.x && c.x >= a.x) {
 
-            if (delta >= 0) {
-                bat.collision_flag++;
-                bat_far.collision_flag = 0;
-
-                this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                this.velocity.z = -this.velocity.z - RESPONSE_SCALE_Z * speedy;
-
-                // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
-
-                this.velocity.x += RESPONSE_SCALE_X * speedx;
-                this.velocity.y = STABLE_Y_VELOCITY;
-
+            console.log('z axis value should be equal', b.z, c.z);
+            if (near == true) {
+                if (a.z <= b.z) {
+                    this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                    this.velocity.z = Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
+                    // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
+                    this.velocity.x += RESPONSE_SCALE_X * speedx;
+                    this.velocity.y = STABLE_Y_VELOCITY;
+                }
             }
+            else {
+                if (a.z <= b.z) {
+                    this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                    this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
+                    // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
+                    this.velocity.x += RESPONSE_SCALE_X * speedx;
+                    this.velocity.y = STABLE_Y_VELOCITY;
+                }
+            }
+
         }
-        // }
     }
 
     reflection() {
