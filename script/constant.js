@@ -17,7 +17,7 @@ const increment=0.005
 //board
 const BOARD_WIDTH=0.3
 const BOARD_HEIGHT=0.1
-const BOARD_LENGTH=0.6
+const BOARD_LENGTH=0.8
 
 const START_BOARD_x=0;
 const START_BOARD_y=0;

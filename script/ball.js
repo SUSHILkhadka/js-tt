@@ -34,7 +34,8 @@ class Ball {
             if (START_BOARD_y - this.centre.y <= this.rad) {
                 this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
                 // this.centre.y=START_BOARD_y+this.rad;
-
+                var audio = new Audio('asset/sound1.mp3');
+audio.play();
                 if(this.centre.y>START_BOARD_y){
                     this.respawn();
                 }
@@ -45,8 +46,12 @@ class Ball {
     dontGoOutside(){
         if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
             // console.log('wallhit')
-            this.velocity.z = -Math.abs(this.velocity.z);
+            // this.velocity.z = -Math.abs(this.velocity.z);
+            this.velocity.z = -0.03;
+
             //add power by adding -LOSS
+            this.velocity.y=STABLE_Y_VELOCITY;
+
         }
 
         if (this.centre.z < START_BOARD_z) {
@@ -117,6 +122,8 @@ class Ball {
 
                 this.velocity.x+=RESPONSE_SCALE_X*speedx;
                 this.velocity.y=STABLE_Y_VELOCITY;
+
+
             }
         }
         // }
