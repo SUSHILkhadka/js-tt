@@ -59,9 +59,10 @@ const GRAVITY=0.0009
 // const GRAVITY=0.0
 
 const FLOORSTART_Y=800
-const LOSS=0
+const LOSS_TABLE=0.00
+const LOSS_GROUND=0.01
 
-const timeScale=0.2
+const timeScale=0.7
 
 const thresholdVelocityY=0.00000001
 
@@ -81,3 +82,13 @@ const GROUND_WIDTH=2.5
 const GROUND_LENGTH=10
 
 const WALL_HEIGHT=2;
+
+
+
+//strike back constants
+const RESPONSE_SCALE_ZtoX=0.5;
+const RESPONSE_SCALE_Z=0.00001;
+const RESPONSE_SCALE_X=0.000001;
+
+const STABLE_Y_VELOCITY=-0.01;
+

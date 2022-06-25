@@ -13,7 +13,7 @@ class Ball {
 
     updatePosition() {
         this.velocity.y += GRAVITY
-        // this.velocity.z-=GRAVITY
+
         this.centre.x += this.velocity.x * timeScale
         this.centre.y += this.velocity.y * timeScale
         this.centre.z += this.velocity.z * timeScale
@@ -32,16 +32,48 @@ class Ball {
     collisionTable() {
         if (this.centre.x >= START_BOARD_x && this.centre.x < START_BOARD_x + BOARD_WIDTH && this.centre.z >= START_BOARD_z && this.centre.z < START_BOARD_z + BOARD_LENGTH) {
             if (START_BOARD_y - this.centre.y <= this.rad) {
-                this.velocity.y = -Math.abs(this.velocity.y) + LOSS;
+                this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
+                // this.centre.y=START_BOARD_y+this.rad;
 
+                if(this.centre.y>START_BOARD_y){
+                    this.respawn();
+                }
             }
+        }
+    }
+
+    dontGoOutside(){
+        if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
+            // console.log('wallhit')
+            this.velocity.z = -Math.abs(this.velocity.z);
+            //add power by adding -LOSS
+        }
+
+        if (this.centre.z < START_BOARD_z) {
+            // console.log('wallhit')
+            this.velocity.z = Math.abs(this.velocity.z);
+            //add power by adding -LOSS
+        }
+
+        if (this.centre.x < START_BOARD_x) {
+            // console.log('wallhit')
+            this.velocity.x = Math.abs(this.velocity.x);
+            //add power by adding -LOSS
+        }
+
+        if (this.centre.x > START_BOARD_x+BOARD_WIDTH) {
+            // console.log('wallhit')
+            this.velocity.x = -Math.abs(this.velocity.x);
+            //add power by adding -LOSS
         }
     }
 
 
     collisionWorld() {
-        if (this.centre.y > FLOORSTART_Y) {
-            this.respawn();
+        if (GROUND_START_y - this.centre.y <= this.rad) {
+            this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
+
+            // this.respawn();
         }
     }
     respawn() {
@@ -62,25 +94,13 @@ class Ball {
         // this.velocity.y=0
     }
 
-    collisionBat(bat) {
-        console.log(this.rad);
+    collisionBat(bat,speedx=0,speedy=0) {
 
-        if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
-            // console.log('wallhit')
-            this.velocity.z = -Math.abs(this.velocity.z);
-            //add power by adding -LOSS
-        }
-
-        if (this.centre.z < START_BOARD_z) {
-            // console.log('wallhit')
-            this.velocity.z = Math.abs(this.velocity.z);
-            //add power by adding -LOSS
-        }
 
         if (ball.centre.x >= bat.topLeft.x - this.rad && ball.centre.x <= bat.topRight.x + this.rad) {
             // if((this.centre.z<=bat.topLeft.z && this.centre.z>=bat.topRight.z) ||(this.centre.z>=bat.topLeft.z && this.centre.z<=bat.topRight.z) ){
-            console.log("topleft x and z=", bat.topLeft.x, bat.topLeft.z)
-            console.log("ball centre x and z=", this.centre.x, this.centre.z)
+            // console.log("topleft x and z=", bat.topLeft.x, bat.topLeft.z)
+            // console.log("ball centre x and z=", this.centre.x, this.centre.z)
 
             let dx = ((bat.topRight.x - ball.centre.x) - (bat.topLeft.x - ball.centre.x));
             let dz = ((bat.topRight.z - ball.centre.z) - (bat.topLeft.z - ball.centre.z));
@@ -89,7 +109,14 @@ class Ball {
             let delta = (this.rad * this.rad * dr * dr) - (D * D);
 
             if (delta >= 0) {
-                this.velocity.z = -this.velocity.z;
+
+                this.velocity.x+=-RESPONSE_SCALE_ZtoX*Math.tan(rotation_angle*Math.PI/180)*Math.abs(this.velocity.z);
+                this.velocity.z = Math.abs(this.velocity.z)-RESPONSE_SCALE_Z*speedy;
+
+                // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
+
+                this.velocity.x+=RESPONSE_SCALE_X*speedx;
+                this.velocity.y=STABLE_Y_VELOCITY;
             }
         }
         // }

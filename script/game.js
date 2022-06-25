@@ -15,7 +15,7 @@ var world = new World();
 var table = new Table()
 
 var centre = new Point3D(0.2, STARTING_BALL_POSITION_Y, 1.09)
-var vel = new Point3D(STARTING_BALL_VELOCITY_X, STARTING_BALL_VELOCITY_Y, -0.05);
+var vel = new Point3D(STARTING_BALL_VELOCITY_X, STARTING_BALL_VELOCITY_Y, +0.01);
 var ball = new Ball(centre, 0.01, vel)
 
 var bat = new Bat();
@@ -23,6 +23,35 @@ var bat_far = new Bat();
 
 var keyboardClientX = 500;
 var keyboardClientY = 500;
+
+
+var timestamp = 0;
+var lastMouseX = 0;
+var lastMouseY = 0;
+var speedX=0;
+var speedY=0;
+
+document.body.addEventListener("mousemove", function(e) {
+    if (timestamp === null) {
+        timestamp = Date.now();
+        lastMouseX = e.screenX;
+        lastMouseY = e.screenY;
+        return;
+    }
+
+    var now = Date.now();
+    var dt =  now - timestamp;
+    var dx = e.screenX - lastMouseX;
+    var dy = e.screenY - lastMouseY;
+     speedX = Math.round(dx / dt * 100);
+     speedY = Math.round(dy / dt * 100);
+
+    timestamp = now;
+    lastMouseX = e.screenX;
+    lastMouseY = e.screenY;
+});
+
+
 window.addEventListener('keypress', function event(e) {
 
     if (e.code == 'KeyT') {
@@ -113,12 +142,13 @@ function play() {
     ball.drawShadow(ctx);
     ball.drawBall(ctx);
     ball.collisionTable();
-    ball.collisionBat(bat);
+    ball.collisionBat(bat,speedX,speedY);
 
 
-    ball.respawn();
+    // ball.respawn();
     ball.collisionWorld();
     ball.updatePosition();
+    ball.dontGoOutside();
 
     // bat.drawBat(ctx);
     bat.updateAngle();
@@ -137,11 +167,10 @@ function play() {
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
     bat_farMirror.reflection();
     bat_farMirror.drawBat3D(ctx);
-    ball.collisionBat(bat_farMirror);
+    // ball.collisionBat(bat_farMirror);
 
 
     ctx.translate(-translateX, -translateY);
-
     requestAnimationFrame(play);
 
 }
