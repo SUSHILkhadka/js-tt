@@ -34,8 +34,8 @@ class Ball {
             if (START_BOARD_y - this.centre.y <= this.rad) {
                 this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
                 // this.centre.y=START_BOARD_y+this.rad;
-                var audio = new Audio('asset/sound1.mp3');
-audio.play();
+//                 var audio = new Audio('asset/sound1.mp3');
+// audio.play();
                 if(this.centre.y>START_BOARD_y){
                     this.respawn();
                 }

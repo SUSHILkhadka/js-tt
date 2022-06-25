@@ -14,7 +14,6 @@ function distance2D(p1,p2){
 var viewPoint = new Point3D(700, -2000, 10);
 var viewPlane = new Plane3D(0, 0, 1, 20);
 
-
 function getDirectionVector(obj1, obj2) {
     let a = new Point3D(0, 0, 0);
     a.x = obj2.x - obj1.x;
@@ -62,7 +61,7 @@ function drawPolygon(ctx, color, ...obj) {
     ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle='white';
+    ctx.strokeStyle='black';
     ctx.stroke();
 }
 function drawPolygonImage(ctx, color, ...obj) {
@@ -83,23 +82,17 @@ function drawPolygonImage(ctx, color, ...obj) {
 ctx.closePath();
 // ctx.clip();
 ctx.drawImage(img, 10, 0,10,100);
-
-    // ctx.fillStyle = color;
-    // ctx.fill();
     ctx.lineWidth = 2;
-    // ctx.strokeStyle='white';
     ctx.stroke();
-    // ctx.restore();
     
 }
 function drawCircle(ctx, obj, rad) {
     ctx.beginPath();
 
     ctx.arc(obj.x, obj.y, rad, 0, 2 * Math.PI);
-    ctx.fillStyle=BALL_COLOR[0]
+    ctx.fillStyle=BALL_COLOR[1]
     ctx.fill();
-    ctx.strokeStyle='black';
-
+    ctx.strokeStyle='rgb(51, 31, 0)';
     ctx.stroke();
 }
 function shadowCircle(ctx, centre, rad) {
@@ -141,18 +134,6 @@ function drawCube(ctx, point, width, height, length) {
     let pointc_be = new Point3D(pointa.x + width, pointa.y + height, pointa.z + length)
     let pointd_be = new Point3D(pointa.x, pointa.y + height, pointa.z + length)
 
-    // project above coordinates
-    // pointa = getPointOnPlane(pointa);
-    // pointb = getPointOnPlane(pointb);
-    // pointc = getPointOnPlane(pointc);
-    // pointd = getPointOnPlane(pointd);
-
-    // pointa_be = getPointOnPlane(pointa_be);
-    // pointb_be = getPointOnPlane(pointb_be);
-    // pointc_be = getPointOnPlane(pointc_be);
-    // pointd_be = getPointOnPlane(pointd_be);
-
-
     pointa = project(pointa);
     pointb = project(pointb);
     pointc = project(pointc);
@@ -162,10 +143,6 @@ function drawCube(ctx, point, width, height, length) {
     pointb_be = project(pointb_be);
     pointc_be = project(pointc_be);
     pointd_be = project(pointd_be);
-
-    // drawCircle(ctx,pointa,10)
-    // drawCircle(ctx,pointb,10)
-    // drawCircle(ctx,pointa_be,10)
 
     //draw 6 faces
     drawPolygon(ctx, TABLE_COLOR[0], pointa_be, pointb_be, pointc_be, pointd_be)
@@ -179,7 +156,7 @@ function drawSphere(ctx,centre,rad){
     let c=project(centre)
 
     let guessRadius=BALL_RADIUS_2D;
-    guessRadius/=2.5*centre.z;
+    guessRadius/=1.5*(centre.z-1+START_ZPLANE);
 
     //draw circle
     drawCircle(ctx,c,guessRadius);

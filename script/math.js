@@ -7,13 +7,13 @@ const f=1/Math.tan((degrees/2) * Math.PI / 180)
 function project(point)
 {
 
-    let dest=new Point3D(-0.15,0,-1.3)
+    let dest=new Point3D(-(START_BOARD_x+BOARD_WIDTH/2),-START_BOARD_y,-(START_BOARD_z+BOARD_LENGTH/2))
     let temp=translate(point,dest)
 
     let roty=rotateY(temp,rotation_angle);
     let rot=rotateX(roty,rotation_anglex);
 
-    let destmid=new Point3D(0,0,1)
+    let destmid=new Point3D(0,0,START_ZPLANE)
     let tempmid=translate(rot,destmid)
     point=Object.assign(tempmid);
 
@@ -21,7 +21,7 @@ function project(point)
     proj.x=(aspect*f*point.x)/point.z;
     proj.y=(f*point.y)/point.z;
 
-    let dest1=new Point3D(0.15,0,+1.3)
+    let dest1=new Point3D((START_BOARD_x+BOARD_WIDTH/2),START_BOARD_y,(START_BOARD_z+BOARD_LENGTH/2))
     let temp1=translate(proj,dest1)
 
     temp1.x*=CANVAS_WIDTH

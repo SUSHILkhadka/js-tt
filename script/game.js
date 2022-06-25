@@ -28,10 +28,10 @@ var keyboardClientY = 500;
 var timestamp = 0;
 var lastMouseX = 0;
 var lastMouseY = 0;
-var speedX=0;
-var speedY=0;
+var speedX = 0;
+var speedY = 0;
 
-document.body.addEventListener("mousemove", function(e) {
+document.body.addEventListener("mousemove", function (e) {
     if (timestamp === null) {
         timestamp = Date.now();
         lastMouseX = e.screenX;
@@ -40,11 +40,11 @@ document.body.addEventListener("mousemove", function(e) {
     }
 
     var now = Date.now();
-    var dt =  now - timestamp;
+    var dt = now - timestamp;
     var dx = e.screenX - lastMouseX;
     var dy = e.screenY - lastMouseY;
-     speedX = Math.round(dx / dt * 100);
-     speedY = Math.round(dy / dt * 100);
+    speedX = Math.round(dx / dt * 100);
+    speedY = Math.round(dy / dt * 100);
 
     timestamp = now;
     lastMouseX = e.screenX;
@@ -80,43 +80,50 @@ function play() {
 
     });
     window.addEventListener('keypress', function event(e) {
-        if (e.code == 'KeyI') {
-            ball.centre.z -= 0.0001;
+
+        if (e.code == 'KeyP') {
+            if (START_ZPLANE > RESTRICTION_START_ZPLANE_min) {
+                START_ZPLANE -= 0.0001;
+            }
+
 
         }
         if (e.code == 'KeyO') {
-            ball.centre.z += 0.0001;
+            if (START_ZPLANE < RESTRICTION_START_ZPLANE_max) {
+                START_ZPLANE += 0.0001;
+            }
         }
-        if (e.code == 'KeyY') {
-            ball.centre.x += 0.01;
-        }
-        if (e.code == 'KeyU') {
-            ball.centre.y -= 0.00001;
 
-        }
-        if (e.code == 'KeyP') {
-            ball.centre.y += 0.00001;
-
-        }
 
         if (e.code == 'KeyA') {
-            rotation_angle += increment;
+            if (rotation_angle < RESTRICTION_ANGLE_Y) {
+                rotation_angle += increment;
+
+            }
 
         }
 
         if (e.code == 'KeyD') {
 
-            rotation_angle -= increment;
+            if (rotation_angle >- RESTRICTION_ANGLE_Y) {
+                rotation_angle -= increment;
+
+            }
 
         }
 
         if (e.code == 'KeyW') {
-            rotation_anglex -= increment;
 
+            if (rotation_anglex > 0) {
+                rotation_anglex -= increment;
+            }
 
         } if (e.code == 'KeyS') {
             // viewpointY+=5;
-            rotation_anglex += increment;
+            if (rotation_anglex < RESTRICTION_ANGLE_X) {
+                rotation_anglex += increment;
+
+            }
 
         }
 
@@ -135,14 +142,18 @@ function play() {
     if (rotation_angle > -13) {
         world.drawWallLeft(ctx);
     }
-
+    table.drawLegs(ctx);
     table.drawTable(ctx);
+    table.drawMidline(ctx);
     table.drawNet(ctx);
+
 
     ball.drawShadow(ctx);
     ball.drawBall(ctx);
     ball.collisionTable();
-    ball.collisionBat(bat,speedX,speedY);
+    // ball.collisionBat(bat,speedX,speedY);
+    ball.collisionBat(bat, 0, 0);
+
 
 
     // ball.respawn();
@@ -191,52 +202,7 @@ canvas2.style.cursor = 'none'
 
 
 function play2() {
-    canvas.addEventListener('mousemove', function event(e) {
-        bat.updatePosition(e.clientX - translateX, e.clientY);
 
-    });
-    window.addEventListener('keypress', function event(e) {
-        if (e.code == 'KeyI') {
-            ball.centre.z -= 0.0001;
-
-        }
-        if (e.code == 'KeyO') {
-            ball.centre.z += 0.0001;
-        }
-        if (e.code == 'KeyY') {
-            ball.centre.x += 0.01;
-        }
-        if (e.code == 'KeyU') {
-            ball.centre.y -= 0.00001;
-
-        }
-        if (e.code == 'KeyP') {
-            ball.centre.y += 0.00001;
-
-        }
-
-        if (e.code == 'KeyA') {
-            rotation_angle += increment;
-
-        }
-
-        if (e.code == 'KeyD') {
-
-            rotation_angle -= increment;
-
-        }
-
-        if (e.code == 'KeyW') {
-            rotation_anglex -= increment;
-
-
-        } if (e.code == 'KeyS') {
-            // viewpointY+=5;
-            rotation_anglex += increment;
-
-        }
-
-    });
 
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     ctx2.strokeRect(0, 0, canvas.width, canvas.height);
@@ -252,11 +218,14 @@ function play2() {
         world.drawWallLeft(ctx2);
     }
 
+    table.drawLegs(ctx2);
     table.drawTable(ctx2);
+    table.drawMidline(ctx2);
     table.drawNet(ctx2);
 
+
     let ballMirror = new Ball();
-    ballMirror.new(ball.centre,ball.rad,ball.velocity)
+    ballMirror.new(ball.centre, ball.rad, ball.velocity)
     ballMirror.reflection();
     ballMirror.drawShadow(ctx2);
     ballMirror.drawBall(ctx2);

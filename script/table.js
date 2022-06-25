@@ -13,7 +13,23 @@ class Table{
         drawCube(ctx,this.bPoint,BOARD_WIDTH,BOARD_HEIGHT,BOARD_LENGTH)
 
     }
-    drawLegs(){
+    drawMidline(ctx){
+        let a=new Point3D(START_BOARD_x+(BOARD_WIDTH/2)-(MID_LINE_WIDTH/2),START_BOARD_y,START_BOARD_z+BOARD_LENGTH)
+        let b=new Point3D(START_BOARD_x+(BOARD_WIDTH/2)+(MID_LINE_WIDTH/2),START_BOARD_y,START_BOARD_z+BOARD_LENGTH)
+        let c=new Point3D(START_BOARD_x+(BOARD_WIDTH/2)+(MID_LINE_WIDTH/2),START_BOARD_y,START_BOARD_z)
+        let d=new Point3D(START_BOARD_x+(BOARD_WIDTH/2)-(MID_LINE_WIDTH/2),START_BOARD_y,START_BOARD_z)
+        let ap=project(a);
+        let bp=project(b);
+        let cp=project(c);
+        let dp=project(d);
+
+        drawPolygon(ctx,'rgba(255, 255, 255, 1)',ap,bp,cp,dp);
+    }
+    drawLegs(ctx){
+        let a=new Point3D(START_LEG_x,START_LEG_y,START_LEG_z)
+        // let b
+        drawCube(ctx,a,LEG_WIDTH,LEG_HEIGHT,LEG_LENGTH);
+
 
 
     }
@@ -29,6 +45,6 @@ class Table{
         let c_proj=project(bottomRight);
         let d_proj=project(bottomLeft);
 
-        drawPolygon(ctx,'rgba(0, 0, 0, 0.3)',a_proj,b_proj,c_proj,d_proj);
+        drawPolygon(ctx,'rgba(255, 255, 255, 0.3)',a_proj,b_proj,c_proj,d_proj);
     }
 }
