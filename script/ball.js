@@ -44,7 +44,7 @@ class Ball {
     drawBall(ctx, angley, anglex) {
         let c = project(this.centre, angley, anglex)
         let guessRadius = BALL_RADIUS_2D;
-        guessRadius /= 1.5 * (centre.z - 1 + START_ZPLANE);
+        guessRadius /= 1.5 * (this.centre.z - 1 + START_ZPLANE);
         //draw circle
         drawCircle(ctx, c, guessRadius);
     }
@@ -269,7 +269,7 @@ class Ball {
         translateByReference(this.centre, dest);
 
         //then reflect about xy plane
-        // this.centre.z = -this.centre.z
+        this.centre.z = -this.centre.z
         this.centre.x = -this.centre.x;
 
         //then undo translation

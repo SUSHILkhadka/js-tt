@@ -226,9 +226,11 @@ function play2() {
     table.drawAll(ctx2,angy2,angx2);
 
     let ballMirror = new Ball();
-    // ball.reflection();
     ballMirror.new(ball.centre, ball.rad, ball.velocity)
+    console.log('main ball z',ball.centre.z)
     ballMirror.reflection();
+    console.log('mirror ball z',ballMirror.centre.z)
+
     ballMirror.drawAll(ctx2,angy2,angx2);
 
     ballMirror.collisionBat2(angy2,bat_far,0,0,bat,false);

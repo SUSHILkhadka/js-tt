@@ -121,7 +121,6 @@ function drawPolygonImage(ctx, color, ...obj) {
 };
 
 
-
 /**
  * 
  * @param {*} ctx canvas context
