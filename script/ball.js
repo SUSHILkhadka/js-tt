@@ -72,8 +72,7 @@ class Ball {
 
 
                 this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
-                // var audio = new Audio('asset/sound1.mp3');
-                // audio.play();
+                bounche.play();
                 if (this.centre.y > START_BOARD_y) {
                     this.respawn();
                 }
@@ -84,11 +83,11 @@ class Ball {
     dontGoOutside() {
         if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
             // console.log('wallhit')
-            // this.velocity.z = -Math.abs(this.velocity.z);
-            this.velocity.z = -0.03;
+            this.velocity.z = -Math.abs(this.velocity.z)+LOSS_TABLE;
+            // this.velocity.z = -0.03;
 
             //add power by adding -LOSS
-            this.velocity.y = STABLE_Y_VELOCITY;
+            // this.velocity.y = STABLE_Y_VELOCITY;
 
         }
 
@@ -168,20 +167,39 @@ class Ball {
 
             console.log('z axis value should be equal', b.z, c.z);
             if (near == true) {
-                if (a.z <= b.z) {
-                    this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                    this.velocity.z = Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
-                    // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
-                    this.velocity.x += RESPONSE_SCALE_X * speedx;
+                if (((b.z - a.z) >= 0) && ((b.z-a.z)<BAT_LENGTHINZAXIS_FOR_SHOT)) {
+                    if(soundflag==1)
+                    {
+                    batsound.play();
+                    soundflag=0;
+                
+
+                    
+                    // this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                    // this.velocity.z = Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
+                    // this.velocity.x += RESPONSE_SCALE_X * speedx;
+                    this.centre.y=SHOT_POSITION_Y
                     this.velocity.y = STABLE_Y_VELOCITY;
+                    this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                    this.velocity.z = Math.abs(this.velocity.z)*0.8- RESPONSE_SCALE_Z * speedy-0.001;
+                    this.velocity.x = RESPONSE_SCALE_X * speedx;
                 }
+                setTimeout(function(){
+                    soundflag=1;
+
+                },1000)
+            }
             }
             else {
-                if (a.z <= b.z) {
+                if (a.z >= b.z) {
+
+                    if(soundflag==1)
+                    {batsound.play();}
+
                     this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
                     this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
-                    // this.velocity.y -= RESPONSE_SCALE_Y*speedy;
                     this.velocity.x += RESPONSE_SCALE_X * speedx;
+                    this.centre.y=SHOT_POSITION_Y
                     this.velocity.y = STABLE_Y_VELOCITY;
                 }
             }

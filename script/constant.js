@@ -9,7 +9,7 @@ const translateY2=300;
 
 const nomouse=9000;
 // rotation_angle=-87.99999999999245;
-START_ZPLANE=1.5
+START_ZPLANE=2
 rotation_angle=-0;
 rotation_anglex=45;
 
@@ -36,7 +36,7 @@ const WALL_HEIGHT=1.6;
 //board
 const BOARD_WIDTH=0.4
 const BOARD_HEIGHT=0.1
-const BOARD_LENGTH=0.8
+const BOARD_LENGTH=1.5
 
 const START_BOARD_x=0;
 const START_BOARD_y=0;
@@ -63,18 +63,20 @@ const START_LEG_xr=START_BOARD_x+BOARD_WIDTH-10
 const MID_LINE_WIDTH=0.01
 
 const NET_WIDHT=BOARD_WIDTH+0.05
-const NET_HEIGHT=0.07
+const NET_HEIGHT=0.05
 const START_NET_x=START_BOARD_x-(NET_WIDHT-BOARD_WIDTH)/2
 const START_NET_y=START_BOARD_y-NET_HEIGHT
 const START_NET_z=START_BOARD_z+(BOARD_LENGTH/2)
 
 const TABLE_COLOR=["rgba(31, 199, 31, 01)","rgb(0, 0, 102)","rgba(124, 69, 73, 0.8)","rgba(0, 0, 255, 1)"]
+
+
 //bat
-const BAT_WIDTH=0.05
+const BAT_WIDTH=0.1
 const BAT_HEIGHT=0.1
 const BAT_LENGTH=1
 
-const BAT_WIDTH_2d=80
+const BAT_WIDTH_2d=40
 const BAT_HEIGHT_2d=70
 const BAT_LENGTH_2d=1
 
@@ -91,7 +93,7 @@ const FLOORSTART_Y=800
 const LOSS_TABLE=0.00
 const LOSS_GROUND=0.01
 
-const timeScale=0.7
+const timeScale=0.8
 
 const thresholdVelocityY=0.00000001
 
@@ -109,8 +111,16 @@ const thresholdZ=0.3;
 
 //strike back constants
 const RESPONSE_SCALE_ZtoX=0.5;
-const RESPONSE_SCALE_Z=0.00001;
-const RESPONSE_SCALE_X=0.00008;
+const RESPONSE_SCALE_Z=0.0002;
+const RESPONSE_SCALE_X=0.00003;
 
-const STABLE_Y_VELOCITY=-0.01;
+const STABLE_Y_VELOCITY=0.00015;
+const SHOT_POSITION_Y=-0.15
+const BAT_LENGTHINZAXIS_FOR_SHOT=0.3
 
+
+let bounche = new Audio('asset/bounche.m4a');
+let batsound = new Audio('asset/bat.m4a');
+let soundflag=1
+let batimage=new Image();
+batimage.src="asset/bat.png";

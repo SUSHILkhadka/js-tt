@@ -58,6 +58,7 @@ function drawPolygon(ctx, color, ...obj) {
         }
     });
     ctx.closePath();
+
     ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
@@ -65,33 +66,28 @@ function drawPolygon(ctx, color, ...obj) {
     ctx.stroke();
 }
 function drawPolygonImage(ctx, color, ...obj) {
-    const img = new Image();
-    img.src='asset/bat.png'
-    ctx.beginPath();
-  img.onload = function() {
 
-    obj.forEach((value, index) => {
-        if (index == 0) {
-            ctx.moveTo(value.x, value.y);
-        }
-        else {
-            ctx.lineTo(value.x, value.y);
-        }
-    });
+
+    var imageObj = new Image("asset/bat.png");
+    imageObj.src="asset/bat.png";
+    imageObj.onload = function() {
+      var pattern = ctx.createPattern(imageObj, 'repeat');
+      ctx.fillStyle = pattern;
+      ctx.fill();
+    };
+
+
+
+
 };
-ctx.closePath();
-// ctx.clip();
-ctx.drawImage(img, 10, 0,10,100);
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    
-}
+
 function drawCircle(ctx, obj, rad) {
     ctx.beginPath();
 
     ctx.arc(obj.x, obj.y, rad, 0, 2 * Math.PI);
     ctx.fillStyle=BALL_COLOR[1]
     ctx.fill();
+    ctx.lineWidth=0.7
     ctx.strokeStyle='rgb(51, 31, 0)';
     ctx.stroke();
 }

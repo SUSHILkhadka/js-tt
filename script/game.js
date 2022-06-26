@@ -129,8 +129,10 @@ function play() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
     ctx.translate(translateX, translateY);
-
-    world.drawGround(ctx);
+    let image=new Image();
+    image.src="asset/bat1.jpg"
+    ctx.drawImage(image, canvas.width / 2 , canvas.height / 2 );
+    // world.drawGround(ctx);
     world.drawWall1(ctx);
 
     if (rotation_angle < 15) {
@@ -180,7 +182,6 @@ function play() {
     requestAnimationFrame(play);
 
 }
-play();
 
 const canvas2 = document.createElement("canvas")
 const ctx2 = canvas2.getContext('2d');
@@ -238,7 +239,13 @@ function play2() {
 
     ctx2.translate(-translateX2, -translateY2);
     requestAnimationFrame(play2);
+document.body.append(canvas2);
+
 
 }
-document.body.append(canvas2);
-play2();
+
+batimage.onload = () => {play();
+
+    play2();}
+
+

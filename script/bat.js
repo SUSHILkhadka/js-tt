@@ -31,11 +31,11 @@ class Bat {
             this.y = y;
 
             this.point3D.z = ((this.y) * (-(START_BOARD_z + BOARD_LENGTH) + 0.5) / (CANVAS_WIDTH - 0)) + 1.6;
-            if (this.point3D.z > 1.3) {
-                this.point3D.z = 1.3
+            if (this.point3D.z > (START_BOARD_z+BOARD_LENGTH/2)) {
+                this.point3D.z =START_BOARD_z+BOARD_LENGTH/2
             }
             this.point3D.x = ((this.x) * (1.6) / (CANVAS_WIDTH - 0)) + 0;
-            this.point3D.y = -NET_HEIGHT;
+            this.point3D.y = -NET_HEIGHT*2;
         }
     }
     updateAngle() {
@@ -101,7 +101,10 @@ class Bat {
         // a_proj.x=this.x;
         // b_proj.x=this.x+BAT_WIDTH_2d;
         // c_proj.x=this.x+BAT_WIDTH_2d;
-        // d_proj.x=this.x;
+        // d_proj.x=this.x; 
+
+        ctx.drawImage(batimage,a_proj.x , a_proj.y, BAT_WIDTH_2d/this.topLeft.z, BAT_HEIGHT_2d/this.topLeft.z);
+        
 
         drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', a_proj, b_proj, c_proj, d_proj);
 
