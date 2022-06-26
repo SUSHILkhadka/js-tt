@@ -1,3 +1,5 @@
+
+//2d point 
 class Point{
     constructor(x=0,y=0){
         this.x=x;
@@ -8,6 +10,8 @@ class Point{
     }
 }
 
+
+//3d point
 class Point3D{
     constructor(x=0,y=0,z=0){
         this.x=x;
@@ -19,6 +23,7 @@ class Point3D{
     }
 }
 
+//3d plane equation
 class Plane3D{
     constructor(x,y,z,c){
         this.x=x;

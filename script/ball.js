@@ -1,19 +1,36 @@
 class Ball {
+
+    /**
+     * 
+     * @param {*} centre 3D centre point of ball
+     * @param {*} rad radius of ball
+     * @param {*} velocity velocity vector as 3D Point object
+     * 2 flags for score update
+     */
     constructor(centre, rad, velocity) {
         this.centre = centre;
         this.rad = rad;
         this.velocity = velocity;
-        // this.mass=mass;
-
         this.upside_collision_flag = 0;
         this.downside_collision_flag = 0;
     }
+
+    drawAll(ctx, angley, anglex) {
+
+        this.drawShadow(ctx, angley, anglex)
+        this.drawBall(ctx, angley, anglex)
+    }
+
+
+    //copying ball object by value.
     new(centre, rad, velocity) {
         this.centre = Object.create(centre);
         this.rad = rad;
         this.velocity = Object.create(velocity)
     }
 
+    //updates position of ball based on velocity vector and gravity.
+    //timescale for testing purpose
     updatePosition() {
         this.velocity.y += GRAVITY
 
@@ -22,74 +39,82 @@ class Ball {
         this.centre.z += this.velocity.z * timeScale
     }
 
-    drawBall(ctx) {
 
-        drawSphere(ctx, this.centre, this.rad);
+    //draws ball as circle
+    drawBall(ctx, angley, anglex) {
+        let c = project(this.centre, angley, anglex)
+        let guessRadius = BALL_RADIUS_2D;
+        guessRadius /= 1.5 * (centre.z - 1 + START_ZPLANE);
+        //draw circle
+        drawCircle(ctx, c, guessRadius);
     }
 
-    drawShadow(ctx) {
-        shadowCircle(ctx, this.centre, this.rad)
+    //draws shadow as circle
+    drawShadow(ctx, angley, anglex) {
+        let temp = new Point3D(this.centre.x, START_BOARD_y, this.centre.z);
+        let centre2D = project(temp, angley, anglex);
+
+        let radiusShadow = this.rad * (-this.centre.y) * 5000;
+
+        if (radiusShadow < 0) {
+            radiusShadow = 0
+        }
+        shadowCircle(ctx, centre2D, radiusShadow)
     }
 
-    //since table position static no need to pass argument here
+    //Detects collision between ball and table.
     collisionTable(bat, bat_far) {
+
+        //collision detected if ball is with in "x range of table" and "z range of table" and "y value of ball is greater than y value of table when radius compensated"
         if (this.centre.x >= START_BOARD_x && this.centre.x < START_BOARD_x + BOARD_WIDTH && this.centre.z >= START_BOARD_z && this.centre.z < START_BOARD_z + BOARD_LENGTH) {
             if (START_BOARD_y - this.centre.y <= this.rad) {
 
+
+                //this is for determining which side up or down side ball collide to for updating score
+                //upside
                 if (this.centre.z > (START_BOARD_z + BOARD_LENGTH / 2)) {
                     this.upside_collision_flag++;
                     this.downside_collision_flag = 0;
                     if (this.upside_collision_flag >= 2) {
                         bat.score++;
-
-                        console.log('my bat score increased to ', bat.score)
-
                         //respawn logic
                     }
-
-
                 }
+                //downside
                 if (this.centre.z < (START_BOARD_z + BOARD_LENGTH / 2)) {
                     this.upside_collision_flag = 0;
                     this.downside_collision_flag++;
 
                     if (this.downside_collision_flag >= 2) {
                         bat_far.score++;
-
-                        console.log('otherbat bat score increased to ', bat_far.score)
                         //respawn logic
                     }
                 }
 
 
-
-
-
-
-
-                console.log('upside flag', this.upside_collision_flag)
-                console.log('downside flag', this.downside_collision_flag)
-
-
+                //after collision reverse velocity vector adding some loss
                 this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
-                bounche.play();
-                // if (this.centre.y > START_BOARD_y) {
-                //     this.respawn();
-                // }
+                bounche.play();//play sound
+                if (this.centre.y > START_BOARD_y) {
+                    this.respawn();
+                }
             }
         }
     }
 
-    dontGoOutside() {
-        // if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
-        //     // console.log('wallhit')
-        //     this.velocity.z = -Math.abs(this.velocity.z)+LOSS_TABLE;
-        //     // this.velocity.z = -0.03;
-        //     wallsound.play();
 
-        //     //add power by adding -LOSS
-        //     // this.velocity.y = STABLE_Y_VELOCITY;
-        // }
+    //this function is used to testing. This bounds ball within table. Used to fine tuning collision response.
+
+    dontGoOutside() {
+        if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
+            // console.log('wallhit')
+            this.velocity.z = -Math.abs(this.velocity.z);
+            // this.velocity.z = -0.03;
+            wallsound.play();
+
+            //add power by adding -LOSS
+            // this.velocity.y = STABLE_Y_VELOCITY;
+        }
 
         if (this.centre.z < START_BOARD_z) {
             // console.log('wallhit')
@@ -98,20 +123,21 @@ class Ball {
             //add power by adding -LOSS
         }
 
-        // if (this.centre.x < START_BOARD_x) {
-        //     // console.log('wallhit')
-        //     this.velocity.x = Math.abs(this.velocity.x);
-        //     //add power by adding -LOSS
-        // }
+        if (this.centre.x < START_BOARD_x) {
+            // console.log('wallhit')
+            this.velocity.x = Math.abs(this.velocity.x);
+            //add power by adding -LOSS
+        }
 
-        // if (this.centre.x > START_BOARD_x + BOARD_WIDTH) {
-        //     // console.log('wallhit')
-        //     this.velocity.x = -Math.abs(this.velocity.x);
-        //     //add power by adding -LOSS
-        // }
+        if (this.centre.x > START_BOARD_x + BOARD_WIDTH) {
+            // console.log('wallhit')
+            this.velocity.x = -Math.abs(this.velocity.x);
+            //add power by adding -LOSS
+        }
     }
 
 
+    //detects collision with world
     collisionWorld() {
         if (GROUND_START_y - this.centre.y <= this.rad) {
             this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
@@ -122,20 +148,23 @@ class Ball {
             this.velocity.y = Math.abs(this.velocity.y);
         }
 
-        if((GROUND_START_z+GROUND_LENGTH)<=this.centre.z){
-            this.velocity.z=-this.velocity.z;
+        if ((GROUND_START_z + GROUND_LENGTH) <= this.centre.z) {
+            this.velocity.z = -this.velocity.z;
         }
-        if((GROUND_START_x+GROUND_WIDTH)<=this.centre.x){
-            this.velocity.x=-this.velocity.x;
+        if ((GROUND_START_x + GROUND_WIDTH) <= this.centre.x) {
+            this.velocity.x = -this.velocity.x;
         }
-        if((GROUND_START_x)>=this.centre.x){
-            this.velocity.x=-this.velocity.x;
+        if ((GROUND_START_x) >= this.centre.x) {
+            this.velocity.x = -this.velocity.x;
         }
     }
+
+    //ball respawn logic
     respawn() {
         if (this.centre.y > START_BOARD_y) {
             this.centre.y = STARTING_BALL_POSITION_Y
-            this.velocity.y = STARTING_BALL_VELOCITY_Y
+            // this.velocity.y = STARTING_BALL_VELOCITY_Y
+            this.centre.y=0;
         }
 
         /**
@@ -146,6 +175,9 @@ class Ball {
         // this.centre.z=START_BOARD_z+20;
         // this.velocity.y=0
     }
+
+
+    // Mathematical collision detection of bat and ball.
 
     // collisionBat(bat, speedx = 0, speedy = 0, bat_far) {
     //     if (ball.centre.x >= bat.topLeft.x - this.rad && ball.centre.x <= bat.topRight.x + this.rad) {
@@ -169,68 +201,80 @@ class Ball {
     // }
 
 
-    collisionBat2(bat, speedx = 0, speedy = 0, bat_far, near = true) {
-        let a = rotateY(this.centre, rotation_angle);
-        let b = rotateY(bat.topLeft, rotation_angle);
-        let c = rotateY(bat.topRight, rotation_angle);
+    // Simulated collision between bat and ball with bat having increased thickness
 
+    collisionBat2(angley, bat, speedx = 0, speedy = 0, bat_far, near = true) {
+        let a = rotateY(this.centre, angley);
+        let b = rotateY(bat.topLeft, angley);
+        let c = rotateY(bat.topRight, angley);
+
+
+        //downside bat
         if (b.x <= a.x && c.x >= a.x) {
 
-            console.log('z axis value should be equal', b.z, c.z);
             if (near == true) {
-                if (((b.z - a.z) >= 0) && ((b.z-a.z)<BAT_LENGTHINZAXIS_FOR_SHOT)) {
-                    if(soundflag==1)
-                    {
-                    batsound.play();
-                    soundflag=0;
-                
 
-                    
-                    // this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                    // this.velocity.z = Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
-                    // this.velocity.x += RESPONSE_SCALE_X * speedx;
-                    this.centre.y=SHOT_POSITION_Y
-                    this.velocity.y = STABLE_Y_VELOCITY;
-                    this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                    this.velocity.z = Math.abs(this.velocity.z)*0.8- RESPONSE_SCALE_Z * speedy-0.001;
-                    this.velocity.x = RESPONSE_SCALE_X * speedx;
+                if (((b.z - a.z) >= 0) && ((b.z - a.z) < BAT_LENGTHINZAXIS_FOR_SHOT)) {
+                    if (soundflag == 1) {
+                        //play sound
+                        batsound.play();
+                        soundflag = 0;
+
+                        //collision response
+                        this.centre.y = SHOT_POSITION_Y;
+                        this.velocity.y = STABLE_Y_VELOCITY;
+                        this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                        this.velocity.x = RESPONSE_SCALE_X * speedx;
+                        this.velocity.z = Math.abs(this.velocity.z) * 0.8 - RESPONSE_SCALE_Z * speedy - 0.001;
+                        // this.velocity.z=-0.02
+                    }
+                    //for rejecting multiple collision detection under limit
+                    setTimeout(function () {
+                        soundflag = 1;
+
+                    }, COLLISION_DETECTION_LIMIT)
                 }
-                setTimeout(function(){
-                    soundflag=1;
-
-                },1000)
             }
-            }
+            //upside bat
             else {
-                if (a.z >= b.z) {
+                if (a.z <= b.z && (a.z-b.z)<BAT_LENGTHINZAXIS_FOR_SHOT) {
+                    if (soundflag == 1) {
+                        batsound.play();
+                        console.log('inside')
 
-                    if(soundflag==1)
-                    {batsound.play();}
+                        this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                        this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
+                        this.velocity.x += RESPONSE_SCALE_X * speedx;
+                        this.centre.y = SHOT_POSITION_Y
+                        this.velocity.y = STABLE_Y_VELOCITY;
+                        // this.velocity.z=-0.02
 
-                    this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                    this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
-                    this.velocity.x += RESPONSE_SCALE_X * speedx;
-                    this.centre.y=SHOT_POSITION_Y
-                    this.velocity.y = STABLE_Y_VELOCITY;
+                    }
+
+                    setTimeout(function () {
+                        soundflag = 1;
+
+                    }, COLLISION_DETECTION_LIMIT)
                 }
             }
 
         }
     }
 
+    //reflects ball about midpoint of table. Used for multiplayer mode
     reflection() {
         //first translate world to allign such that point of reflection align with z plane
-        let dest = new Point3D(-START_BOARD_x, -START_BOARD_y, -(START_BOARD_z + (BOARD_LENGTH / 2)));
+        let dest = new Point3D(-START_BOARD_x - (BOARD_WIDTH / 2), -START_BOARD_y, -(START_BOARD_z + (BOARD_LENGTH / 2)));
+
         translateByReference(this.centre, dest);
 
-
         //then reflect about xy plane
-        this.centre.z = -this.centre.z
-
+        // this.centre.z = -this.centre.z
+        this.centre.x = -this.centre.x;
 
         //then undo translation
-        let dest1 = new Point3D(START_BOARD_x, START_BOARD_y, START_BOARD_z + (BOARD_LENGTH / 2));
+        let dest1 = new Point3D(START_BOARD_x + (BOARD_WIDTH / 2), START_BOARD_y, START_BOARD_z + (BOARD_LENGTH / 2));
         translateByReference(this.centre, dest1);
-
     }
+
 }

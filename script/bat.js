@@ -5,9 +5,8 @@ class Bat {
         this.z = START_BOARD_z;
         this.point3D = new Point3D();
         // this.point=new Point3D();
-        this.angle = 0;
         this.tilt_angle = 20;
-        this.topLeft = 0;
+        this.topLeft = new Point(0.1706666666666667, -0.1,1);
         this.topRight = 0;
         this.bottomRight = 0;
         this.bottomLeft = 0;
@@ -16,6 +15,36 @@ class Bat {
         this.collision_flag=0;
     }
 
+    //draws as per accurate cursor position
+
+    // drawBat(ctx) {
+    //     let topLeft1 = new Point3D(this.x, this.y, this.z);
+    //     let topRight1 = new Point3D(this.x + BAT_WIDTH_2d, this.y, this.z);
+    //     let bottomRight1 = new Point3D(this.x + BAT_WIDTH_2d, this.y + BAT_HEIGHT_2d, this.z);
+    //     let bottomLeft1 = new Point3D(this.x, this.y + BAT_HEIGHT_2d, this.z);
+
+    //     let a_proj = project(topLeft1);
+    //     let b_proj = project(topRight1);
+    //     let c_proj = project(bottomRight1);
+    //     let d_proj = project(bottomLeft1);
+
+    //     // drawPolygon(ctx,'white',a_proj,b_proj,c_proj,d_proj);
+    //     drawPolygon(ctx, 'white', topLeft1, topRight1, bottomRight1, bottomLeft1);
+    // }
+    
+
+    //draws bat as mouse in (x,y) is projected to (x,z) for 3D.
+    drawBat3D(ctx,angley,anglex) {
+        let a_proj = project(this.topLeft,angley,anglex);
+        let b_proj = project(this.topRight,angley,anglex);
+        let c_proj = project(this.bottomRight,angley,anglex);
+        let d_proj = project(this.bottomLeft,angley,anglex);
+
+        ctx.drawImage(batimage,a_proj.x , a_proj.y, BAT_WIDTH_2d/this.topLeft.z, BAT_HEIGHT_2d/this.topLeft.z);
+        drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', a_proj, b_proj, c_proj, d_proj);
+    }
+
+
     new(a, b, c, d) {
         this.topLeft = Object.create(a);
         this.topRight = Object.create(b);
@@ -23,6 +52,7 @@ class Bat {
         this.bottomRight = Object.create(d);
     }
 
+    //update position of bat in 3D coordinate system as per mouse movement or keyboard event.
     updatePosition(x = nomouse, y = nomouse, tilt_angle = 0) {
         if (x == nomouse && y == nomouse) {
         }
@@ -39,15 +69,10 @@ class Bat {
         }
     }
 
-    trackBall(ball){
-        this.point3D.x=(ball.centre.x-BAT_WIDTH/2);
 
-    }
-    adjustRange(ball){
-        this.point3D.z=START_BOARD_z;
-    }
-    updateAngle() {
 
+    //rotating bat as per angle in yaxis
+    updateAngle(angley) {
         this.topLeft = new Point3D(this.point3D.x, this.point3D.y, this.point3D.z);
         this.topRight = new Point3D(this.point3D.x + BAT_WIDTH, this.point3D.y, this.point3D.z);
         this.bottomRight = new Point3D(this.point3D.x + BAT_WIDTH, this.point3D.y + BAT_HEIGHT, this.point3D.z);
@@ -59,10 +84,10 @@ class Bat {
         let temp3 = translate(this.bottomRight, dest)
         let temp4 = translate(this.bottomLeft, dest)
 
-        let roty1 = rotateY(temp1, -1 * rotation_angle);
-        let roty2 = rotateY(temp2, -1 * rotation_angle);
-        let roty3 = rotateY(temp3, -1 * rotation_angle);
-        let roty4 = rotateY(temp4, -1 * rotation_angle);
+        let roty1 = rotateY(temp1, -1 * angley);
+        let roty2 = rotateY(temp2, -1 * angley);
+        let roty3 = rotateY(temp3, -1 * angley);
+        let roty4 = rotateY(temp4, -1 * angley);
 
         let dest1 = new Point3D(0.15, 0, +1.3)
 
@@ -75,52 +100,17 @@ class Bat {
         this.topRight = temp21;
         this.bottomRight = temp31;
         this.bottomLeft = temp41;
-
     }
 
 
-    drawBat(ctx) {
-
-        let topLeft1 = new Point3D(this.x, this.y, this.z);
-        let topRight1 = new Point3D(this.x + BAT_WIDTH_2d, this.y, this.z);
-        let bottomRight1 = new Point3D(this.x + BAT_WIDTH_2d, this.y + BAT_HEIGHT_2d, this.z);
-        let bottomLeft1 = new Point3D(this.x, this.y + BAT_HEIGHT_2d, this.z);
-
-        let a_proj = project(topLeft1);
-        let b_proj = project(topRight1);
-        let c_proj = project(bottomRight1);
-        let d_proj = project(bottomLeft1);
-
-        // drawPolygon(ctx,'white',a_proj,b_proj,c_proj,d_proj);
-        drawPolygon(ctx, 'white', topLeft1, topRight1, bottomRight1, bottomLeft1);
-
-    }
-    drawBat3D(ctx) {
 
 
 
-        // console.log('inside draw x=',this.point3D.x);
 
-        let a_proj = project(this.topLeft);
-        let b_proj = project(this.topRight);
-        let c_proj = project(this.bottomRight);
-        let d_proj = project(this.bottomLeft);
-
-        // a_proj.x=this.x;
-        // b_proj.x=this.x+BAT_WIDTH_2d;
-        // c_proj.x=this.x+BAT_WIDTH_2d;
-        // d_proj.x=this.x; 
-
-        ctx.drawImage(batimage,a_proj.x , a_proj.y, BAT_WIDTH_2d/this.topLeft.z, BAT_HEIGHT_2d/this.topLeft.z);
-        
-
-        drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', a_proj, b_proj, c_proj, d_proj);
-
-    }
-
+//reflection is for multiplayer mode.
     reflection() {
         //first translate world to allign such that point of reflection align with z plane
-        let dest = new Point3D(-START_BOARD_x, -START_BOARD_y, -(START_BOARD_z + (BOARD_LENGTH / 2)));
+        let dest = new Point3D(-START_BOARD_x-(BOARD_WIDTH/2), -START_BOARD_y, -(START_BOARD_z + (BOARD_LENGTH / 2)));
         translateByReference(this.topLeft, dest);
         translateByReference(this.topRight, dest);
         translateByReference(this.bottomLeft, dest);
@@ -132,23 +122,37 @@ class Bat {
         this.bottomLeft.z = -this.bottomLeft.z
         this.bottomRight.z = -this.bottomRight.z
 
+        this.topLeft.x = -this.topLeft.x
+        this.topRight.x = -this.topRight.x
+        this.bottomLeft.x = -this.bottomLeft.x
+        this.bottomRight.x = -this.bottomRight.x
+
         //then undo translation
-        let dest1 = new Point3D(START_BOARD_x, START_BOARD_y, START_BOARD_z + (BOARD_LENGTH / 2));
+        let dest1 = new Point3D(START_BOARD_x+(BOARD_WIDTH/2)  , START_BOARD_y, START_BOARD_z + (BOARD_LENGTH / 2));
         translateByReference(this.topLeft, dest1);
         translateByReference(this.topRight, dest1);
         translateByReference(this.bottomLeft, dest1);
         translateByReference(this.bottomRight, dest1);
-
     }
 
 
-
+    //for copying bat by value
     copy(anotherbat) {
         this.topLeft = anotherbat.topLeft;
         this.topRight = anotherbat.topRight;
         this.bottomLeft = anotherbat.bottomLeft;
         this.bottomRight = anotherbat.bottomRight;
 
+    }
+
+    //for bot tracking ball in x axis
+    trackBall(ball){
+        this.point3D.x=(ball.centre.x-BAT_WIDTH/2);
+
+    }
+    //for bot maintaining distance in z axis
+    adjustRange(ball){
+        this.point3D.z=START_BOARD_z;
     }
 
 
