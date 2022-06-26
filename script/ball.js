@@ -73,27 +73,27 @@ class Ball {
 
                 this.velocity.y = -Math.abs(this.velocity.y) + LOSS_TABLE;
                 bounche.play();
-                if (this.centre.y > START_BOARD_y) {
-                    this.respawn();
-                }
+                // if (this.centre.y > START_BOARD_y) {
+                //     this.respawn();
+                // }
             }
         }
     }
 
     dontGoOutside() {
-        if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
-            // console.log('wallhit')
-            this.velocity.z = -Math.abs(this.velocity.z)+LOSS_TABLE;
-            // this.velocity.z = -0.03;
-            wallsound.play();
+        // if (this.centre.z > START_BOARD_z + BOARD_LENGTH) {
+        //     // console.log('wallhit')
+        //     this.velocity.z = -Math.abs(this.velocity.z)+LOSS_TABLE;
+        //     // this.velocity.z = -0.03;
+        //     wallsound.play();
 
-            //add power by adding -LOSS
-            // this.velocity.y = STABLE_Y_VELOCITY;
-
-        }
+        //     //add power by adding -LOSS
+        //     // this.velocity.y = STABLE_Y_VELOCITY;
+        // }
 
         if (this.centre.z < START_BOARD_z) {
             // console.log('wallhit')
+            wallsound.play();
             this.velocity.z = Math.abs(this.velocity.z);
             //add power by adding -LOSS
         }

@@ -43,6 +43,9 @@ class Bat {
         this.point3D.x=(ball.centre.x-BAT_WIDTH/2);
 
     }
+    adjustRange(ball){
+        this.point3D.z=START_BOARD_z;
+    }
     updateAngle() {
 
         this.topLeft = new Point3D(this.point3D.x, this.point3D.y, this.point3D.z);

@@ -129,9 +129,7 @@ function play() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
     ctx.translate(translateX, translateY);
-    let image=new Image();
-    image.src="asset/bat1.jpg"
-    ctx.drawImage(image, canvas.width / 2 , canvas.height / 2 );
+
     world.drawGround(ctx);
     world.drawWall1(ctx);
 
@@ -146,31 +144,28 @@ function play() {
     table.drawMidline(ctx);
     table.drawNet(ctx);
 
-
     ball.drawShadow(ctx);
     ball.drawBall(ctx);
     ball.collisionTable(bat,bat_far);
     ball.collisionBat2(bat,speedX,speedY,bat_far);
-    // ball.collisionBat(bat, 0, 0);
 
-    // ball.respawn();
     ball.collisionWorld();
     ball.updatePosition();
-    // ball.dontGoOutside();
+    ball.dontGoOutside();
 
-    // bat.drawBat(ctx);
     bat.updateAngle();
     bat.drawBat3D(ctx);
     bat.updatePosition();
 
-    // bat_far.drawBat(ctx);
     bat_far.updateAngle();
-    // bat_far.drawBat3D(ctx);
     bat_far.updatePosition();
 
 
 
+//bot tracking movements:
     bat_far.trackBall(ball);
+    bat_far.adjustRange(ball);
+
 
     let bat_farMirror = new Bat();
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
@@ -178,7 +173,6 @@ function play() {
     bat_farMirror.drawBat3D(ctx);
     // bat_farMirror.trackBall(ball);
     ball.collisionBat2(bat_farMirror,0,0,bat,false);
-
 
     ctx.translate(-translateX, -translateY);
     requestAnimationFrame(play);
@@ -191,16 +185,11 @@ canvas2.width = CANVAS_WIDTH;
 canvas2.height = CANVAS_HEIGHT;
 canvas2.style.cursor = 'none';
 
-
-
 canvas2.width = CANVAS_WIDTH;
 canvas2.height = CANVAS_HEIGHT;
 canvas2.style.cursor = 'none'
 
-
-
 function play2() {
-
 
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     ctx2.strokeRect(0, 0, canvas.width, canvas.height);
@@ -241,9 +230,7 @@ function play2() {
 
     ctx2.translate(-translateX2, -translateY2);
     requestAnimationFrame(play2);
-document.body.append(canvas2);
-
-
+    document.body.append(canvas2);
 }
 
 imageObj.style.height=10;
