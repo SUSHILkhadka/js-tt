@@ -38,6 +38,11 @@ class Bat {
             this.point3D.y = -NET_HEIGHT*2;
         }
     }
+
+    trackBall(ball){
+        this.point3D.x=(ball.centre.x-BAT_WIDTH/2);
+
+    }
     updateAngle() {
 
         this.topLeft = new Point3D(this.point3D.x, this.point3D.y, this.point3D.z);

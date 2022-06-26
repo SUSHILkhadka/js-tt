@@ -13,7 +13,7 @@ class World{
         let bp=project(b);
         let cp=project(c);
         let dp=project(d);
-        drawPolygon(ctx,"grey",ap,bp,cp,dp);
+        drawPolygon(ctx,"gret",ap,bp,cp,dp);
         // drawCube(ctx,this.point,GROUND_WIDTH,1,GROUND_LENGTH);
     }
     drawWall1(ctx){
@@ -25,7 +25,7 @@ class World{
         let bp=project(b);
         let cp=project(c);
         let dp=project(d);
-        drawPolygon(ctx,"grey",ap,bp,cp,dp);
+        drawPolygon(ctx,netpattern,ap,bp,cp,dp);
     }
     drawWallLeft(ctx){
         let a=new Point3D(GROUND_START_x,GROUND_START_y,GROUND_START_z+GROUND_LENGTH);
@@ -36,7 +36,7 @@ class World{
         let bp=project(b);
         let cp=project(c);
         let dp=project(d);
-        drawPolygon(ctx,"green",ap,bp,cp,dp);
+        drawPolygon(ctx,pattern,ap,bp,cp,dp);
     }
     drawWallRight(ctx){
         let a=new Point3D(GROUND_START_x+GROUND_WIDTH,GROUND_START_y,GROUND_START_z+GROUND_LENGTH);

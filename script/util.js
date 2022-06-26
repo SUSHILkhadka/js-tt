@@ -1,4 +1,4 @@
-
+// import {pattern} from "./game.js";
 function toPx(value){
     return `${value}px`
 }
@@ -63,18 +63,12 @@ function drawPolygon(ctx, color, ...obj) {
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle='black';
-    ctx.stroke();
+    // ctx.stroke();
 }
 function drawPolygonImage(ctx, color, ...obj) {
 
 
-    var imageObj = new Image("asset/bat.png");
-    imageObj.src="asset/bat.png";
-    imageObj.onload = function() {
-      var pattern = ctx.createPattern(imageObj, 'repeat');
-      ctx.fillStyle = pattern;
-      ctx.fill();
-    };
+
 
 
 

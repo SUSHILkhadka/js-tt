@@ -13,15 +13,15 @@ canvas.style.cursor = 'none'
 var world = new World();
 var table = new Table()
 
-var centre = new Point3D(0.2, STARTING_BALL_POSITION_Y, 1.09)
-var vel = new Point3D(STARTING_BALL_VELOCITY_X, STARTING_BALL_VELOCITY_Y, +0.01);
+var centre = new Point3D(0.2, STARTING_BALL_POSITION_Y, 2.09)
+var vel = new Point3D(STARTING_BALL_VELOCITY_X, STARTING_BALL_VELOCITY_Y, -0.01);
 var ball = new Ball(centre, 0.01, vel)
 
 var bat = new Bat();
 var bat_far = new Bat();
 
-var keyboardClientX = 500;
-var keyboardClientY = 500;
+var keyboardClientX = 200;
+var keyboardClientY = 900;
 
 
 var timestamp = 0;
@@ -132,7 +132,7 @@ function play() {
     let image=new Image();
     image.src="asset/bat1.jpg"
     ctx.drawImage(image, canvas.width / 2 , canvas.height / 2 );
-    // world.drawGround(ctx);
+    world.drawGround(ctx);
     world.drawWall1(ctx);
 
     if (rotation_angle < 15) {
@@ -156,7 +156,7 @@ function play() {
     // ball.respawn();
     ball.collisionWorld();
     ball.updatePosition();
-    ball.dontGoOutside();
+    // ball.dontGoOutside();
 
     // bat.drawBat(ctx);
     bat.updateAngle();
@@ -170,11 +170,13 @@ function play() {
 
 
 
+    bat_far.trackBall(ball);
 
     let bat_farMirror = new Bat();
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
     bat_farMirror.reflection();
     bat_farMirror.drawBat3D(ctx);
+    // bat_farMirror.trackBall(ball);
     ball.collisionBat2(bat_farMirror,0,0,bat,false);
 
 
@@ -244,8 +246,23 @@ document.body.append(canvas2);
 
 }
 
-batimage.onload = () => {play();
+imageObj.style.height=10;
+imageObj.style.width=10;
 
+imageObj.onload = function() {
+   pattern = ctx.createPattern(imageObj, 'repeat');
+};
+imageObj2.onload = function() {
+   netpattern = ctx.createPattern(imageObj2, 'repeat');
+
+};
+
+imageObj3.onload = function() {
+    floorpattern = ctx.createPattern(imageObj3, 'repeat');
+ };
+
+
+batimage.onload = () => {
+    play();
     play2();}
-
 

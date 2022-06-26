@@ -85,6 +85,7 @@ class Ball {
             // console.log('wallhit')
             this.velocity.z = -Math.abs(this.velocity.z)+LOSS_TABLE;
             // this.velocity.z = -0.03;
+            wallsound.play();
 
             //add power by adding -LOSS
             // this.velocity.y = STABLE_Y_VELOCITY;
@@ -97,17 +98,17 @@ class Ball {
             //add power by adding -LOSS
         }
 
-        if (this.centre.x < START_BOARD_x) {
-            // console.log('wallhit')
-            this.velocity.x = Math.abs(this.velocity.x);
-            //add power by adding -LOSS
-        }
+        // if (this.centre.x < START_BOARD_x) {
+        //     // console.log('wallhit')
+        //     this.velocity.x = Math.abs(this.velocity.x);
+        //     //add power by adding -LOSS
+        // }
 
-        if (this.centre.x > START_BOARD_x + BOARD_WIDTH) {
-            // console.log('wallhit')
-            this.velocity.x = -Math.abs(this.velocity.x);
-            //add power by adding -LOSS
-        }
+        // if (this.centre.x > START_BOARD_x + BOARD_WIDTH) {
+        //     // console.log('wallhit')
+        //     this.velocity.x = -Math.abs(this.velocity.x);
+        //     //add power by adding -LOSS
+        // }
     }
 
 
@@ -119,6 +120,16 @@ class Ball {
 
         if ((GROUND_START_y - WALL_HEIGHT) > this.centre.y) {
             this.velocity.y = Math.abs(this.velocity.y);
+        }
+
+        if((GROUND_START_z+GROUND_LENGTH)<=this.centre.z){
+            this.velocity.z=-this.velocity.z;
+        }
+        if((GROUND_START_x+GROUND_WIDTH)<=this.centre.x){
+            this.velocity.x=-this.velocity.x;
+        }
+        if((GROUND_START_x)>=this.centre.x){
+            this.velocity.x=-this.velocity.x;
         }
     }
     respawn() {

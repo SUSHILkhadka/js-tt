@@ -45,6 +45,7 @@ class Table{
         let c_proj=project(bottomRight);
         let d_proj=project(bottomLeft);
 
-        drawPolygon(ctx,'rgba(255, 255, 255, 0.3)',a_proj,b_proj,c_proj,d_proj);
+        // drawPolygon(ctx,'rgba(255, 255, 255, 0.3)',a_proj,b_proj,c_proj,d_proj);
+        drawPolygon(ctx,netpattern,a_proj,b_proj,c_proj,d_proj);
     }
 }

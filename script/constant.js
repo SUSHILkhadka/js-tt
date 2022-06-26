@@ -91,15 +91,14 @@ const GRAVITY=0.0009
 
 const FLOORSTART_Y=800
 const LOSS_TABLE=0.00
-const LOSS_GROUND=0.01
-
+const LOSS_GROUND=0.0007
 const timeScale=0.8
 
 const thresholdVelocityY=0.00000001
 
 const STARTING_BALL_POSITION_Y=-0.1
 const STARTING_BALL_VELOCITY_Y=0.001
-const STARTING_BALL_VELOCITY_X=-0.0
+const STARTING_BALL_VELOCITY_X=-0.001
 
 const thresholdX=0.01;
 const thresholdY=0.01;
@@ -110,17 +109,31 @@ const thresholdZ=0.3;
 
 
 //strike back constants
-const RESPONSE_SCALE_ZtoX=0.5;
+const RESPONSE_SCALE_ZtoX=1;
 const RESPONSE_SCALE_Z=0.0002;
-const RESPONSE_SCALE_X=0.00003;
+// const RESPONSE_SCALE_X=0.00003;
+const RESPONSE_SCALE_X=0.00001;
+
 
 const STABLE_Y_VELOCITY=0.00015;
 const SHOT_POSITION_Y=-0.15
-const BAT_LENGTHINZAXIS_FOR_SHOT=0.3
+const BAT_LENGTHINZAXIS_FOR_SHOT=0.4
 
 
 let bounche = new Audio('asset/bounche.m4a');
 let batsound = new Audio('asset/bat.m4a');
+let wallsound = new Audio('asset/wall.wav');
+let batsound2 = new Audio('asset/balls.wav');
 let soundflag=1
 let batimage=new Image();
 batimage.src="asset/bat.png";
+
+var imageObj = new Image();
+imageObj.src="asset/wall.png";
+var pattern=null;
+var imageObj2 = new Image();
+imageObj2.src="asset/net.png";
+var netpattern=null;
+var imageObj3 = new Image();
+imageObj3.src="asset/floor.jpg";
+var floorpattern=null;
