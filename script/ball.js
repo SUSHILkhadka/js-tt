@@ -21,7 +21,6 @@ class Ball {
         this.serveflag = 1;
         //id for where to position ball for serve
         this.serverid = 1;
-        this.correctServeFlag=0;
     }
 
     drawAll(ctx, angley, anglex) {
@@ -253,7 +252,7 @@ collisionTable( ) {
 
     // Simulated collision between bat and ball with bat having increased thickness
 
-    collisionBat2(angley, bat, bat_far, near = true) {
+    collisionBat2(angley,angley2, bat, bat_far, near = true) {
         let a = rotateY(this.centre, angley);
         let b = rotateY(bat.topLeft, angley);
         let c = rotateY(bat.topRight, angley);
@@ -272,15 +271,14 @@ collisionTable( ) {
                         //collision response
                         this.centre.y = SHOT_POSITION_Y;
                         this.velocity.y = STABLE_Y_VELOCITY;
-                        this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                        this.velocity.x = RESPONSE_SCALE_X * bat.speedX;
+
+                        this.velocity.x+=-angy*0.001*Math.abs(this.velocity.z);
+                        this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
+
                         this.velocity.z = Math.abs(this.velocity.z) * 0.8 - RESPONSE_SCALE_Z * bat.speedY - 0.001;
                         if (this.serveflag != 0) {
-                            this.velocity.z = 0.025 //this is godo one
-                            // this.velocity.z = 0.05
-
+                            this.velocity.z = 0.025 //this is good one
                             this.serveflag = 0;
-                            // this.correctServeFlag=1;
 
                         }
                         ball.lastCollidedBat=1;
@@ -289,7 +287,7 @@ collisionTable( ) {
                     setTimeout(function () {
                         soundflag = 1;
 
-                    }, COLLISION_DETECTION_LIMIT  + extendCollisionDelayForServer * 0)
+                    }, COLLISION_DETECTION_LIMIT  + extendCollisionDelayForServer * 100)
                 }
             }
             //upside bat
@@ -301,19 +299,20 @@ collisionTable( ) {
 
                         this.centre.y = SHOT_POSITION_Y
                         this.velocity.y = STABLE_Y_VELOCITY;
-                        this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+
+                        this.velocity.x+=angy*0.001*Math.abs(this.velocity.z);
+                        this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
+
                         this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * bat.speedY;
                         this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
                         if (this.serveflag != 0) {
                             this.velocity.z = -0.03
                             this.serveflag = 0;
-                            this.correctServeFlag=1;
                         }
                         else {
                             this.velocity.z = -0.08
                         }
                         ball.lastCollidedBat=2;
-
                         // this.velocity.z=-0.1
                     }
                     setTimeout(function () {

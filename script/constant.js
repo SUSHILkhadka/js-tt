@@ -125,7 +125,7 @@ const thresholdVelocityY=0.00000001
 
 
 
-const thresholdX=0.01;
+const thresholdX=0.04;
 const thresholdY=0.01;
 const thresholdZ=0.3;
 
@@ -133,7 +133,7 @@ const COLLISION_DETECTION_LIMIT=70
 
 
 //strike back or collision response constants
-const RESPONSE_SCALE_ZtoX=1;
+const RESPONSE_SCALE_ZtoX=10;
 const RESPONSE_SCALE_Z=0.0002;
 const RESPONSE_SCALE_X=0.00001;
 

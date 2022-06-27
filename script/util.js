@@ -196,6 +196,13 @@ function drawCube(ctx, point, width, height, length,angley,anglex) {
     drawPolygon(ctx, TABLE_COLOR[3], pointa, pointb, pointb_be, pointa_be)
 }
 
+/**
+ * 
+ * @param {*} firstscore score of first player
+ * @param {*} secondscore score of second player
+ * @param {*} currentid which player is serving right now
+ * @returns which player should be serving right now.
+ */
 
 function serveDeterminer(firstscore,secondscore,currentid){
     // console.log(firstscore,secondscore)
@@ -207,4 +214,3 @@ function serveDeterminer(firstscore,secondscore,currentid){
     else {return 2} ;
 
 }
-

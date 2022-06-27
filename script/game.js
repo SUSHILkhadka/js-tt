@@ -15,22 +15,18 @@ var ball = new Ball(centre, 0.01, vel)
 var bat = new Bat();
 var bat_far = new Bat();
 
-
-
 let angy = 0;
 let angx = 45;
 let angy2 = 0;
 let angx2 = 45;
 
-var counter = 0;
 let scoreboard = document.createElement('div');
 let name1 = document.createElement('h3')
 name1.innerHTML = 'near'
-let score1 = document.createElement('p');
 let name2 = document.createElement('h3')
 name2.innerHTML = 'far'
+let score1 = document.createElement('p');
 let score2 = document.createElement('p');
-
 let serveflag = document.createElement('p');
 
 
@@ -40,7 +36,9 @@ scoreboard.append(name2);
 scoreboard.append(score2);
 scoreboard.append(serveflag);
 
-scoreboard.style.position = "relative"
+// scoreboard.style.position = "absolute"
+scoreboard.style.zIndex = "1"
+
 
 document.body.append(scoreboard);
 bat.addMouseController();
@@ -103,7 +101,6 @@ function play() {
             }
 
         } if (e.code == 'KeyK') {
-            // viewpointY+=5;
             if (angx2 < RESTRICTION_ANGLE_X) {
                 angx2 += increment;
             }
@@ -128,25 +125,24 @@ function play() {
     ball.collisionTable(bat, bat_far);
     if(freeze==0)
     {
-    ball.collisionBat2(angy, bat, bat_far);
+        ball.collisionBat2(angy,angy2, bat, bat_far);
     }
     ball.collisionWorld();
     ball.updatePosition();
     // ball.dontGoOutside();
-console.log(ball.serverid);
     bat.drawBat3D(ctx, angy, angx);
     bat.updateAngle(angy);
     bat_far.updateAngle(angy2);
 
     if(freeze==0){
     bat.updatePosition();
-
     bat_far.updatePosition();
     }
 
     //bot tracking movements both x and y:
     bat_far.trackBall(ball);
     bat_far.adjustRange(ball);
+
 
     let bat_farMirror = new Bat();
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
@@ -155,12 +151,9 @@ console.log(ball.serverid);
 
 
     //score
-
-    counter++;
-
     score1.innerHTML = `${bat.score}`
     score2.innerHTML = `${bat_far.score}`
-    serveflag.innerHTML=`correct serve flag=${ball.correctServeFlag},downside collision flag=${ball.downside_collision_flag},upsidecollision flag = ${ball.upside_collision_flag},freeze=${freeze}`
+    serveflag.innerHTML=`downside collision flag=${ball.downside_collision_flag},upsidecollision flag = ${ball.upside_collision_flag},freeze=${freeze}`
     if(freeze==0){
     updateScore2(ball, bat, bat_far);
     }
@@ -203,7 +196,7 @@ function play2() {
     ballMirror.drawAll(ctx2, angy2, angx2);
     if(freeze==0)
     {
-    ballMirror.collisionBat2(angy2, bat_far, bat, false);
+        ballMirror.collisionBat2(angy,angy2, bat_far, bat, false);
     }
     ball.velocity = ballMirror.velocity;
     ball.serveflag = ballMirror.serveflag;
@@ -211,8 +204,8 @@ function play2() {
     bat_far.drawBat3D(ctx2, angy2, angx2);
     if(freeze==0);
     {
-    bat_far.updateAngle(angy2);
-    bat_far.updatePosition();
+        bat_far.updateAngle(angy2);
+        bat_far.updatePosition();
     }
 
     let batMirror = new Bat();
@@ -245,6 +238,13 @@ batimage.onload = () => {
 
 
 
+
+/**
+ * 
+ * @param {*} ball ball for upside collision count, downside collision count, and other flags
+ * @param {*} bat for updating score
+ * @param {*} bat_far for updating score
+ */
 
 function updateScore2(ball, bat, bat_far) {
 if(freeze==0){
