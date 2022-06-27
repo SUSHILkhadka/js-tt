@@ -13,6 +13,9 @@ class Ball {
         this.velocity = velocity;
         this.upside_collision_flag = 0;
         this.downside_collision_flag = 0;
+
+        //serve 0 means no serve,1 means serve down, 2 means serve up
+        this.serve =1
     }
 
     drawAll(ctx, angley, anglex) {
@@ -23,20 +26,52 @@ class Ball {
 
 
     //copying ball object by value.
-    new(centre, rad, velocity) {
+    new(centre, rad, velocity,upsideflag,downsideflag,serve) {
         this.centre = Object.create(centre);
         this.rad = rad;
         this.velocity = Object.create(velocity)
+        this.upside_collision_flag=upsideflag;
+        this.downside_collision_flag=downsideflag;
+        this.serve=serve;
     }
 
     //updates position of ball based on velocity vector and gravity.
     //timescale for testing purpose
     updatePosition() {
-        this.velocity.y += GRAVITY
 
+        if(this.serve==0){
+        this.velocity.y += GRAVITY
         this.centre.x += this.velocity.x * timeScale
         this.centre.y += this.velocity.y * timeScale
         this.centre.z += this.velocity.z * timeScale
+        }
+        if (this.serve==1){
+            this.serveDown();
+            // this.server=0;
+
+        }
+        if(this.serve==2){
+            this.serveUp();
+            // this.serve=0;
+        }
+    }
+    serveDown(){
+        this.velocity.x=0;
+        this.velocity.y=0;
+        this.velocity.z=0;
+        this.centre.x=SERVEDOWN_X;
+        this.centre.y=SERVEDOWN_y;
+        this.centre.z=SERVEDOWN_z;
+    }
+
+    serveUp(){
+        this.velocity.x=0;
+        this.velocity.y=0;
+        this.velocity.z=0;
+        this.centre.x=SERVEUP_X;
+        this.centre.y=SERVEUP_y;
+        this.centre.z=SERVEUP_z;
+
     }
 
 
@@ -141,15 +176,20 @@ class Ball {
     collisionWorld() {
         if (GROUND_START_y - this.centre.y <= this.rad) {
             this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
+            this.serve=1;
             // this.respawn();
         }
 
         if ((GROUND_START_y - WALL_HEIGHT) > this.centre.y) {
             this.velocity.y = Math.abs(this.velocity.y);
+            this.serve=1;
+
         }
 
         if ((GROUND_START_z + GROUND_LENGTH) <= this.centre.z) {
             this.velocity.z = -this.velocity.z;
+            this.serve=1;
+
         }
         if ((GROUND_START_x + GROUND_WIDTH) <= this.centre.x) {
             this.velocity.x = -this.velocity.x;
@@ -166,7 +206,6 @@ class Ball {
             // this.velocity.y = STARTING_BALL_VELOCITY_Y
             this.centre.y=0;
         }
-
         /**
          * normal reset position
          */
@@ -203,15 +242,13 @@ class Ball {
 
     // Simulated collision between bat and ball with bat having increased thickness
 
-    collisionBat2(angley, bat, speedx = 0, speedy = 0, bat_far, near = true) {
+    collisionBat2(angley, bat, bat_far, near = true) {
         let a = rotateY(this.centre, angley);
         let b = rotateY(bat.topLeft, angley);
         let c = rotateY(bat.topRight, angley);
 
-
         //downside bat
         if (b.x <= a.x && c.x >= a.x) {
-
             if (near == true) {
 
                 if (((b.z - a.z) >= 0) && ((b.z - a.z) < BAT_LENGTHINZAXIS_FOR_SHOT)) {
@@ -224,9 +261,14 @@ class Ball {
                         this.centre.y = SHOT_POSITION_Y;
                         this.velocity.y = STABLE_Y_VELOCITY;
                         this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                        this.velocity.x = RESPONSE_SCALE_X * speedx;
-                        this.velocity.z = Math.abs(this.velocity.z) * 0.8 - RESPONSE_SCALE_Z * speedy - 0.001;
+                        this.velocity.x = RESPONSE_SCALE_X * bat.speedX;
+                        this.velocity.z = Math.abs(this.velocity.z) * 0.8 - RESPONSE_SCALE_Z * bat.speedY - 0.001;
                         // this.velocity.z=-0.02
+                        if(this.serve!=0)
+                        {
+                            this.velocity.z=+0.025
+                            this.serve=0;
+                        }
                     }
                     //for rejecting multiple collision detection under limit
                     setTimeout(function () {
@@ -237,18 +279,22 @@ class Ball {
             }
             //upside bat
             else {
-                if (a.z <= b.z && (a.z-b.z)<BAT_LENGTHINZAXIS_FOR_SHOT) {
+                if (a.z <= b.z && (b.z-a.z)<BAT_LENGTHINZAXIS_FOR_SHOT) {
                     if (soundflag == 1) {
                         batsound.play();
-                        console.log('inside')
+                        soundflag = 0;
 
-                        this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
-                        this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * speedy;
-                        this.velocity.x += RESPONSE_SCALE_X * speedx;
                         this.centre.y = SHOT_POSITION_Y
                         this.velocity.y = STABLE_Y_VELOCITY;
-                        // this.velocity.z=-0.02
-
+                        this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
+                        this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * bat.speedY;
+                        this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
+                        if(this.serve!=0)
+                        {
+                            this.velocity.z=-0.03
+                            this.serve=0;
+                        }
+                        // this.velocity.z=-0.1
                     }
 
                     setTimeout(function () {
@@ -265,7 +311,6 @@ class Ball {
     reflection() {
         //first translate world to allign such that point of reflection align with z plane
         let dest = new Point3D(-START_BOARD_x - (BOARD_WIDTH / 2), -START_BOARD_y, -(START_BOARD_z + (BOARD_LENGTH / 2)));
-
         translateByReference(this.centre, dest);
 
         //then reflect about xy plane

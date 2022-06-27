@@ -83,7 +83,7 @@ const START_LEG_xr=START_BOARD_x+BOARD_WIDTH-10
 //bat
 //for actual 3d 
 const BAT_WIDTH=0.05
-const BAT_HEIGHT=0.1
+const BAT_HEIGHT=0.2
 const BAT_LENGTH=1
 
 //for static 2d bat image
@@ -99,6 +99,19 @@ const BALL_RADIUS=5
 BALL_COLOR=["rgba(255, 177, 0, 0.8)","rgb(230, 138, 0,1)"]
 
 
+const STARTING_BALL_POSITION_Y=-0.1
+const STARTING_BALL_VELOCITY_Y=0.001
+const STARTING_BALL_VELOCITY_X=-0.0
+
+
+const SERVEUP_X=START_BOARD_x+BOARD_WIDTH/2
+const SERVEUP_y=STARTING_BALL_POSITION_Y
+const SERVEUP_z=START_BOARD_z+BOARD_LENGTH-BOARD_LENGTH/6
+const SERVEDOWN_X=START_BOARD_x+BOARD_WIDTH/2
+const SERVEDOWN_y=STARTING_BALL_POSITION_Y
+const SERVEDOWN_z=START_BOARD_z+BOARD_LENGTH/6
+
+
 
 //physics constant
 const GRAVITY=0.0009
@@ -110,9 +123,7 @@ const timeScale=0.8
 
 const thresholdVelocityY=0.00000001
 
-const STARTING_BALL_POSITION_Y=-0.1
-const STARTING_BALL_VELOCITY_Y=0.001
-const STARTING_BALL_VELOCITY_X=-0.0
+
 
 const thresholdX=0.01;
 const thresholdY=0.01;
