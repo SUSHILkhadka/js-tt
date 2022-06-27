@@ -252,6 +252,7 @@ class Ball {
             if (near == true) {
 
                 if (((b.z - a.z) >= 0) && ((b.z - a.z) < BAT_LENGTHINZAXIS_FOR_SHOT)) {
+                    let extendCollisionDelayForServer=this.server;
                     if (soundflag == 1) {
                         //play sound
                         batsound.play();
@@ -266,7 +267,7 @@ class Ball {
                         // this.velocity.z=-0.02
                         if(this.serve!=0)
                         {
-                            this.velocity.z=+0.025
+                            this.velocity.z=0.025
                             this.serve=0;
                         }
                     }
@@ -274,7 +275,7 @@ class Ball {
                     setTimeout(function () {
                         soundflag = 1;
 
-                    }, COLLISION_DETECTION_LIMIT)
+                    }, COLLISION_DETECTION_LIMIT*(1+extendCollisionDelayForServer*100))
                 }
             }
             //upside bat
@@ -294,6 +295,10 @@ class Ball {
                             this.velocity.z=-0.03
                             this.serve=0;
                         }
+                        else{
+                        this.velocity.z=-0.08
+                        }
+
                         // this.velocity.z=-0.1
                     }
 

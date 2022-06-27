@@ -130,6 +130,10 @@ function drawPolygonImage(ctx, color, ...obj) {
 function drawCircle(ctx, centre, rad) {
     ctx.beginPath();
 
+    if(rad<0)
+    {
+        rad=0;
+    }
     ctx.arc(centre.x, centre.y, rad, 0, 2 * Math.PI);
     ctx.fillStyle=BALL_COLOR[1]
     ctx.fill();

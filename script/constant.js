@@ -82,7 +82,7 @@ const START_LEG_xr=START_BOARD_x+BOARD_WIDTH-10
 
 //bat
 //for actual 3d 
-const BAT_WIDTH=0.05
+const BAT_WIDTH=0.2
 const BAT_HEIGHT=0.2
 const BAT_LENGTH=1
 
@@ -129,7 +129,7 @@ const thresholdX=0.01;
 const thresholdY=0.01;
 const thresholdZ=0.3;
 
-const COLLISION_DETECTION_LIMIT=800
+const COLLISION_DETECTION_LIMIT=70
 
 
 //strike back or collision response constants
