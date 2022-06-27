@@ -195,7 +195,7 @@ class Bat {
     }
     //for bot tracking ball in x axis
     trackBall(ball) {
-        this.point3D.x = (ball.centre.x - BAT_WIDTH / 2);
+        this.point3D.x =(START_BOARD_x+BOARD_WIDTH/2) -(ball.centre.x - BAT_WIDTH / 2);
 
     }
     //for bot maintaining distance in z axis
