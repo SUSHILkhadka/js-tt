@@ -138,7 +138,7 @@ function drawCircle(ctx, centre, rad) {
     ctx.fillStyle=BALL_COLOR[1]
     ctx.fill();
     ctx.lineWidth=2
-    ctx.strokeStyle='rgb(51, 31, 0)';
+    ctx.strokeStyle=BALL_STROKE_COLOR[0];
     ctx.strokeStyle='black';
 
     ctx.stroke();
@@ -149,8 +149,7 @@ function shadowCircle(ctx, centre2D, rad) {
 
     ctx.beginPath();
     ctx.arc(centre2D.x, centre2D.y, rad, 0, 2 * Math.PI);
-    ctx.fillStyle='black';
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)"
+    ctx.fillStyle = SHADOW_COLOR[0]
     ctx.fill();
     // ctx.stroke();
 }

@@ -101,7 +101,7 @@ class Ball {
     drawBall(ctx, angley, anglex) {
         let c = project(this.centre, angley, anglex)
         let guessRadius = BALL_RADIUS_2D;
-        guessRadius /= 1.5 * (this.centre.z - 1 + START_ZPLANE);
+        guessRadius /= ballradiusfactor * (this.centre.z - 1 + START_ZPLANE);
         //draw circle
         drawCircle(ctx, c, guessRadius);
     }
@@ -111,7 +111,7 @@ class Ball {
         let temp = new Point3D(this.centre.x, START_BOARD_y, this.centre.z);
         let centre2D = project(temp, angley, anglex);
 
-        let radiusShadow = this.rad * (-this.centre.y) * 5000;
+        let radiusShadow = this.rad * (-this.centre.y) * shadowradiusfactor/(this.centre.z - 1 + START_ZPLANE);
 
         if (radiusShadow < 0) {
             radiusShadow = 0
@@ -190,30 +190,30 @@ collisionTable( ) {
     collisionWorld() {
         if (GROUND_START_y - this.centre.y <= this.rad) {
             this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
-            ball.outOfBoard=1;
+            this.outOfBoard=1;
             // this.respawn();
         }
 
         if ((GROUND_START_y - WALL_HEIGHT) > this.centre.y) {
             this.velocity.y = Math.abs(this.velocity.y);
-            ball.outOfBoard=1;
+            this.outOfBoard=1;
 
         }
 
         if ((GROUND_START_z + GROUND_LENGTH) <= this.centre.z) {
             this.velocity.z = -this.velocity.z;
-            ball.outOfBoard=1;
+            this.outOfBoard=1;
 
 
         }
         if ((GROUND_START_x + GROUND_WIDTH) <= this.centre.x) {
             this.velocity.x = -this.velocity.x;
-            ball.outOfBoard=1;
+            this.outOfBoard=1;
 
         }
         if ((GROUND_START_x) >= this.centre.x) {
             this.velocity.x = -this.velocity.x;
-            ball.outOfBoard=1;
+            this.outOfBoard=1;
 
         }
     }
@@ -272,7 +272,7 @@ collisionTable( ) {
                         this.centre.y = SHOT_POSITION_Y;
                         this.velocity.y = STABLE_Y_VELOCITY;
 
-                        this.velocity.x+=-angy*0.001*Math.abs(this.velocity.z);
+                        this.velocity.x+=-angley*0.001*Math.abs(this.velocity.z);
                         this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
 
                         this.velocity.z = Math.abs(this.velocity.z) * 0.8 - RESPONSE_SCALE_Z * bat.speedY - 0.001;
@@ -281,7 +281,7 @@ collisionTable( ) {
                             this.serveflag = 0;
 
                         }
-                        ball.lastCollidedBat=1;
+                        this.lastCollidedBat=1;
                     }
                     //for rejecting multiple collision detection under limit
                     setTimeout(function () {
@@ -300,7 +300,7 @@ collisionTable( ) {
                         this.centre.y = SHOT_POSITION_Y
                         this.velocity.y = STABLE_Y_VELOCITY;
 
-                        this.velocity.x+=angy*0.001*Math.abs(this.velocity.z);
+                        this.velocity.x+=angley2*0.001*Math.abs(this.velocity.z);
                         this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
 
                         this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * bat.speedY;
@@ -312,7 +312,7 @@ collisionTable( ) {
                         else {
                             this.velocity.z = -0.08
                         }
-                        ball.lastCollidedBat=2;
+                        this.lastCollidedBat=2;
                         // this.velocity.z=-0.1
                     }
                     setTimeout(function () {

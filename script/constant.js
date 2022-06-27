@@ -1,5 +1,16 @@
-const CANVAS_WIDTH=1200;
-const CANVAS_HEIGHT=600;
+const CANVAS_WIDTH=1300;
+const CANVAS_HEIGHT=650;
+
+var canvasWidthDividerForMultiplayer=1;
+var canvasHeightDividerForMultiplayer=1;
+
+
+//global variables for gamemode
+WIDTH_SCALE_FOR_PROJECTION=1
+HEIGHT_SCALE_FOR_PROJECTION=1
+
+ballradiusfactor=1.7
+shadowradiusfactor=10000
 
 
 //projection constants
@@ -10,8 +21,9 @@ const znear=1
 const q=zfar/(zfar-znear);
 const f=1/Math.tan((degrees/2) * Math.PI / 180) 
 
-const translateX=500;
-const translateY=300;    
+const translateX=550;
+const translateY=150;    
+
 
 
 const nomouse=9000;
@@ -26,7 +38,7 @@ rotation_anglex=90;
 const RESTRICTION_START_ZPLANE_min= 1
 const RESTRICTION_START_ZPLANE_max= 4
 const RESTRICTION_ANGLE_Y= 50
-const RESTRICTION_ANGLE_X= 90
+const RESTRICTION_ANGLE_X= 55
 
 
 //camera 
@@ -96,8 +108,11 @@ const BAT_LENGTH_2d=1
 const BALL_RADIUS_2D=20
 const BALL_RADIUS=5
 
-BALL_COLOR=["rgba(255, 177, 0, 0.8)","rgb(230, 138, 0,1)"]
+BALL_COLOR=["rgba(255, 177, 0, 0.1)","rgb(230, 138, 0,1)","rgb(255,255,255,1)"]
+// BALL_STROKE_COLOR=['rgb(51, 31, 0,1)']
+BALL_STROKE_COLOR=['rgb(255, 0, 0,1)']
 
+SHADOW_COLOR=["rgba(0, 0, 0, 0.8)"]
 
 const STARTING_BALL_POSITION_Y=-0.1
 const STARTING_BALL_VELOCITY_Y=0.001

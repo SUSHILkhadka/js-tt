@@ -1,9 +1,56 @@
-const canvas = document.querySelector(".canvas")
+const menu=document.querySelector('.menu')
+const singleplayer=document.querySelector('.singleplayer')
+const multiplayer=document.querySelector('.multiplayer')
+const highscore=document.querySelector('.highscore')
+
+
+singleplayer.addEventListener('click',function event(e){
+    menu.style.display='none';
+    gameloop(1);
+})
+multiplayer.addEventListener('click',function event(e){
+    menu.style.display='none';
+    gameloop(2);
+})
+
+
+
+
+
+function gameloop(gamemode){
+const gamebox = document.createElement("div")
+gamebox.style.position='relative'
+document.body.append(gamebox)
+const canvas = document.createElement("canvas")
 const ctx = canvas.getContext('2d');
+gamebox.append(canvas)
 
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
+var adjustXdependingOnGameMode=0
+var adjustYdependingOnGameMode=200;
+
 canvas.style.cursor = 'none'
+const canvas2 = document.createElement("canvas")
+const ctx2 = canvas2.getContext('2d');
+
+if(gamemode==2){
+
+adjustYdependingOnGameMode=0;
+canvasWidthDividerForMultiplayer=1
+canvasHeightDividerForMultiplayer=2
+
+canvas.width = CANVAS_WIDTH/canvasWidthDividerForMultiplayer;
+canvas.height = CANVAS_HEIGHT/canvasHeightDividerForMultiplayer;
+
+gamebox.append(canvas2)
+canvas2.width = CANVAS_WIDTH/canvasWidthDividerForMultiplayer;
+canvas2.height = CANVAS_HEIGHT/canvasHeightDividerForMultiplayer;
+canvas2.style.cursor = 'none'
+
+WIDTH_SCALE_FOR_PROJECTION=2;
+HEIGHT_SCALE_FOR_PROJECTION=2;
+}
 
 var world = new World();
 var table = new Table()
@@ -20,6 +67,21 @@ let angx = 45;
 let angy2 = 0;
 let angx2 = 45;
 
+let targetScore=6;
+
+let backbutton=document.createElement('button')
+backbutton.innerHTML='quit';
+backbutton.style.position='absolute';
+backbutton.style.top='0px';
+backbutton.style.right='0px';
+backbutton.addEventListener('click',function event(e){
+    gamebox.innerHTML='';
+    menu.style.display='block';
+    return 0;
+})
+gamebox.append(backbutton);
+
+
 let scoreboard = document.createElement('div');
 let name1 = document.createElement('h3')
 name1.innerHTML = 'near'
@@ -35,14 +97,18 @@ scoreboard.append(score1);
 scoreboard.append(name2);
 scoreboard.append(score2);
 scoreboard.append(serveflag);
-
-// scoreboard.style.position = "absolute"
+scoreboard.style.background='transparent'
+scoreboard.style.position = "absolute";
 scoreboard.style.zIndex = "1"
+scoreboard.style.top='0px';
+scoreboard.style.left='0px';
 
 
-document.body.append(scoreboard);
+gamebox.append(scoreboard);
 bat.addMouseController();
+if(gamemode==2){
 bat_far.addKeyboardController();
+}
 function play() {
     // window.addEventListener('mousemove', function event(e) {
     //     bat.updatePosition(e.clientX - translateX, e.clientY);
@@ -109,44 +175,49 @@ function play() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
-    ctx.translate(translateX, translateY);
-
-    world.drawWorld(ctx, angy, angx);
-    // if (angy < 15) {
-    //     world.drawWallRight(ctx);
-    // }
-    // if (angy > -13) {
-    //     world.drawWallLeft(ctx);
-    // }
-
-    table.drawAll(ctx, angy, angx);
-    ball.drawAll(ctx, angy, angx);
-
-    ball.collisionTable(bat, bat_far);
-    if(freeze==0)
+    if(bat.score>=targetScore || bat_far.score>=targetScore)
     {
-        ball.collisionBat2(angy,angy2, bat, bat_far);
+        gamebox.innerHTML='';
+    menu.style.display='block';
+
+        return 0;
     }
-    ball.collisionWorld();
-    ball.updatePosition();
-    // ball.dontGoOutside();
-    bat.drawBat3D(ctx, angy, angx);
+
     bat.updateAngle(angy);
     bat_far.updateAngle(angy2);
-
-    if(freeze==0){
-    bat.updatePosition();
-    bat_far.updatePosition();
-    }
-
-    //bot tracking movements both x and y:
-    bat_far.trackBall(ball);
-    bat_far.adjustRange(ball);
-
-
     let bat_farMirror = new Bat();
     bat_farMirror.new(bat_far.topLeft, bat_far.topRight, bat_far.bottomLeft, bat_far.bottomRight)
     bat_farMirror.reflection();
+    ball.collisionWorld();
+    ball.updatePosition();
+    ball.collisionTable(bat, bat_far);
+    // ball.dontGoOutside();
+
+
+    if(freeze==0)
+    {
+        ball.collisionBat2(angy,angy2, bat, bat_far);
+    bat.updatePosition();
+    bat_far.updatePosition();
+    }
+    //bot tracking movements both x and y:
+    if(gamemode==1 && freeze==0){
+    bat_far.trackBall(ball);
+    bat_far.adjustRange(ball);
+    }
+
+
+    ctx.translate(translateX, translateY+adjustYdependingOnGameMode);
+    world.drawWorld(ctx, angy, angx);
+    if (angy < 15) {
+        world.drawWallRight(ctx);
+    }
+    if (angy > -13) {
+        world.drawWallLeft(ctx);
+    }
+    table.drawAll(ctx, angy, angx);
+    ball.drawAll(ctx, angy, angx);
+    bat.drawBat3D(ctx, angy, angx);
     bat_farMirror.drawBat3D(ctx, angy, angx);
 
 
@@ -159,64 +230,54 @@ function play() {
     }
 
     ball.serverid = serveDeterminer(bat.score, bat_far.score, ball.serverid);
-    // ball.serverid =2;
+    if(gamemode==1)
+    {
+        ball.serverid =1
+    }
+    ctx.translate(-translateX, -translateY-adjustYdependingOnGameMode);
 
-    ctx.translate(-translateX, -translateY);
+
+    //next bat calculation
+    let ballMirror = new Ball();
+    ballMirror.new(ball.centre, ball.rad, ball.velocity, ball.upside_collision_flag, ball.downside_collision_flag, ball.serveflag,ball.lastCollidedBat)
+    ballMirror.reflection();
+    let batMirror = new Bat();
+    batMirror.new(bat.topLeft, bat.topRight, bat.bottomLeft, bat.bottomRight)
+    batMirror.reflection();
+    if(freeze==0)
+    {
+    ballMirror.collisionBat2(angy,angy2, bat_far, bat, false);
+    ball.velocity = ballMirror.velocity;
+    ball.serveflag = ballMirror.serveflag;
+    bat_far.updateAngle(angy2);
+    bat_far.updatePosition();
+    }
+
+
+
+//next bat draw
+    if(gamemode==2){
+        ctx2.clearRect(0, 0, canvas.width, canvas.height);
+        ctx2.strokeRect(0, 0, canvas.width, canvas.height);
+    ctx2.translate(translateX, translateY);
+    world.drawWorld(ctx2, angy2, angx2);
+    if (rotation_angle < 15) {
+        world.drawWallRight(ctx2);
+    }
+    if (rotation_angle > -13) {
+        world.drawWallLeft(ctx2);
+    }
+    table.drawAll(ctx2, angy2, angx2);
+    ballMirror.drawAll(ctx2, angy2, angx2);
+    bat_far.drawBat3D(ctx2, angy2, angx2);
+    batMirror.drawBat3D(ctx2, angy2, angx2);
+    ctx2.translate(-translateX, -translateY);
+    }
     requestAnimationFrame(play);
 
 }
 
-const canvas2 = document.createElement("canvas")
-const ctx2 = canvas2.getContext('2d');
-canvas2.width = CANVAS_WIDTH;
-canvas2.height = CANVAS_HEIGHT;
-canvas2.style.cursor = 'none';
-
-canvas2.width = CANVAS_WIDTH;
-canvas2.height = CANVAS_HEIGHT;
-canvas2.style.cursor = 'none'
-
-function play2() {
-    ctx2.clearRect(0, 0, canvas.width, canvas.height);
-    ctx2.strokeRect(0, 0, canvas.width, canvas.height);
-    ctx2.translate(translateX, translateY);
-
-    world.drawWorld(ctx2, angy2, angx2);
-    // if (rotation_angle < 15) {
-    //     world.drawWallRight(ctx2);
-    // }
-    // if (rotation_angle > -13) {
-    //     world.drawWallLeft(ctx2);
-    // }
-    table.drawAll(ctx2, angy2, angx2);
-
-    let ballMirror = new Ball();
-    ballMirror.new(ball.centre, ball.rad, ball.velocity, ball.upside_collision_flag, ball.downside_collision_flag, ball.serveflag,ball.lastCollidedBat)
-    ballMirror.reflection();
-    ballMirror.drawAll(ctx2, angy2, angx2);
-    if(freeze==0)
-    {
-        ballMirror.collisionBat2(angy,angy2, bat_far, bat, false);
-    }
-    ball.velocity = ballMirror.velocity;
-    ball.serveflag = ballMirror.serveflag;
-
-    bat_far.drawBat3D(ctx2, angy2, angx2);
-    if(freeze==0);
-    {
-        bat_far.updateAngle(angy2);
-        bat_far.updatePosition();
-    }
-
-    let batMirror = new Bat();
-    batMirror.new(bat.topLeft, bat.topRight, bat.bottomLeft, bat.bottomRight)
-    batMirror.reflection();
-    batMirror.drawBat3D(ctx2, angy2, angx2);
-
-    ctx2.translate(-translateX, -translateY);
-    document.body.append(canvas2);
-    requestAnimationFrame(play2);
-}
+play();
 
 
 imageObj.style.height = 10;
@@ -230,10 +291,13 @@ imageObj2.onload = function () {
 imageObj3.onload = function () {
     floorpattern = ctx.createPattern(imageObj3, 'repeat');
 };
-batimage.onload = () => {
-    play();
-    play2();
+
 }
+
+
+
+
+
 
 
 

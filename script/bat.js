@@ -81,7 +81,7 @@ class Bat {
             this.timestamp = now;
             this.lastMouseX = e.screenX;
             this.lastMouseY = e.screenY;
-            bat.updatePosition(e.clientX - translateX, e.clientY);
+            this.updatePosition(e.clientX - translateX, e.clientY);
 
         }.bind(this));
 

@@ -34,8 +34,8 @@ function project(point,angley,anglex)
     let temp1=translate(proj,dest1)
 
     //since world coordinate system is unit system, scale it back to viewport
-    temp1.x*=CANVAS_WIDTH
-    temp1.y*=CANVAS_HEIGHT
+    temp1.x*=CANVAS_WIDTH/WIDTH_SCALE_FOR_PROJECTION
+    temp1.y*=CANVAS_HEIGHT/HEIGHT_SCALE_FOR_PROJECTION
 
     return temp1;
 }

@@ -1,6 +1,34 @@
 *{
     background-color: grey;
-    margin: 0rem;
+    margin: 0rem auto;
     padding: 0rem;
     position: relative;
+
+    max-width: 1400px;
+    background-color: transparent;
+    overflow: hidden;
 }
+
+.menu{
+    max-width: 1400px;
+    height: 700px;
+    background-image: url('../asset/background1.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+button{
+    display: block;
+    padding: 2rem;
+
+    margin-bottom: 3rem;
+    background-color: aqua;
+    font-size: 2rem;
+    border-radius: 2rem;
+}
+button:hover{
+    background-color: red;
+    transition: all .3s ease-in;
+}
+
