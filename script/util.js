@@ -197,7 +197,14 @@ function drawCube(ctx, point, width, height, length,angley,anglex) {
 }
 
 
+function serveDeterminer(firstscore,secondscore,currentid){
+    // console.log(firstscore,secondscore)
+    // console.log("rounded",Math.floor((firstscore+secondscore)/2))
 
-function drawSphere(ctx,centre,rad){
+    if(Math.floor((firstscore+secondscore)/2)%2==0){
+        return 1;
+    }
+    else {return 2} ;
 
 }
+

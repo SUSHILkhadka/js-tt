@@ -119,7 +119,7 @@ const GRAVITY=0.0009
 const FLOORSTART_Y=800
 const LOSS_TABLE=0.00
 const LOSS_GROUND=0.0007
-const timeScale=0.8
+const timeScale=0.7
 
 const thresholdVelocityY=0.00000001
 
@@ -147,6 +147,7 @@ let bounche = new Audio('asset/bounche.m4a');
 let batsound = new Audio('asset/bat.m4a');
 let wallsound = new Audio('asset/wall.wav');
 let batsound2 = new Audio('asset/balls.wav');
+let refreesound=new Audio('asset/refree.m4a');
 let soundflag=1
 let batimage=new Image();
 batimage.src="asset/bat.png";
@@ -160,3 +161,6 @@ var netpattern=null;
 var imageObj3 = new Image();
 imageObj3.src="asset/floor.jpg";
 var floorpattern=null;
+
+
+var freeze=0;

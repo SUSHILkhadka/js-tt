@@ -11,66 +11,89 @@ class Ball {
         this.centre = centre;
         this.rad = rad;
         this.velocity = velocity;
+
+        this.outOfBoard=0;
         this.upside_collision_flag = 0;
         this.downside_collision_flag = 0;
+        this.lastCollidedBat=0;
 
-        //serve 0 means no serve,1 means serve down, 2 means serve up
-        this.serve =1
+        //serve flag for disableing updateposition on ball
+        this.serveflag = 1;
+        //id for where to position ball for serve
+        this.serverid = 1;
+        this.correctServeFlag=0;
     }
 
     drawAll(ctx, angley, anglex) {
-
         this.drawShadow(ctx, angley, anglex)
         this.drawBall(ctx, angley, anglex)
     }
 
 
     //copying ball object by value.
-    new(centre, rad, velocity,upsideflag,downsideflag,serve) {
+    new(centre, rad, velocity, upsideflag, downsideflag, serveflag,lastCollidedBat) {
         this.centre = Object.create(centre);
         this.rad = rad;
         this.velocity = Object.create(velocity)
-        this.upside_collision_flag=upsideflag;
-        this.downside_collision_flag=downsideflag;
-        this.serve=serve;
+        
+        this.upside_collision_flag = upsideflag;
+        this.downside_collision_flag = downsideflag;
+        this.serveflag = serveflag;
+        this.lastCollidedBat = lastCollidedBat;
+
     }
 
     //updates position of ball based on velocity vector and gravity.
     //timescale for testing purpose
     updatePosition() {
 
-        if(this.serve==0){
-        this.velocity.y += GRAVITY
-        this.centre.x += this.velocity.x * timeScale
-        this.centre.y += this.velocity.y * timeScale
-        this.centre.z += this.velocity.z * timeScale
+        if (this.serveflag == 0) {
+            this.velocity.y += GRAVITY
+            this.centre.x += this.velocity.x * timeScale
+            this.centre.y += this.velocity.y * timeScale
+            this.centre.z += this.velocity.z * timeScale
         }
-        if (this.serve==1){
-            this.serveDown();
-            // this.server=0;
 
-        }
-        if(this.serve==2){
-            this.serveUp();
-            // this.serve=0;
+        else {
+            if (this.serverid == 1) {
+                this.serveDown();
+                // this.server=0;
+
+            }
+            if (this.serverid == 2) {
+                this.serveUp(); 
+                // this.serve=0;
+            }
         }
     }
-    serveDown(){
-        this.velocity.x=0;
-        this.velocity.y=0;
-        this.velocity.z=0;
-        this.centre.x=SERVEDOWN_X;
-        this.centre.y=SERVEDOWN_y;
-        this.centre.z=SERVEDOWN_z;
+    serveDown() {
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        this.velocity.z = 0;
+        this.centre.x = SERVEDOWN_X;
+        this.centre.y = SERVEDOWN_y;
+        this.centre.z = SERVEDOWN_z;
     }
 
-    serveUp(){
-        this.velocity.x=0;
-        this.velocity.y=0;
-        this.velocity.z=0;
-        this.centre.x=SERVEUP_X;
-        this.centre.y=SERVEUP_y;
-        this.centre.z=SERVEUP_z;
+    serveUp() {
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        this.velocity.z = 0;
+        this.centre.x = SERVEUP_X;
+        this.centre.y = SERVEUP_y;
+        this.centre.z = SERVEUP_z;
+
+    }
+    startServe(){
+            freeze=1;
+            refreesound.play();
+            setTimeout(function(){
+            this.serveflag=1;
+            this.upside_collision_flag=0;
+            this.downside_collision_flag=0;
+            this.outOfBoard=0;
+                freeze=0;
+            }.bind(this),1000);
 
     }
 
@@ -98,7 +121,7 @@ class Ball {
     }
 
     //Detects collision between ball and table.
-    collisionTable(bat, bat_far) {
+collisionTable( ) {
 
         //collision detected if ball is with in "x range of table" and "z range of table" and "y value of ball is greater than y value of table when radius compensated"
         if (this.centre.x >= START_BOARD_x && this.centre.x < START_BOARD_x + BOARD_WIDTH && this.centre.z >= START_BOARD_z && this.centre.z < START_BOARD_z + BOARD_LENGTH) {
@@ -109,21 +132,13 @@ class Ball {
                 //upside
                 if (this.centre.z > (START_BOARD_z + BOARD_LENGTH / 2)) {
                     this.upside_collision_flag++;
-                    this.downside_collision_flag = 0;
-                    if (this.upside_collision_flag >= 2) {
-                        bat.score++;
-                        //respawn logic
-                    }
+                    // this.downside_collision_flag = 0;
                 }
                 //downside
                 if (this.centre.z < (START_BOARD_z + BOARD_LENGTH / 2)) {
-                    this.upside_collision_flag = 0;
                     this.downside_collision_flag++;
+                    // this.upside_collision_flag = 0;
 
-                    if (this.downside_collision_flag >= 2) {
-                        bat_far.score++;
-                        //respawn logic
-                    }
                 }
 
 
@@ -176,43 +191,39 @@ class Ball {
     collisionWorld() {
         if (GROUND_START_y - this.centre.y <= this.rad) {
             this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
-            this.serve=1;
+            ball.outOfBoard=1;
             // this.respawn();
         }
 
         if ((GROUND_START_y - WALL_HEIGHT) > this.centre.y) {
             this.velocity.y = Math.abs(this.velocity.y);
-            this.serve=1;
+            ball.outOfBoard=1;
 
         }
 
         if ((GROUND_START_z + GROUND_LENGTH) <= this.centre.z) {
             this.velocity.z = -this.velocity.z;
-            this.serve=1;
+            ball.outOfBoard=1;
+
 
         }
         if ((GROUND_START_x + GROUND_WIDTH) <= this.centre.x) {
             this.velocity.x = -this.velocity.x;
+            ball.outOfBoard=1;
+
         }
         if ((GROUND_START_x) >= this.centre.x) {
             this.velocity.x = -this.velocity.x;
+            ball.outOfBoard=1;
+
         }
     }
 
     //ball respawn logic
     respawn() {
         if (this.centre.y > START_BOARD_y) {
-            this.centre.y = STARTING_BALL_POSITION_Y
-            // this.velocity.y = STARTING_BALL_VELOCITY_Y
-            this.centre.y=0;
+            this.centre.y = 0;
         }
-        /**
-         * normal reset position
-         */
-        // this.centre.x=START_BOARD_x+20;
-        // this.centre.y=START_BOARD_y; 
-        // this.centre.z=START_BOARD_z+20;
-        // this.velocity.y=0
     }
 
 
@@ -252,7 +263,7 @@ class Ball {
             if (near == true) {
 
                 if (((b.z - a.z) >= 0) && ((b.z - a.z) < BAT_LENGTHINZAXIS_FOR_SHOT)) {
-                    let extendCollisionDelayForServer=this.server;
+                    let extendCollisionDelayForServer = this.serveflag;
                     if (soundflag == 1) {
                         //play sound
                         batsound.play();
@@ -264,23 +275,26 @@ class Ball {
                         this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
                         this.velocity.x = RESPONSE_SCALE_X * bat.speedX;
                         this.velocity.z = Math.abs(this.velocity.z) * 0.8 - RESPONSE_SCALE_Z * bat.speedY - 0.001;
-                        // this.velocity.z=-0.02
-                        if(this.serve!=0)
-                        {
-                            this.velocity.z=0.025
-                            this.serve=0;
+                        if (this.serveflag != 0) {
+                            this.velocity.z = 0.025 //this is godo one
+                            // this.velocity.z = 0.05
+
+                            this.serveflag = 0;
+                            // this.correctServeFlag=1;
+
                         }
+                        ball.lastCollidedBat=1;
                     }
                     //for rejecting multiple collision detection under limit
                     setTimeout(function () {
                         soundflag = 1;
 
-                    }, COLLISION_DETECTION_LIMIT*(1+extendCollisionDelayForServer*100))
+                    }, COLLISION_DETECTION_LIMIT  + extendCollisionDelayForServer * 0)
                 }
             }
             //upside bat
             else {
-                if (a.z <= b.z && (b.z-a.z)<BAT_LENGTHINZAXIS_FOR_SHOT) {
+                if (a.z <= b.z && (b.z - a.z) < BAT_LENGTHINZAXIS_FOR_SHOT) {
                     if (soundflag == 1) {
                         batsound.play();
                         soundflag = 0;
@@ -290,28 +304,26 @@ class Ball {
                         this.velocity.x += -RESPONSE_SCALE_ZtoX * Math.tan(rotation_angle * Math.PI / 180) * Math.abs(this.velocity.z);
                         this.velocity.z = -Math.abs(this.velocity.z) - RESPONSE_SCALE_Z * bat.speedY;
                         this.velocity.x += RESPONSE_SCALE_X * bat.speedX;
-                        if(this.serve!=0)
-                        {
-                            this.velocity.z=-0.03
-                            this.serve=0;
+                        if (this.serveflag != 0) {
+                            this.velocity.z = -0.03
+                            this.serveflag = 0;
+                            this.correctServeFlag=1;
                         }
-                        else{
-                        this.velocity.z=-0.08
+                        else {
+                            this.velocity.z = -0.08
                         }
+                        ball.lastCollidedBat=2;
 
                         // this.velocity.z=-0.1
                     }
-
                     setTimeout(function () {
                         soundflag = 1;
 
                     }, COLLISION_DETECTION_LIMIT)
                 }
             }
-
         }
     }
-
     //reflects ball about midpoint of table. Used for multiplayer mode
     reflection() {
         //first translate world to allign such that point of reflection align with z plane
