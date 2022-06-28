@@ -56,11 +56,11 @@ class Bat {
         ctx.drawImage(batimage, a_proj.x, a_proj.y, BAT_WIDTH_2d /(this.topLeft.z*START_ZPLANE*WIDTH_SCALE_FOR_PROJECTION), BAT_HEIGHT_2d /(this.topLeft.z*START_ZPLANE*HEIGHT_SCALE_FOR_PROJECTION));
         }
         else{
-        ctx.drawImage(batimage, b_proj.x, b_proj.y, BAT_WIDTH_2d /(this.topLeft.z*START_ZPLANE*WIDTH_SCALE_FOR_PROJECTION), BAT_HEIGHT_2d /(this.topLeft.z*START_ZPLANE*HEIGHT_SCALE_FOR_PROJECTION));
+        ctx.drawImage(batimage, b_proj.x, b_proj.y, BAT_WIDTH_2d /(1.2*this.topLeft.z*START_ZPLANE*WIDTH_SCALE_FOR_PROJECTION), BAT_HEIGHT_2d /(1.2*this.topLeft.z*START_ZPLANE*HEIGHT_SCALE_FOR_PROJECTION));
 
         }
 
-        drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', a_proj, b_proj, c_proj, d_proj);
+        // drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', a_proj, b_proj, c_proj, d_proj);
     }
 
 
@@ -204,6 +204,7 @@ class Bat {
     //for bot tracking ball in x axis
     trackBall(ball) {
         this.point3D.x =(START_BOARD_x+BOARD_WIDTH) -(ball.centre.x + BAT_WIDTH / 2);
+        this.point3D.y=STARTING_BALL_POSITION_Y;
 
     }
     //for bot maintaining distance in z axis

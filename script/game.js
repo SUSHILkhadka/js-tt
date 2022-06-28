@@ -1,6 +1,8 @@
 const menu=document.querySelector('.menu')
 const singleplayer=document.querySelector('.singleplayer')
 const multiplayer=document.querySelector('.multiplayer')
+const training=document.querySelector('.training')
+
 const highscore=document.querySelector('.highscore')
 
 
@@ -12,9 +14,13 @@ multiplayer.addEventListener('click',function event(e){
     menu.style.display='none';
     gameloop(2);
 })
+training.addEventListener('click',function event(e){
+    menu.style.display='none';
+    gameloop(1,1);
+})
 
 
-function gameloop(gamemode){
+function gameloop(gamemode=1,training=0){
 const gamebox = document.createElement("div")
 gamebox.style.position='relative'
 document.body.append(gamebox)
@@ -31,8 +37,9 @@ canvas.style.cursor = 'none'
 const canvas2 = document.createElement("canvas")
 const ctx2 = canvas2.getContext('2d');
 
-if(gamemode==2){
 
+if(gamemode==2){
+adjustXdependingOnGameMode=150
 adjustYdependingOnGameMode=0;
 canvasWidthDividerForMultiplayer=1
 canvasHeightDividerForMultiplayer=2
@@ -76,11 +83,7 @@ backbutton.innerHTML='quit';
 backbutton.style.position='absolute';
 backbutton.style.top='0px';
 backbutton.style.right='0px';
-backbutton.addEventListener('click',function event(e){
-    gamebox.innerHTML='';
-    menu.style.display='block';
-    return 0;
-})
+
 gamebox.append(backbutton);
 
 
@@ -92,6 +95,8 @@ name2.innerHTML = 'far'
 let score1 = document.createElement('p');
 let score2 = document.createElement('p');
 let serveflag = document.createElement('p');
+
+
 
 
 scoreboard.append(name1);
@@ -108,6 +113,9 @@ scoreboard.style.left='0px';
 
 gamebox.append(scoreboard);
 bat.addMouseController();
+if(training==1){
+    bat.addKeyboardController();
+}
 if(gamemode==2){
 bat_far.addKeyboardController();
 }
@@ -168,7 +176,17 @@ window.addEventListener('keydown', function event(e) {
         }
     }
 });
+backbutton.addEventListener('click',function event(e){
+    gamebox.innerHTML='';
+    menu.style.display='block';
+    world=null;    
+    ball=null;
+    bat=null;
+    bat_far=null;
+    return 0;
+})
 function play() {
+
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
@@ -176,7 +194,10 @@ function play() {
     {
         gamebox.innerHTML='';
     menu.style.display='block';
-
+    world=null;    
+    ball=null;
+    bat=null;
+    bat_far=null;
         return 0;
     }
 
@@ -188,7 +209,10 @@ function play() {
     ball.collisionWorld();
     ball.updatePosition();
     ball.collisionTable(bat, bat_far);
-    // ball.dontGoOutside();
+    if(training==1)
+    {
+    ball.dontGoOutside();
+    }
 
 
     if(freeze==0)
@@ -198,13 +222,13 @@ function play() {
     bat_far.updatePosition();
     }
     //bot tracking movements both x and y:
-    if(gamemode==1 && freeze==0){
+    if(gamemode==1 && freeze==0 && training==0){
     bat_far.trackBall(ball);
     bat_far.adjustRange(ball);
     }
 
 
-    ctx.translate(translateX, translateY+adjustYdependingOnGameMode);
+    ctx.translate(translateX+adjustXdependingOnGameMode, translateY+adjustYdependingOnGameMode);
     world.drawWorld(ctx, angy, angx);
     if (angy < 15) {
         world.drawWallRight(ctx);
@@ -214,15 +238,18 @@ function play() {
     }
     table.drawAll(ctx, angy, angx);
     ball.drawAll(ctx, angy, angx);
-    bat.drawBat3D(ctx, angy, angx);
+    if(training==0){
     bat_farMirror.drawBat3D(ctx, angy, angx);
+    }
+    bat.drawBat3D(ctx, angy, angx);
+
 
 
     //score
     score1.innerHTML = `${bat.score}`
     score2.innerHTML = `${bat_far.score}`
     serveflag.innerHTML=`downside collision flag=${ball.downside_collision_flag},upsidecollision flag = ${ball.upside_collision_flag},freeze=${freeze}`
-    if(freeze==0){
+    if(freeze==0 && training==0){
     updateScore2(ball, bat, bat_far);
     }
 
@@ -231,7 +258,7 @@ function play() {
     {
         ball.serverid =1
     }
-    ctx.translate(-translateX, -translateY-adjustYdependingOnGameMode);
+    ctx.translate(-translateX-adjustXdependingOnGameMode, -translateY-adjustYdependingOnGameMode);
 
 
     //next bat calculation
@@ -266,29 +293,53 @@ function play() {
     }
     table.drawAll(ctx2, angy2, angx2);
     ballMirror.drawAll(ctx2, angy2, angx2);
-    bat_far.drawBat3D(ctx2, angy2, angx2);
     batMirror.drawBat3D(ctx2, angy2, angx2);
+    bat_far.drawBat3D(ctx2, angy2, angx2);
     ctx2.translate(-translateX, -translateY);
+
+
     }
+
+
     requestAnimationFrame(play);
 
 }
 
-play();
-
-
-imageObj.style.height = 10;
-imageObj.style.width = 10;
 imageObj.onload = function () {
     pattern = ctx.createPattern(imageObj, 'repeat');
 };
+
+texture.onload = function () {
+    texturepattern = ctx.createPattern(texture, 'repeat');
+    ctx.drawImage(texture, 0, 0);
+    ctx.beginPath();
+    ctx.moveTo(30, 96);
+    ctx.lineTo(70, 66);
+    ctx.lineTo(103, 76);
+    ctx.lineTo(170, 15);
+    ctx.stroke();
+};
 imageObj2.onload = function () {
     netpattern = ctx.createPattern(imageObj2, 'repeat');
+
 };
 imageObj3.onload = function () {
     floorpattern = ctx.createPattern(imageObj3, 'repeat');
 };
+batimage.src="./asset/bat.png";
+texture.src="./asset/walltexture1.png";
+imageObj.src="asset/wall.png";
+imageObj2.src="../asset/net.png";
+imageObj3.src="asset/floor.jpg";
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.msImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
 
+play();
+
+
+console.log('ff')
 }
 
 

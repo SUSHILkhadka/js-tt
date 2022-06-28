@@ -22,7 +22,7 @@ const znear=1
 const q=zfar/(zfar-znear);
 const f=1/Math.tan((degrees/2) * Math.PI / 180) 
 
-const translateX=550;
+const translateX=400;
 const translateY=150;    
 
 
@@ -99,7 +99,7 @@ const BAT_HEIGHT=0.2
 const BAT_LENGTH=1
 
 //for static 2d bat image
-const BAT_WIDTH_2d=60*2
+const BAT_WIDTH_2d=58*2
 const BAT_HEIGHT_2d=80*2
 const BAT_LENGTH_2d=1
 
@@ -123,10 +123,10 @@ const STARTING_BALL_VELOCITY_X=-0.0
 
 const SERVEUP_X=START_BOARD_x+BOARD_WIDTH/2
 const SERVEUP_y=STARTING_BALL_POSITION_Y
-const SERVEUP_z=START_BOARD_z+BOARD_LENGTH-BOARD_LENGTH/6
+const SERVEUP_z=START_BOARD_z+BOARD_LENGTH-BOARD_LENGTH/10
 const SERVEDOWN_X=START_BOARD_x+BOARD_WIDTH/2
 const SERVEDOWN_y=STARTING_BALL_POSITION_Y
-const SERVEDOWN_z=START_BOARD_z+BOARD_LENGTH/6
+const SERVEDOWN_z=START_BOARD_z+BOARD_LENGTH/10
 
 
 
@@ -166,18 +166,21 @@ let wallsound = new Audio('asset/wall.wav');
 let batsound2 = new Audio('asset/balls.wav');
 let refreesound=new Audio('asset/refree.m4a');
 let soundflag=1
+
+
 let batimage=new Image();
-batimage.src="asset/bat.png";
 
 var imageObj = new Image();
-imageObj.src="asset/wall.png";
 var pattern=null;
+var texture = new Image();
+var texturepattern=null;
 var imageObj2 = new Image();
-imageObj2.src="asset/net.png";
 var netpattern=null;
 var imageObj3 = new Image();
-imageObj3.src="asset/floor.jpg";
 var floorpattern=null;
+
+
+
 
 
 var freeze=0;

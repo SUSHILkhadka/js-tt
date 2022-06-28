@@ -21,7 +21,9 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,"grey",ap,bp,cp,dp);
+
+
+        drawPolygon(ctx,'#008566',ap,bp,cp,dp);
         // drawCube(ctx,this.point,GROUND_WIDTH,1,GROUND_LENGTH);
     }
 
@@ -35,7 +37,7 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,netpattern,ap,bp,cp,dp);
+        drawPolygon(ctx,texturepattern,ap,bp,cp,dp);
     }
 
     //draws Left wall as polygon surface
