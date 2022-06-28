@@ -47,7 +47,7 @@ class Ball {
     updatePosition() {
 
         if (this.serveflag == 0) {
-            this.velocity.y += GRAVITY
+            this.velocity.y += GRAVITY*timeScale
             this.centre.x += this.velocity.x * timeScale
             this.centre.y += this.velocity.y * timeScale
             this.centre.z += this.velocity.z * timeScale

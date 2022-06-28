@@ -135,12 +135,13 @@ const SERVEDOWN_z=START_BOARD_z+BOARD_LENGTH/10
 
 
 //physics constant
-const GRAVITY=0.0009
+const GRAVITY=0.00128
 
 const FLOORSTART_Y=800
 const LOSS_TABLE=0.00
 const LOSS_GROUND=0.0007
-const timeScale=0.7
+// const timeScale=0.7
+var timeScale=localStorage.getItem('timescale_TableTennis') ? localStorage.getItem('timescale_TableTennis') : 0.7;
 
 const thresholdVelocityY=0.00000001
 
