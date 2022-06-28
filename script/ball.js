@@ -92,7 +92,7 @@ class Ball {
             this.downside_collision_flag=0;
             this.outOfBoard=0;
                 freeze=0;
-            }.bind(this),1000);
+            }.bind(this),5000);
 
     }
 
@@ -109,9 +109,19 @@ class Ball {
     //draws shadow as circle
     drawShadow(ctx, angley, anglex) {
         let temp = new Point3D(this.centre.x, START_BOARD_y, this.centre.z);
+        if(this.centre.x<START_BOARD_x || this.centre.x>START_BOARD_x+BOARD_WIDTH || this.centre.z<START_BOARD_z|| this.centre.z>START_BOARD_z+BOARD_LENGTH ){
+            temp.y=GROUND_START_y;
+        }
+
         let centre2D = project(temp, angley, anglex);
 
         let radiusShadow = this.rad * (-this.centre.y) * shadowradiusfactor/(this.centre.z - 1 + START_ZPLANE);
+        if(this.centre.x<START_BOARD_x || this.centre.x>START_BOARD_x+BOARD_WIDTH || this.centre.z<START_BOARD_z|| this.centre.z>START_BOARD_z+BOARD_LENGTH ){
+            radiusShadow=this.rad * (-this.centre.y+GROUND_START_y) * 0.4*shadowradiusfactor/(this.centre.z - 1 + START_ZPLANE)
+            if(this.centre.z<START_BOARD_z+BOARD_LENGTH+0.8){
+                radiusShadow=0;
+            }
+        }
 
         if (radiusShadow < 0) {
             radiusShadow = 0
@@ -191,30 +201,34 @@ collisionTable( ) {
         if (GROUND_START_y - this.centre.y <= this.rad) {
             this.velocity.y = -Math.abs(this.velocity.y) + LOSS_GROUND;
             this.outOfBoard=1;
+            wallsound.play();
             // this.respawn();
         }
 
         if ((GROUND_START_y - WALL_HEIGHT) > this.centre.y) {
             this.velocity.y = Math.abs(this.velocity.y);
             this.outOfBoard=1;
+            wallsound.play();
+
 
         }
 
         if ((GROUND_START_z + GROUND_LENGTH) <= this.centre.z) {
             this.velocity.z = -this.velocity.z;
             this.outOfBoard=1;
-
-
+            wallsound.play();
         }
         if ((GROUND_START_x + GROUND_WIDTH) <= this.centre.x) {
             this.velocity.x = -this.velocity.x;
             this.outOfBoard=1;
+            wallsound.play();
+
 
         }
         if ((GROUND_START_x) >= this.centre.x) {
             this.velocity.x = -this.velocity.x;
             this.outOfBoard=1;
-
+            wallsound.play();
         }
     }
 
@@ -294,7 +308,7 @@ collisionTable( ) {
             else {
                 if (a.z <= b.z && (b.z - a.z) < BAT_LENGTHINZAXIS_FOR_SHOT) {
                     if (soundflag == 1) {
-                        batsound.play();
+                        batsound2.play();
                         soundflag = 0;
 
                         this.centre.y = SHOT_POSITION_Y

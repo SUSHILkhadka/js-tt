@@ -14,9 +14,6 @@ multiplayer.addEventListener('click',function event(e){
 })
 
 
-
-
-
 function gameloop(gamemode){
 const gamebox = document.createElement("div")
 gamebox.style.position='relative'
@@ -40,6 +37,12 @@ adjustYdependingOnGameMode=0;
 canvasWidthDividerForMultiplayer=1
 canvasHeightDividerForMultiplayer=2
 
+WIDTH_SCALE_FOR_PROJECTION=2;
+HEIGHT_SCALE_FOR_PROJECTION=2;
+
+ballradiusfactor=2.2
+shadowradiusfactor=6000
+
 canvas.width = CANVAS_WIDTH/canvasWidthDividerForMultiplayer;
 canvas.height = CANVAS_HEIGHT/canvasHeightDividerForMultiplayer;
 
@@ -48,8 +51,7 @@ canvas2.width = CANVAS_WIDTH/canvasWidthDividerForMultiplayer;
 canvas2.height = CANVAS_HEIGHT/canvasHeightDividerForMultiplayer;
 canvas2.style.cursor = 'none'
 
-WIDTH_SCALE_FOR_PROJECTION=2;
-HEIGHT_SCALE_FOR_PROJECTION=2;
+
 }
 
 var world = new World();
@@ -109,69 +111,64 @@ bat.addMouseController();
 if(gamemode==2){
 bat_far.addKeyboardController();
 }
+window.addEventListener('keydown', function event(e) {
+    if (e.code == 'KeyP') {
+        if (START_ZPLANE > RESTRICTION_START_ZPLANE_min) {
+            START_ZPLANE -= incrementDistance;
+        }
+    }
+    if (e.code == 'KeyO') {
+        if (START_ZPLANE < RESTRICTION_START_ZPLANE_max) {
+            START_ZPLANE +=incrementDistance;
+        }
+    }
+    if (e.code == 'KeyA') {
+        if (angy < RESTRICTION_ANGLE_Y) {
+            angy += increment;
+        }
+    }
+    if (e.code == 'KeyD') {
+        if (angy > - RESTRICTION_ANGLE_Y) {
+            angy -= increment;
+        }
+    }
+    if (e.code == 'KeyW') {
+
+        if (angx > 0) {
+            angx -= increment;
+        }
+
+    } if (e.code == 'KeyS') {
+        // viewpointY+=5;
+        if (angx < RESTRICTION_ANGLE_X) {
+            angx += increment;
+        }
+    }
+
+    if (e.code == 'KeyL') {
+        if (angy2 < RESTRICTION_ANGLE_Y) {
+            angy2 += increment;
+        }
+    }
+
+    if (e.code == 'KeyJ') {
+        if (angy2 > - RESTRICTION_ANGLE_Y) {
+            angy2 -= increment;
+        }
+    }
+
+    if (e.code == 'KeyI') {
+        if (angx2 > 0) {
+            angx2 -= increment;
+        }
+
+    } if (e.code == 'KeyK') {
+        if (angx2 < RESTRICTION_ANGLE_X) {
+            angx2 += increment;
+        }
+    }
+});
 function play() {
-    // window.addEventListener('mousemove', function event(e) {
-    //     bat.updatePosition(e.clientX - translateX, e.clientY);
-
-    // });
-    window.addEventListener('keypress', function event(e) {
-        if (e.code == 'KeyP') {
-            if (START_ZPLANE > RESTRICTION_START_ZPLANE_min) {
-                START_ZPLANE -= 0.0001;
-            }
-        }
-        if (e.code == 'KeyO') {
-            if (START_ZPLANE < RESTRICTION_START_ZPLANE_max) {
-                START_ZPLANE += 0.0001;
-            }
-        }
-        if (e.code == 'KeyA') {
-            if (angy < RESTRICTION_ANGLE_Y) {
-                angy += increment;
-            }
-        }
-        if (e.code == 'KeyD') {
-
-            if (angy > - RESTRICTION_ANGLE_Y) {
-                angy -= increment;
-            }
-        }
-        if (e.code == 'KeyW') {
-
-            if (angx > 0) {
-                angx -= increment;
-            }
-
-        } if (e.code == 'KeyS') {
-            // viewpointY+=5;
-            if (angx < RESTRICTION_ANGLE_X) {
-                angx += increment;
-            }
-        }
-
-        if (e.code == 'KeyL') {
-            if (angy2 < RESTRICTION_ANGLE_Y) {
-                angy2 += increment;
-            }
-        }
-
-        if (e.code == 'KeyJ') {
-            if (angy2 > - RESTRICTION_ANGLE_Y) {
-                angy2 -= increment;
-            }
-        }
-
-        if (e.code == 'KeyI') {
-            if (angx2 > 0) {
-                angx2 -= increment;
-            }
-
-        } if (e.code == 'KeyK') {
-            if (angx2 < RESTRICTION_ANGLE_X) {
-                angx2 += increment;
-            }
-        }
-    });
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeRect(0, 0, canvas.width, canvas.height);

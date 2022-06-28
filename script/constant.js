@@ -1,17 +1,18 @@
 const CANVAS_WIDTH=1300;
 const CANVAS_HEIGHT=650;
 
-var canvasWidthDividerForMultiplayer=1;
-var canvasHeightDividerForMultiplayer=1;
 
 
 //global variables for gamemode
+
+var canvasWidthDividerForMultiplayer=1;
+var canvasHeightDividerForMultiplayer=1;
+
 WIDTH_SCALE_FOR_PROJECTION=1
 HEIGHT_SCALE_FOR_PROJECTION=1
 
 ballradiusfactor=1.7
 shadowradiusfactor=10000
-
 
 //projection constants
 const degrees=90
@@ -43,24 +44,23 @@ const RESTRICTION_ANGLE_X= 55
 
 //camera 
 const KeyboardMovement=10;
-const increment=0.01
-
-
+const increment=0.5
+const incrementDistance=0.02
 
 //world and wall constants
 const GROUND_START_x=-1.4
-const GROUND_START_y=0.3
+const GROUND_START_y=0.29
 const GROUND_START_z=1
 
 const GROUND_WIDTH=3
 const GROUND_LENGTH=5
 
-const WALL_HEIGHT=1.6;
+const WALL_HEIGHT=1.2;
 
 
 //actual table constants
 const BOARD_WIDTH=0.4
-const BOARD_HEIGHT=0.1
+const BOARD_HEIGHT=0.02
 const BOARD_LENGTH=1.5
 
 const START_BOARD_x=0;
@@ -70,9 +70,9 @@ const START_BOARD_z=1 ;
 const TABLE_COLOR=["rgba(31, 199, 31, 01)","rgb(0, 0, 102)","rgba(124, 69, 73, 0.8)","rgba(0, 0, 255, 1)"]
 
 //leg
-const LEG_WIDTH_OFFSET=0.05
+const LEG_WIDTH_OFFSET=0.08
 const LEG_HEIGHT=GROUND_START_y-(START_BOARD_y+BOARD_HEIGHT)
-const LEG_LENGTH_OFFSET=0.05;
+const LEG_LENGTH_OFFSET=0.3;
 
 const START_LEG_x=START_BOARD_x+LEG_WIDTH_OFFSET
 const START_LEG_y=START_BOARD_y+BOARD_HEIGHT
@@ -94,14 +94,16 @@ const START_LEG_xr=START_BOARD_x+BOARD_WIDTH-10
 
 //bat
 //for actual 3d 
-const BAT_WIDTH=0.2
+const BAT_WIDTH=0.06
 const BAT_HEIGHT=0.2
 const BAT_LENGTH=1
 
 //for static 2d bat image
-const BAT_WIDTH_2d=40
-const BAT_HEIGHT_2d=70
+const BAT_WIDTH_2d=60*2
+const BAT_HEIGHT_2d=80*2
 const BAT_LENGTH_2d=1
+
+
 
 
 //ball
@@ -144,7 +146,7 @@ const thresholdX=0.04;
 const thresholdY=0.01;
 const thresholdZ=0.3;
 
-const COLLISION_DETECTION_LIMIT=70
+const COLLISION_DETECTION_LIMIT=400
 
 
 //strike back or collision response constants

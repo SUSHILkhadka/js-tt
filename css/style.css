@@ -20,14 +20,19 @@
 
 button{
     display: block;
-    padding: 2rem;
+    padding: 1.2rem;
 
-    margin-bottom: 3rem;
-    background-color: aqua;
+    margin-bottom: 1.5rem;
+    background-color: black;
+    color: red;
+    opacity: 90%;
     font-size: 2rem;
     border-radius: 2rem;
 }
 button:hover{
+    color: black;
+    opacity: 50%;
+
     background-color: red;
     transition: all .3s ease-in;
 }

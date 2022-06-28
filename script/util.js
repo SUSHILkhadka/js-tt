@@ -137,7 +137,7 @@ function drawCircle(ctx, centre, rad) {
     ctx.arc(centre.x, centre.y, rad, 0, 2 * Math.PI);
     ctx.fillStyle=BALL_COLOR[1]
     ctx.fill();
-    ctx.lineWidth=2
+    ctx.lineWidth=1
     ctx.strokeStyle=BALL_STROKE_COLOR[0];
     ctx.strokeStyle='black';
 
