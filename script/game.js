@@ -1,25 +1,3 @@
-const menu=document.querySelector('.menu')
-const singleplayer=document.querySelector('.singleplayer')
-const multiplayer=document.querySelector('.multiplayer')
-const training=document.querySelector('.training')
-
-const highscore=document.querySelector('.highscore')
-
-
-singleplayer.addEventListener('click',function event(e){
-    menu.style.display='none';
-    gameloop(1);
-})
-multiplayer.addEventListener('click',function event(e){
-    menu.style.display='none';
-    gameloop(2);
-})
-training.addEventListener('click',function event(e){
-    menu.style.display='none';
-    gameloop(1,1);
-})
-
-
 function gameloop(gamemode=1,training=0){
 let gamebox = document.createElement("div")
 gamebox.style.position='relative';
@@ -60,7 +38,6 @@ gamebox.append(canvas2)
 canvas2.width = CANVAS_WIDTH/canvasWidthDividerForMultiplayer;
 canvas2.height = CANVAS_HEIGHT/canvasHeightDividerForMultiplayer;
 canvas2.style.cursor = 'none'
-
 
 }
 
@@ -237,11 +214,12 @@ function play() {
 
     ctx.translate(translateX+adjustXdependingOnGameMode, translateY+adjustYdependingOnGameMode);
     world.drawWorld(ctx, angy, angx);
-    if (angy < 15) {
-        world.drawWallRight(ctx);
+    if (angy < 14) {
+        console.log('ffff')
+        world.drawWallRight(ctx,angy,angx);
     }
-    if (angy > -13) {
-        world.drawWallLeft(ctx);
+    if (angy > -14) {
+        world.drawWallLeft(ctx,angy,angx);
     }
     table.drawAll(ctx, angy, angx);
     ball.drawAll(ctx, angy, angx);
@@ -294,10 +272,10 @@ function play() {
     let world2=new World();
     world2.drawWorld(ctx2, angy2, angx2);
     if (angy2 < 15) {
-        world2.drawWallRight(ctx2);
+        world2.drawWallRight(ctx2, angy2, angx2);
     }
-    if (angy2 > -13) {
-        world2.drawWallLeft(ctx2);
+    if (angy2 > -14) {
+        world2.drawWallLeft(ctx2, angy2, angx2);
     }
     table.drawAll(ctx2, angy2, angx2);
     ballMirror.drawAll(ctx2, angy2, angx2);

@@ -92,7 +92,7 @@ class Ball {
             this.downside_collision_flag=0;
             this.outOfBoard=0;
                 freeze=0;
-            }.bind(this),5000);
+            }.bind(this),3000);
 
     }
 

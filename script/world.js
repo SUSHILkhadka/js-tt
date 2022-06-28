@@ -6,8 +6,6 @@ class World{
     drawWorld(ctx,angley,anglex){
     this.drawGround(ctx,angley,anglex);
     this.drawWallFar(ctx,angley,anglex);
-    this.drawWallLeft(ctx,angley,anglex);
-    this.drawWallRight(ctx,angley,anglex);
     }
 
     //draws grond floor as polygon surface
