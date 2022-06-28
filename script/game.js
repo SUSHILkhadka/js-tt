@@ -22,7 +22,7 @@ function gameloop(gamemode = 1, training = 0) {
     //local storage access
     let player1Name = localStorage.getItem('player1Name_TableTennis') ? localStorage.getItem('player1Name_TableTennis') : "Player1";
     let player2Name = localStorage.getItem('player2Name_TableTennis') ? localStorage.getItem('player2Name_TableTennis') : "Player2";
-    let toWinScore = localStorage.getItem('toWinScore_TableTennis') ? localStorage.getItem('toWinScore_TableTennis') : 2;
+    let toWinScore = localStorage.getItem('toWinScore_TableTennis') ? localStorage.getItem('toWinScore_TableTennis') : 11;
     let changeServeOn = localStorage.getItem('changeServeOn') ? localStorage.getItem('changeServeOn') : 2;
 
 console.log(player1Name);
@@ -64,6 +64,7 @@ console.log(player1Name);
     let angx = 25;
     let angy2 = 0;
     let angx2 = 25;
+    let gameoverflag=0;
 
 
     //backbutton
@@ -73,6 +74,8 @@ console.log(player1Name);
     backbutton.style.top = '0px';
     backbutton.style.right = '0px';
     backbutton.addEventListener('click', function event(e) {
+        if(gameoverflag==0){
+            gameoverflag=1;
         gamebox.innerHTML = '';
         menu.style.display = 'block';
         world = null;
@@ -80,6 +83,7 @@ console.log(player1Name);
         bat = null;
         bat_far = null;
         return 0;
+        }
     })
     gamebox.append(backbutton);
 
@@ -175,30 +179,52 @@ console.log(player1Name);
 
     function play() {
 
-
+if(gameoverflag==0){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = '#87ceeb'
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         if (bat.score >= toWinScore || bat_far.score >= toWinScore) {
+            if(gameoverflag==0){
+                gameoverflag=1;
+            let winner=player1Name;
 
             if (bat.score >= toWinScore) {
                 console.log(`${player1Name} won`)
+                winner=player1Name;
 
             }
             else {
                 console.log(`${player2Name} won`)
+                winner=player2Name;
             }
 
-            gamebox.innerHTML = '';
-            menu.style.display = 'block';
-            world = null;
-            ball = null;
-            bat = null;
-            bat_far = null;
-            return 0;
+            scoreboard.style.display='none';
+
+            let winnerbox=document.createElement('div');
+            winnerbox.style.position='absolute';
+            winnerbox.style.top=toPx(CANVAS_HEIGHT/2);
+            winnerbox.style.left=toPx(CANVAS_WIDTH/2.2);
+            winnerbox.style.zIndex=3;
+            let greet=document.createElement('p');
+            greet.innerHTML=`${winner} WON`;
+            winnerbox.append(greet);
+            gamebox.append(winnerbox);
+
+            setTimeout(function(){
+                gamebox.innerHTML = '';
+                menu.style.display = 'block';
+                world = null;
+                ball = null;
+                bat = null;
+                bat_far = null;
+                return 0;
+            },2000)
         }
+
+        }
+    
 
         bat.updateAngle(angy);
         bat_far.updateAngle(angy2);
@@ -226,13 +252,14 @@ console.log(player1Name);
 
 
         ctx.translate(translateX + adjustXdependingOnGameMode, translateY + adjustYdependingOnGameMode);
-        world.drawWorld(ctx, angy, angx);
         if (angy < 14) {
             world.drawWallRight(ctx, angy, angx);
         }
         if (angy > -14) {
             world.drawWallLeft(ctx, angy, angx);
         }
+        world.drawWorld(ctx, angy, angx);
+
         table.drawAll(ctx, angy, angx);
         ball.drawAll(ctx, angy, angx);
         if (training == 0) {
@@ -273,33 +300,34 @@ console.log(player1Name);
         }
 
 
-
+        ctx2.clearRect(0, 0, canvas.width, canvas.height);
         //next bat draw
         if (gamemode == 2) {
-            ctx2.clearRect(0, 0, canvas.width, canvas.height);
             ctx2.strokeRect(0, 0, canvas.width, canvas.height);
             ctx2.translate(translateX, translateY);
             let world2 = new World();
-            world2.drawWorld(ctx2, angy2, angx2);
             if (angy2 < 15) {
                 world2.drawWallRight(ctx2, angy2, angx2);
             }
             if (angy2 > -14) {
                 world2.drawWallLeft(ctx2, angy2, angx2);
             }
+            world2.drawWorld(ctx2, angy2, angx2);
             table.drawAll(ctx2, angy2, angx2);
             ballMirror.drawAll(ctx2, angy2, angx2);
             batMirror.drawBat3D(ctx2, angy2, angx2);
             bat_far.drawBat3D(ctx2, angy2, angx2);
             ctx2.translate(-translateX, -translateY);
-
-
         }
 
-
+        
         requestAnimationFrame(play);
+        }   
 
-    }
+        
+}
+play();
+
 
     imageObj.onload = function () {
         pattern = ctx.createPattern(imageObj, 'repeat');
@@ -332,8 +360,8 @@ console.log(player1Name);
     ctx.msImageSmoothingEnabled = false;
     ctx.imageSmoothingEnabled = false;
 
-    play();
 }
+
 
 
 

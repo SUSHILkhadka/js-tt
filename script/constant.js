@@ -70,6 +70,9 @@ const START_BOARD_z=1 ;
 const TABLE_COLOR=["rgba(31, 199, 31, 01)","rgb(0, 0, 102)","rgba(124, 69, 73, 0.8)","rgba(0, 0, 255, 1)",'black']
 
 const LEG_COLOR=["rgba(31, 199, 31, 01)","rgb(153, 51, 0)","rgba(124, 69, 73, 0.8)","rgb(153, 51, 0)",'rgb(153, 51, 0)']
+
+const LIGHT_COLOR=["rgba(31, 199, 31, 01)","rgb(0, 0, 102)","rgba(124, 69, 73, 0.8)","white",'black']
+
 //leg
 const LEG_WIDTH_OFFSET=0.08
 const LEG_HEIGHT=GROUND_START_y-(START_BOARD_y+BOARD_HEIGHT)

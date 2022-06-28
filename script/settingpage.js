@@ -16,19 +16,24 @@ function settingpage() {
     })
     settingpage.append(backbutton);
 
+    document.querySelector("#firstplayername").value= localStorage.getItem('player1Name_TableTennis') ? localStorage.getItem('player1Name_TableTennis') : "Player123";
+    document.querySelector("#secondplayername").value= localStorage.getItem('player2Name_TableTennis') ? localStorage.getItem('player2Name_TableTennis') : "Player2";
+    document.querySelector("#towinscore").value= localStorage.getItem('toWinScore_TableTennis') ? localStorage.getItem('toWinScore_TableTennis') : 11;
+    document.querySelector("#changeserveon").value= localStorage.getItem('changeServeOn') ? localStorage.getItem('changeServeOn') : 2;
+
 
     let save = document.querySelector('#save');
     save.addEventListener('click',function event(e) {
 
-        // let a=
-        // let b=
-        // let c=
-        // let d=
+        let a=document.querySelector("#firstplayername").value
+        let b=document.querySelector("#secondplayername").value
+        let c=document.querySelector("#towinscore").value
+        let d=document.querySelector("#changeserveon").value
 
-        // localStorage.setItem('player1Name_TableTennis', a)
-        // localStorage.setItem('player2Name_TableTennis', b)
-        // localStorage.setItem('toWinScore_TableTennis', c)
-        // localStorage.setItem('changeServeOn', d)
+        localStorage.setItem('player1Name_TableTennis', a)
+        localStorage.setItem('player2Name_TableTennis', b)
+        localStorage.setItem('toWinScore_TableTennis', c)
+        localStorage.setItem('changeServeOn', d)
 
         // localStorage.setItem('player1Name_TableTennis', "Ram")
 
