@@ -2,7 +2,8 @@ const menu=document.querySelector('.menu')
 const singleplayer=document.querySelector('.singleplayer')
 const multiplayer=document.querySelector('.multiplayer')
 const training=document.querySelector('.training')
-
+const setting=document.querySelector('.setting')
+const control=document.querySelector('.control')
 const highscore=document.querySelector('.highscore')
 
 
@@ -17,4 +18,9 @@ multiplayer.addEventListener('click',function event(e){
 training.addEventListener('click',function event(e){
     menu.style.display='none';
     gameloop(1,1);
+})
+
+control.addEventListener('click',function event(e){
+    menu.style.display='none';
+    controlpage();
 })
