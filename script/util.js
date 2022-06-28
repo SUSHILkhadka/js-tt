@@ -203,11 +203,11 @@ function drawCube(ctx,array,strokecolor, point, width, height, length,angley,ang
  * @returns which player should be serving right now.
  */
 
-function serveDeterminer(firstscore,secondscore,currentid){
+function serveDeterminer(firstscore,secondscore,currentid,changeServeOn){
     // console.log(firstscore,secondscore)
     // console.log("rounded",Math.floor((firstscore+secondscore)/2))
 
-    if(Math.floor((firstscore+secondscore)/2)%2==0){
+    if(Math.floor((firstscore+secondscore)/changeServeOn)%2==0){
         return 1;
     }
     else {return 2} ;

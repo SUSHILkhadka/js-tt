@@ -19,6 +19,10 @@ training.addEventListener('click',function event(e){
     menu.style.display='none';
     gameloop(1,1);
 })
+setting.addEventListener('click',function event(e){
+    menu.style.display='none';
+    settingpage();
+})
 
 control.addEventListener('click',function event(e){
     menu.style.display='none';
