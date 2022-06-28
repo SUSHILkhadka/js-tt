@@ -21,25 +21,26 @@ training.addEventListener('click',function event(e){
 
 
 function gameloop(gamemode=1,training=0){
-const gamebox = document.createElement("div")
-gamebox.style.position='relative'
+let gamebox = document.createElement("div")
+gamebox.style.position='relative';
+gamebox.style.backgroundColor='black'
+
 document.body.append(gamebox)
-const canvas = document.createElement("canvas")
-const ctx = canvas.getContext('2d');
+let canvas = document.createElement("canvas")
+let ctx = canvas.getContext('2d');
 gamebox.append(canvas)
 
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
-var adjustXdependingOnGameMode=0
-var adjustYdependingOnGameMode=200;
+let adjustXdependingOnGameMode=-100
+let adjustYdependingOnGameMode=200;
 
 canvas.style.cursor = 'none'
-const canvas2 = document.createElement("canvas")
-const ctx2 = canvas2.getContext('2d');
-
+let canvas2 = document.createElement("canvas")
+let ctx2 = canvas2.getContext('2d');
 
 if(gamemode==2){
-adjustXdependingOnGameMode=150
+adjustXdependingOnGameMode=0
 adjustYdependingOnGameMode=0;
 canvasWidthDividerForMultiplayer=1
 canvasHeightDividerForMultiplayer=2
@@ -49,6 +50,8 @@ HEIGHT_SCALE_FOR_PROJECTION=2;
 
 ballradiusfactor=2.2
 shadowradiusfactor=6000
+
+START_ZPLANE=1.5
 
 canvas.width = CANVAS_WIDTH/canvasWidthDividerForMultiplayer;
 canvas.height = CANVAS_HEIGHT/canvasHeightDividerForMultiplayer;
@@ -61,20 +64,20 @@ canvas2.style.cursor = 'none'
 
 }
 
-var world = new World();
-var table = new Table()
+let world = new World();
+let table = new Table()
 
-var centre = new Point3D(0.2, STARTING_BALL_POSITION_Y, 2.09)
-var vel = new Point3D(STARTING_BALL_VELOCITY_X, STARTING_BALL_VELOCITY_Y, -0.01);
-var ball = new Ball(centre, 0.01, vel)
+let centre = new Point3D(0.2, STARTING_BALL_POSITION_Y, 2.09)
+let vel = new Point3D(STARTING_BALL_VELOCITY_X, STARTING_BALL_VELOCITY_Y, -0.01);
+let ball = new Ball(centre, 0.01, vel)
 
-var bat = new Bat();
-var bat_far = new Bat();
+let bat = new Bat();
+let bat_far = new Bat();
 
 let angy = 0;
-let angx = 45;
+let angx = 25;
 let angy2 = 0;
-let angx2 = 45;
+let angx2 = 25;
 
 let targetScore=6;
 
@@ -83,6 +86,15 @@ backbutton.innerHTML='quit';
 backbutton.style.position='absolute';
 backbutton.style.top='0px';
 backbutton.style.right='0px';
+backbutton.addEventListener('click',function event(e){
+    gamebox.innerHTML='';
+    menu.style.display='block';
+    world=null;    
+    ball=null;
+    bat=null;
+    bat_far=null;
+    return 0;
+})
 
 gamebox.append(backbutton);
 
@@ -176,20 +188,15 @@ window.addEventListener('keydown', function event(e) {
         }
     }
 });
-backbutton.addEventListener('click',function event(e){
-    gamebox.innerHTML='';
-    menu.style.display='block';
-    world=null;    
-    ball=null;
-    bat=null;
-    bat_far=null;
-    return 0;
-})
+
 function play() {
 
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle='#87ceeb'
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
     if(bat.score>=targetScore || bat_far.score>=targetScore)
     {
         gamebox.innerHTML='';
@@ -284,12 +291,13 @@ function play() {
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
         ctx2.strokeRect(0, 0, canvas.width, canvas.height);
     ctx2.translate(translateX, translateY);
-    world.drawWorld(ctx2, angy2, angx2);
-    if (rotation_angle < 15) {
-        world.drawWallRight(ctx2);
+    let world2=new World();
+    world2.drawWorld(ctx2, angy2, angx2);
+    if (angy2 < 15) {
+        world2.drawWallRight(ctx2);
     }
-    if (rotation_angle > -13) {
-        world.drawWallLeft(ctx2);
+    if (angy2 > -13) {
+        world2.drawWallLeft(ctx2);
     }
     table.drawAll(ctx2, angy2, angx2);
     ballMirror.drawAll(ctx2, angy2, angx2);
@@ -337,23 +345,13 @@ ctx.msImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
 play();
-
-
-console.log('ff')
 }
-
-
-
-
-
-
-
 
 
 
 /**
  * 
- * @param {*} ball ball for upside collision count, downside collision count, and other flags
+ * @param {*} ball used for upside collision count, downside collision count, and other flags
  * @param {*} bat for updating score
  * @param {*} bat_far for updating score
  */

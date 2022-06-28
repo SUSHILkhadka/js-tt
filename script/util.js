@@ -95,7 +95,7 @@ function getPointOnPlane(point1, point2 = viewPoint, plane = viewPlane) {
  * @param {*} color color to fill that polygon
  * @param  {...any} obj array of points that make up polygon
  */
-function drawPolygon(ctx, color, ...obj) {
+function drawPolygon(ctx, color,strokecolor, ...obj) {
     ctx.beginPath();
     obj.forEach((value, index) => {
         if (index == 0) {
@@ -110,7 +110,7 @@ function drawPolygon(ctx, color, ...obj) {
     ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 1;
-    ctx.strokeStyle='black';
+    ctx.strokeStyle=strokecolor;
     ctx.stroke();
 }
 
@@ -164,7 +164,7 @@ function shadowCircle(ctx, centre2D, rad) {
  * @param {*} height 
  * @param {*} length 
  */
-function drawCube(ctx, point, width, height, length,angley,anglex) {
+function drawCube(ctx,array,strokecolor, point, width, height, length,angley,anglex) {
     //get 8 point coordinates
     let pointa = Object.assign(point);
 
@@ -188,11 +188,11 @@ function drawCube(ctx, point, width, height, length,angley,anglex) {
     pointd_be = project(pointd_be,angley,anglex);
 
     //draw 6 faces
-    drawPolygon(ctx, TABLE_COLOR[0], pointa_be, pointb_be, pointc_be, pointd_be)
-    drawPolygon(ctx, TABLE_COLOR[1], pointa, pointd, pointd_be, pointa_be)
-    drawPolygon(ctx, TABLE_COLOR[1], pointb, pointc, pointc_be, pointb_be)
-    drawPolygon(ctx, TABLE_COLOR[0], pointa, pointb, pointc, pointd)
-    drawPolygon(ctx, TABLE_COLOR[3], pointa, pointb, pointb_be, pointa_be)
+    drawPolygon(ctx, array[0],strokecolor, pointa_be, pointb_be, pointc_be, pointd_be)
+    drawPolygon(ctx, array[1],strokecolor, pointa, pointd, pointd_be, pointa_be)
+    drawPolygon(ctx, array[1],strokecolor, pointb, pointc, pointc_be, pointb_be)
+    drawPolygon(ctx, array[4],strokecolor, pointa, pointb, pointc, pointd)
+    drawPolygon(ctx, array[3],strokecolor, pointa, pointb, pointb_be, pointa_be)
 }
 
 /**

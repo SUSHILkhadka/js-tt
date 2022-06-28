@@ -23,7 +23,7 @@ class World{
         let dp=project(d,angley,anglex);
 
 
-        drawPolygon(ctx,'#008566',ap,bp,cp,dp);
+        drawPolygon(ctx,'#008566',"black",ap,bp,cp,dp);
         // drawCube(ctx,this.point,GROUND_WIDTH,1,GROUND_LENGTH);
     }
 
@@ -37,7 +37,7 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,texturepattern,ap,bp,cp,dp);
+        drawPolygon(ctx,texturepattern,"black",ap,bp,cp,dp);
     }
 
     //draws Left wall as polygon surface
@@ -50,7 +50,7 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,'red',ap,bp,cp,dp);
+        drawPolygon(ctx,'red',"black",ap,bp,cp,dp);
     }
 
     //draws Right wall as polygon surface
@@ -63,6 +63,6 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,"green",ap,bp,cp,dp);
+        drawPolygon(ctx,"green","black",ap,bp,cp,dp);
     }
 }

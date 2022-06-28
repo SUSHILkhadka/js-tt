@@ -1,4 +1,4 @@
-const CANVAS_WIDTH=1300;
+const CANVAS_WIDTH=1400;
 const CANVAS_HEIGHT=650;
 
 
@@ -22,7 +22,7 @@ const znear=1
 const q=zfar/(zfar-znear);
 const f=1/Math.tan((degrees/2) * Math.PI / 180) 
 
-const translateX=400;
+const translateX=550;
 const translateY=150;    
 
 
@@ -31,8 +31,7 @@ const nomouse=9000;
 
 //these are not actually constants. They are global variable used for testing.
 START_ZPLANE=2
-rotation_angle=-0;
-rotation_anglex=90;
+
 
 
 //camera capped at in degree with Y , X and near and far distance capped by min and max.
@@ -67,8 +66,10 @@ const START_BOARD_x=0;
 const START_BOARD_y=0;
 const START_BOARD_z=1 ;
 
-const TABLE_COLOR=["rgba(31, 199, 31, 01)","rgb(0, 0, 102)","rgba(124, 69, 73, 0.8)","rgba(0, 0, 255, 1)"]
+//far width=0, right=1,left=1,near width=4,top=3
+const TABLE_COLOR=["rgba(31, 199, 31, 01)","rgb(0, 0, 102)","rgba(124, 69, 73, 0.8)","rgba(0, 0, 255, 1)",'black']
 
+const LEG_COLOR=["rgba(31, 199, 31, 01)","rgb(153, 51, 0)","rgba(124, 69, 73, 0.8)","rgb(153, 51, 0)",'rgb(153, 51, 0)']
 //leg
 const LEG_WIDTH_OFFSET=0.08
 const LEG_HEIGHT=GROUND_START_y-(START_BOARD_y+BOARD_HEIGHT)

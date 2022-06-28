@@ -19,7 +19,7 @@ class Table{
 
     //draws actual table as cube
     drawTable(ctx,angley,anglex){
-        drawCube(ctx,this.bPoint,BOARD_WIDTH,BOARD_HEIGHT,BOARD_LENGTH,angley,anglex)
+        drawCube(ctx,TABLE_COLOR,"white",this.bPoint,BOARD_WIDTH,BOARD_HEIGHT,BOARD_LENGTH,angley,anglex)
     }
 
     //draws white midline as polygon surface
@@ -32,14 +32,14 @@ class Table{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,'rgba(255, 255, 255, 1)',ap,bp,cp,dp);
+        drawPolygon(ctx,'rgba(255, 255, 255, 1)',"black",ap,bp,cp,dp);
     }
 
     //draws legs as cube
     drawLegs(ctx,angley,anglex){
         let a=new Point3D(START_LEG_x,START_LEG_y,START_LEG_z)
         // let b
-        drawCube(ctx,a,LEG_WIDTH,LEG_HEIGHT,LEG_LENGTH,angley,anglex);
+        drawCube(ctx,LEG_COLOR,"black",a,LEG_WIDTH,LEG_HEIGHT,LEG_LENGTH,angley,anglex);
     }
 
     //draws net as polygon surface filled with netpattern image
@@ -53,6 +53,6 @@ class Table{
         let b_proj=project(topRight,angley,anglex);
         let c_proj=project(bottomRight,angley,anglex);
         let d_proj=project(bottomLeft,angley,anglex);
-        drawPolygon(ctx,netpattern,a_proj,b_proj,c_proj,d_proj);
+        drawPolygon(ctx,netpattern,"white",a_proj,b_proj,c_proj,d_proj);
     }
 }
