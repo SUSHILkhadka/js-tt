@@ -7,8 +7,7 @@ class World{
     this.drawGround(ctx,angley,anglex);
     this.drawWallFar(ctx,angley,anglex);
     // this.drawRoof(ctx,angley,anglex);
-    // this.drawFloorDecoration(ctx,angley,anglex)
-
+    this.drawFloorDecoration(ctx,angley,anglex)
     }
 
     //draws grond floor as polygon surface
@@ -23,7 +22,7 @@ class World{
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
 
-        drawPolygon(ctx,'#008566',"transparent",ap,bp,cp,dp);
+        drawPolygon(ctx,'grey',"transparent",ap,bp,cp,dp);
         // drawCube(ctx,this.point,GROUND_WIDTH,1,GROUND_LENGTH);
     }
     drawRoof(ctx,angley,anglex){
@@ -36,7 +35,6 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-
 
         drawPolygon(ctx,'yellow',"black",ap,bp,cp,dp);
         // drawCube(ctx,this.point,GROUND_WIDTH,1,GROUND_LENGTH);
@@ -53,7 +51,8 @@ class World{
         let bp=project(b,angley,anglex);
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
-        drawPolygon(ctx,texturepattern,"black",ap,bp,cp,dp);
+
+        drawPolygon(ctx,"grey","black",ap,bp,cp,dp);
     }
 
     //draws Left wall as polygon surface
@@ -80,10 +79,11 @@ class World{
         let cp=project(c,angley,anglex);
         let dp=project(d,angley,anglex);
         drawPolygon(ctx,"green","black",ap,bp,cp,dp);
+
     }
     drawFloorDecoration(ctx,angley,anglex){
         let lightWidth=0.3
-        let a=new Point3D(START_BOARD_x+BOARD_WIDTH/2-lightWidth/2,GROUND_START_y-WALL_HEIGHT,START_BOARD_z+BOARD_LENGTH/2)
+        let a=new Point3D(START_BOARD_x+BOARD_WIDTH/2-lightWidth/2,GROUND_START_y-WALL_HEIGHT,START_BOARD_z+BOARD_LENGTH/2);
 
         drawCube(ctx,LIGHT_COLOR,"black",a,lightWidth,0.1,0.1,angley,anglex);
         // drawCube(ctx,this.point,GROUND_WIDTH,1,GROUND_LENGTH);

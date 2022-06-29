@@ -60,7 +60,7 @@ class Bat {
 
         }
 
-        drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', "black",a_proj, b_proj, c_proj, d_proj);
+        // drawPolygon(ctx, 'rgba(15, 11, 13, 0.4)', "black",a_proj, b_proj, c_proj, d_proj);
     }
 
 

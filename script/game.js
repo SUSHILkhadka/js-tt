@@ -17,8 +17,6 @@ function gameloop(gamemode = 1, training = 0) {
     let canvas2 = document.createElement("canvas")
     let ctx2 = canvas2.getContext('2d');
 
-
-
     //local storage access
     let player1Name = localStorage.getItem('player1Name_TableTennis') ? localStorage.getItem('player1Name_TableTennis') : "Player1";
     let player2Name = localStorage.getItem('player2Name_TableTennis') ? localStorage.getItem('player2Name_TableTennis') : "Player2";
@@ -88,7 +86,6 @@ console.log(player1Name);
         }
     })
     gamebox.append(backbutton);
-
 
 
     //scoreboard
@@ -179,6 +176,9 @@ console.log(player1Name);
         }
     });
 
+
+    let startime=Date.now();
+
     function play() {
 
 if(gameoverflag==0){
@@ -192,14 +192,25 @@ if(gameoverflag==0){
                 gameoverflag=1;
             let winner=player1Name;
 
+            let finishtime=Date.now();
+            console.log("finishtime=",finishtime)
+
+            let timetaken=Math.floor((finishtime-startime)/1000);
+            console.log("timetaken in sec=",timetaken)
+
+
             if (bat.score >= toWinScore) {
                 console.log(`${player1Name} won`)
                 winner=player1Name;
+            highscoreHandler(timetaken,player1Name)
+
 
             }
             else {
                 console.log(`${player2Name} won`)
                 winner=player2Name;
+            highscoreHandler(timetaken,player2Name)
+
             }
 
             scoreboard.style.display='none';
@@ -240,7 +251,6 @@ if(gameoverflag==0){
             ball.dontGoOutside();
         }
 
-
         if (freeze == 0) {
             ball.collisionBat2(angy, angy2, bat, bat_far);
             bat.updatePosition();
@@ -251,7 +261,6 @@ if(gameoverflag==0){
             bat_far.trackBall(ball);
             bat_far.adjustRange(ball);
         }
-
 
         ctx.translate(translateX + adjustXdependingOnGameMode, translateY + adjustYdependingOnGameMode);
         if (angy < 14) {
@@ -268,7 +277,6 @@ if(gameoverflag==0){
             bat_farMirror.drawBat3D(ctx, angy, angx);
         }
         bat.drawBat3D(ctx, angy, angx);
-
 
 
         //score
@@ -334,7 +342,6 @@ play();
     imageObj.onload = function () {
         pattern = ctx.createPattern(imageObj, 'repeat');
     };
-
     texture.onload = function () {
         texturepattern = ctx.createPattern(texture, 'repeat');
         ctx.drawImage(texture, 0, 0);

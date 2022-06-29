@@ -1,8 +1,6 @@
 const CANVAS_WIDTH=1400;
 const CANVAS_HEIGHT=650;
 
-
-
 //global variables for gamemode
 
 var canvasWidthDividerForMultiplayer=1;
@@ -25,14 +23,9 @@ const f=1/Math.tan((degrees/2) * Math.PI / 180)
 const translateX=550;
 const translateY=150;    
 
-
-
 const nomouse=9000;
-
 //these are not actually constants. They are global variable used for testing.
 START_ZPLANE=2
-
-
 
 //camera capped at in degree with Y , X and near and far distance capped by min and max.
 const RESTRICTION_START_ZPLANE_min= 1
@@ -183,8 +176,6 @@ var imageObj2 = new Image();
 var netpattern=null;
 var imageObj3 = new Image();
 var floorpattern=null;
-
-
 
 
 

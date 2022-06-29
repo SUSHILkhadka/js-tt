@@ -1,5 +1,4 @@
 function settingpage() {
-
     let settingpage = document.querySelector('.settingpage');
     settingpage.style.display = 'block';
 
@@ -15,7 +14,6 @@ function settingpage() {
         return 0;
     })
     settingpage.append(backbutton);
-
     document.querySelector("#firstplayername").value= localStorage.getItem('player1Name_TableTennis') ? localStorage.getItem('player1Name_TableTennis') : "Player123";
     document.querySelector("#secondplayername").value= localStorage.getItem('player2Name_TableTennis') ? localStorage.getItem('player2Name_TableTennis') : "Player2";
     document.querySelector("#towinscore").value= localStorage.getItem('toWinScore_TableTennis') ? localStorage.getItem('toWinScore_TableTennis') : 11;
@@ -50,14 +48,5 @@ function settingpage() {
 
     })
 
-
-
-
-
-
     settingpage.append(backbutton);
-
-
-
-
 }

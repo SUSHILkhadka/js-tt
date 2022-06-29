@@ -28,3 +28,8 @@ control.addEventListener('click',function event(e){
     menu.style.display='none';
     controlpage();
 })
+
+highscore.addEventListener('click',function event(e){
+    menu.style.display='none';
+    highscorepage();
+})
